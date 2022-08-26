@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:oru_rock/model/geocoding_model.dart';
 
 class ApiFunction extends GetxService {
   var dio = Dio();
@@ -12,10 +13,13 @@ class ApiFunction extends GetxService {
   );
 
   Future<ApiFunction> init() async {
-    dio.options.baseUrl = ''; //기본 url 인터셉터에 탑제
+    //기본 url 인터셉터에 탑제
 
     dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
-      options.headers = headers; //request시에 header 탑재
+      if (options.headers.isEmpty) {
+        options.headers = headers;
+        options.baseUrl = '';
+      }
       return handler.next(options);
     }, onResponse: (response, handler) {
       loggerNoStack.v(response.statusCode);
@@ -34,6 +38,13 @@ class ApiFunction extends GetxService {
     Map<String, String> headers = {};
     headers['content-type'] = 'application/json; charset=utf-8';
     headers['accept'] = 'application/json; charset=utf-8';
+    return headers;
+  }
+
+  Map<String, String> get naverApiHeaders {
+    Map<String, String> headers = {};
+    headers['X-NCP-APIGW-API-KEY-ID'] = 'lhtdt0293p';
+    headers['X-NCP-APIGW-API-KEY'] = 'UOSneSZrYXbBFwsCA5faKWpaWZFhPOS6ZJpK6KBq';
     return headers;
   }
 }

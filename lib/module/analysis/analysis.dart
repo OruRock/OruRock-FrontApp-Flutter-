@@ -15,7 +15,7 @@ class Analysis extends GetView<AnalysisController> {
           onPressed: () {
             Get.offNamed(Routes.nmap);
           },
-          child: const Text('취향 조사 완료'),
+          child: const Text('첫 화면'),
         ),
       ),
     );
