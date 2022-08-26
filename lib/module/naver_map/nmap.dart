@@ -16,15 +16,7 @@ class NMap extends GetView<NMapController> {
         resizeToAvoidBottomInset: false,
         drawer: _buildDrawerListView(),
         appBar: AppBar(
-          title: const Text("TravelRhythm"),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Get.toNamed(Routes.search);
-              },
-              icon: const Icon(Icons.search_rounded),
-            )
-          ],
+          title: const Text("오르Rock"),
         ),
         body: Obx(() => Stack(
               children: [
