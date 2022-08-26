@@ -6,8 +6,6 @@ import 'package:oru_rock/module/analysis/analysis.dart';
 import 'package:oru_rock/module/analysis/analysis_controller.dart';
 import 'package:oru_rock/module/naver_map/nmap.dart';
 import 'package:oru_rock/module/naver_map/nmap_controller.dart';
-import 'package:oru_rock/module/search_address/search_address.dart';
-import 'package:oru_rock/module/search_address/search_address_controller.dart';
 import 'package:oru_rock/routes.dart';
 
 void main() async {
@@ -45,12 +43,6 @@ class MyApp extends StatelessWidget {
             page: () => const NMap(),
             binding: BindingsBuilder(
               () => {Get.put(NMapController())},
-            )),
-        GetPage(
-            name: Routes.search,
-            page: () => const SearchAddress(),
-            binding: BindingsBuilder(
-              () => {Get.put(SearchAddressController())},
             )),
       ],
     );

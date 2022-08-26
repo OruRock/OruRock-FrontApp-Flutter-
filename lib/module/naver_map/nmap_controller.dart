@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/get.dart';
-import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
+import 'package:proj4dart/proj4dart.dart' as proj4;
 
 class NMapController extends GetxController {
   Completer<NaverMapController> completer = Completer();
   MapType mapType = MapType.Basic;
   LocationTrackingMode trackingMode = LocationTrackingMode.Follow;
   RxList<Marker> markers = <Marker>[].obs;
-  SolidController solidController = SolidController();
 
   @override
   void onInit() async {
@@ -23,12 +22,12 @@ class NMapController extends GetxController {
       title: '터치한 위치',
       message: '[onTap] lat: ${position.latitude}, lon: ${position.longitude}',
     ));
-    markers.removeLast();
   }
   void onMapCreated(NaverMapController controller) {
     if (completer.isCompleted) completer = Completer();
     completer.complete(controller);
     goToMyLocation();
+    setMarker();
   }
 
   void goToMyLocation() async {
@@ -36,17 +35,38 @@ class NMapController extends GetxController {
     nmapController.setLocationTrackingMode(LocationTrackingMode.Follow);
   }
 
-  void goToSelectedLocation(LatLng position) async {
+  void setMarker() async {
     final nmapController = await completer.future;
+    LatLng position = getLatLng(14151561.7330666,4507202.5944991);
+
     markers.add(Marker(
-      markerId: DateTime.now().toIso8601String(),
+      markerId: "ClimbingStore",
       position: position,
       infoWindow: '테스트',
     ));
+
     final cameraPosition = CameraUpdate.scrollWithOptions(
         LatLng(position.latitude, position.longitude),
         zoom: 18);
+
     nmapController.moveCamera(cameraPosition);
+  }
+
+
+  LatLng getLatLng(double entX, double entY) {
+
+    final coord_X = (entX * 1000000).round()/ 1000000;
+    final coord_Y = (entY * 1000000).round()/ 1000000;
+
+    var pointDst = proj4.Point(x: coord_X, y: coord_Y);
+
+    var projSrc = proj4.Projection.get('EPSG:4326')!;
+    var projDst = proj4.Projection.get('EPSG:3857')!;
+
+    var point = projDst.transform(projSrc, pointDst);
+    print(point.x);
+    print(point.y);
+    return LatLng(point.y, point.x);
   }
 
 }
