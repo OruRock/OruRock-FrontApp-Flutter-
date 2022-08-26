@@ -25,7 +25,6 @@ class NMapController extends GetxController {
     ));
     markers.removeLast();
   }
-
   void onMapCreated(NaverMapController controller) {
     if (completer.isCompleted) completer = Completer();
     completer.complete(controller);
@@ -49,4 +48,5 @@ class NMapController extends GetxController {
         zoom: 18);
     nmapController.moveCamera(cameraPosition);
   }
+
 }
