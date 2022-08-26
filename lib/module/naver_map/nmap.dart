@@ -5,7 +5,6 @@ import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/naver_map/nmap_controller.dart';
 import 'package:oru_rock/routes.dart';
-import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 class NMap extends GetView<NMapController> {
   const NMap({Key? key}) : super(key: key);
@@ -40,35 +39,6 @@ class NMap extends GetView<NMapController> {
                   minZoom: 5,
                   logoClickEnabled: false,
                   markers: controller.markers.value,
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SolidBottomSheet(
-                      maxHeight: (MediaQuery.of(context).size.height -
-                              kToolbarHeight) *
-                          0.75,
-                      showOnAppear: false,
-                      controller: controller.solidController,
-                      draggableBody: true,
-                      headerBar: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.2),
-                              spreadRadius: 3,
-                              blurRadius: 5,
-                              offset: const Offset(
-                                  0, 0), // changes position of shadow
-                            )
-                          ],
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(RadiusSize.large)),
-                        ),
-                        child: const Center(child: Icon(Icons.maximize)),
-                      ),
-                      body: Container()),
                 ),
                 Align(
                     alignment: Alignment.topCenter,
