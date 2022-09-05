@@ -39,6 +39,8 @@ dependencies:
     git: https://github.com/note11g/flutter_naver_map.git
   flutter_native_splash: ^2.2.7 # splah(첫 로고 화면)용 library
 
+  kakao_flutter_sdk_user: ^1.2.1 # 카카오 로그인
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

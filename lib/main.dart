@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/module/analysis/analysis.dart';
 import 'package:oru_rock/module/analysis/analysis_controller.dart';
@@ -9,11 +10,13 @@ import 'package:oru_rock/module/naver_map/nmap_controller.dart';
 import 'package:oru_rock/routes.dart';
 import 'module/login/login.dart';
 import 'module/login/login_controller.dart';
+import 'package:oru_rock/constant/config.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Get.putAsync(() => ApiFunction().init());
+  KakaoSdk.init(nativeAppKey: '${KakaoLogin.kakao_native_key}');
   FlutterNativeSplash.remove(); //로딩 끝나는 위치에 두어야 함(스플래시 제거)
   runApp(const MyApp());
 }
