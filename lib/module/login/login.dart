@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/module/login/login_controller.dart';
 import 'package:oru_rock/routes.dart';
 
@@ -10,13 +11,22 @@ class Login extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Get.offNamed(Routes.analysis);
-          },
-          child: const Text('첫 화면'),
-        ),
+      body: Column(
+        children: [
+          _buildLoginButton(controller.KakaoLoginButtonPressed, "Kakao Login"),
+          _buildLoginButton(() {}, "Google Login"),
+          _buildLoginButton(() {}, "Naver Login"),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLoginButton(Function() onPressed, String login) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: GapSize.small),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        child: Text(login),
       ),
     );
   }
