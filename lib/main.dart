@@ -7,6 +7,8 @@ import 'package:oru_rock/module/analysis/analysis_controller.dart';
 import 'package:oru_rock/module/naver_map/nmap.dart';
 import 'package:oru_rock/module/naver_map/nmap_controller.dart';
 import 'package:oru_rock/routes.dart';
+import 'module/login/login.dart';
+import 'module/login/login_controller.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -29,9 +31,15 @@ class MyApp extends StatelessWidget {
             child: child!);
       },
       //첫 라우팅 페이지
-      initialRoute: Routes.analysis,
+      initialRoute: Routes.login,
       getPages: [
         //페이지 추가
+        GetPage(
+            name: Routes.login,
+            page: () => const Login(),
+            binding: BindingsBuilder(
+                () => {Get.put(LoginController())},
+            )),
         GetPage(
             name: Routes.analysis,
             page: () => const Analysis(),

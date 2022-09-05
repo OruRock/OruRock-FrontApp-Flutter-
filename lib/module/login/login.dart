@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:oru_rock/module/analysis/analysis_controller.dart';
+import 'package:oru_rock/module/login/login_controller.dart';
 import 'package:oru_rock/routes.dart';
 
-class Analysis extends GetView<AnalysisController> {
-  const Analysis({Key? key}) : super(key: key);
+class Login extends GetView<LoginController> {
+  const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +13,9 @@ class Analysis extends GetView<AnalysisController> {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            Get.offNamed(Routes.nmap);
+            Get.offNamed(Routes.analysis);
           },
-          child: const Text('Analysis 화면'),
+          child: const Text('첫 화면'),
         ),
       ),
     );
