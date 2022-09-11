@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/module/login/login_controller.dart';
-import 'package:oru_rock/routes.dart';
 
 class Login extends GetView<LoginController> {
   const Login({super.key});
@@ -14,7 +13,7 @@ class Login extends GetView<LoginController> {
       body: Column(
         children: [
           _buildLoginButton(controller.KakaoLoginButtonPressed, "Kakao Login"),
-          _buildLoginButton(() {}, "Google Login"),
+          _buildLoginButton(controller.GoogleLoginButtonPressed, "Google Login"),
           _buildLoginButton(() {}, "Naver Login"),
         ],
       ),
