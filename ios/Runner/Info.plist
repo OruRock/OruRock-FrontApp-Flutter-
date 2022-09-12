@@ -49,5 +49,17 @@
     <string>lhtdt0293p</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>위치 권한의 허용이 필요합니다.</string>
+    <!-- Google Sign-in Setting -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.699813385517-p61pm27c9oppgm5u0dppd28e3r9uake1</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>
