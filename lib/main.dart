@@ -10,8 +10,8 @@ import 'package:oru_rock/module/analysis/analysis_controller.dart';
 import 'package:oru_rock/module/naver_map/nmap.dart';
 import 'package:oru_rock/module/naver_map/nmap_controller.dart';
 import 'package:oru_rock/routes.dart';
-import 'module/login/login.dart';
-import 'module/login/login_controller.dart';
+import 'package:oru_rock/module/login/login.dart';
+import 'package:oru_rock/module/login/login_controller.dart';
 import 'package:oru_rock/constant/config.dart';
 
 void main() async {
