@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class AnalysisController extends GetxController {
+class HomeController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
