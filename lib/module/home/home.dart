@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:oru_rock/constant/style/size.dart';
+import 'package:oru_rock/module/home/fragment/home_service_top.dart';
 import 'package:oru_rock/module/home/home_controller.dart';
 
 import 'package:oru_rock/routes.dart';
@@ -9,15 +11,47 @@ class Home extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Get.offNamed(Routes.nmap);
-          },
-          child: const Text('첫 화면'),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(),
+        body: ListView(
+          children: [
+            SizedBox(
+              height: HeightWithRatio.medium,
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: GapSize.medium),
+              child: HomeServiceTop(),
+            ),
+            SizedBox(
+              height: HeightWithRatio.medium,
+              width: Get.width,
+              child: const Center(child: Text('Admob Banner')),
+            ),
+            const Text(
+              '즐겨찾는 암장',
+              style: TextStyle(fontSize: FontSize.large, fontFamily: "NanumB"),
+            ),
+            const SizedBox(
+              height: GapSize.medium,
+            ),
+            _buildListTile(),
+            _buildListTile(),
+            _buildListTile(),
+            _buildListTile(),
+            _buildListTile(),
+            _buildListTile(),
+            _buildListTile(),
+          ],
         ),
+      ),
+    );
+  }
+
+  _buildListTile() {
+    return const Center(
+      child: ListTile(
+        title: Text('암장 1'),
       ),
     );
   }

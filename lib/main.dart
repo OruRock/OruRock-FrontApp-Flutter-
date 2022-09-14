@@ -29,11 +29,11 @@ class MyApp extends StatelessWidget {
             child: child!);
       },
       //첫 라우팅 페이지
-      initialRoute: Routes.analysis,
+      initialRoute: Routes.home,
       getPages: [
         //페이지 추가
         GetPage(
-            name: Routes.analysis,
+            name: Routes.home,
             page: () => const Home(),
             binding: BindingsBuilder(
               () => {Get.put(HomeController())},
