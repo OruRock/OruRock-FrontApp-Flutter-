@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
@@ -73,7 +74,24 @@ class HomeServiceTop extends GetView<HomeController> {
                       onTap: () {
                         Get.toNamed(Routes.nmap);
                       },
-                      child: const Center(child: Text('내 주변 클라이밍장 찾기')),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom:GapSize.small, left: GapSize.small),
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: DefaultTextStyle(
+                            style: const TextStyle(fontSize: FontSize.medium, fontFamily: 'NanumB', color: Colors.black, height: 1.5),
+                            child: AnimatedTextKit(
+                              displayFullTextOnTap: true,
+                              repeatForever: true,
+                              animatedTexts: [
+                                TypewriterAnimatedText(
+                                    speed: const Duration(milliseconds: 150),
+                                    '내 주변\n클라이밍장 찾기'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
