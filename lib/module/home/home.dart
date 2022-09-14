@@ -28,9 +28,12 @@ class Home extends GetView<HomeController> {
               width: Get.width,
               child: const Center(child: Text('Admob Banner')),
             ),
-            const Text(
-              '즐겨찾는 암장',
-              style: TextStyle(fontSize: FontSize.large, fontFamily: "NanumB"),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: GapSize.medium),
+              child: Text(
+                '즐겨찾는 암장',
+                style: TextStyle(fontSize: FontSize.large, fontFamily: "NanumB"),
+              ),
             ),
             const SizedBox(
               height: GapSize.medium,
