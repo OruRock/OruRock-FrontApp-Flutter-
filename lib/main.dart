@@ -46,6 +46,14 @@ class MyApp extends StatelessWidget {
             binding: BindingsBuilder(
               () => {Get.put(NMapController())},
             )),
+        GetPage(
+            name: Routes.marker,
+            page: () => const MarkerDetail(store: null),
+            transition: Transition.zoom,
+            transitionDuration: const Duration(milliseconds: 250),
+            binding: BindingsBuilder(
+              () => {Get.put(MarkerDetailController())},
+            )),
       ],
     );
   }

@@ -5,7 +5,7 @@ import 'package:oru_rock/model/store_model.dart';
 import 'package:oru_rock/module/marker_detail/marker_detail_controller.dart';
 
 class MarkerDetail extends GetView<MarkerDetailController> {
-  final StoreModel store;
+  final StoreModel? store;
 
   const MarkerDetail({
     Key? key,
@@ -20,7 +20,7 @@ class MarkerDetail extends GetView<MarkerDetailController> {
           onPressed: () {
             Get.back();
           },
-          child: Text('${store.stroreName} and ${store.storeAddr}'),
+          child: Text('${store!.stroreName} and ${store!.storeAddr}'),
         ),
       ),
     );

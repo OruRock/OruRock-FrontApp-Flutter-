@@ -17,14 +17,6 @@ class NMap extends GetView<NMapController> {
         drawer: _buildDrawerListView(),
         appBar: AppBar(
           title: const Text("오르Rock"),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.ac_unit_outlined),
-              onPressed: (){
-                controller.setMarker();
-              },
-            )
-          ],
         ),
         body: Obx(() => Stack(
               children: [
@@ -41,64 +33,73 @@ class NMap extends GetView<NMapController> {
                   markers: controller.markers.value,
                 ),
                 Align(
-                    alignment: Alignment.topCenter,
-                    child: Container(
-                      height: (MediaQuery.of(context).size.height -
-                              kToolbarHeight) *
-                          0.2,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 3,
-                            blurRadius: 5,
-                            offset: const Offset(
-                                0, 0), // changes position of shadow
-                          )
-                        ],
-                        color: Colors.white,
-                        borderRadius: const BorderRadius.vertical(
-                            bottom: Radius.circular(RadiusSize.medium)),
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.2),
-                                    spreadRadius: 3,
-                                    blurRadius: 5,
-                                    offset: const Offset(
-                                        0, 0), // changes position of shadow
-                                  )
-                                ],
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.circular(RadiusSize.small)),
-                            margin: const EdgeInsets.all(GapSize.medium),
-                            child: const Padding(
-                              padding: EdgeInsets.all(GapSize.xSmall),
-                              child: TextField(
-                                decoration: InputDecoration(hintText: 'Search'),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )),
+                  alignment: Alignment.topCenter,
+                  child: _buildSearchButton(),
+                ),
               ],
             )),
       ),
     );
   }
 
-  Widget _buildCategoryButton(Function() onPressed, String category) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: GapSize.xxSmall),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        child: Text(category),
+  _buildSearchButton() {
+    return Container(
+      width: Get.width / 1.2,
+      height: ButtonHeight.xxLarge,
+      decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 3,
+              blurRadius: 5,
+              offset: const Offset(0, 0), // changes position of shadow
+            )
+          ],
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(RadiusSize.large)),
+      margin: const EdgeInsets.all(GapSize.medium),
+      child: Material(
+        borderRadius: BorderRadius.circular(RadiusSize.large),
+        child: Ink(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(RadiusSize.large)),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(RadiusSize.large),
+            onTap: () {},
+            child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: GapSize.small, vertical: GapSize.small),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(right: GapSize.small),
+                      child: Icon(
+                        Icons.search_rounded,
+                      ),
+                    ),
+                    Expanded(
+                        child: Container(
+                      padding: const EdgeInsets.only(bottom: GapSize.xxxSmall),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                          color: Colors.grey,
+                          width: 1.0,
+                        )),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        '어느 암장을 찾으시나요?',
+                        style: TextStyle(
+                            color: Colors.grey, fontSize: FontSize.large),
+                      ),
+                    )),
+                  ],
+                )),
+          ),
+        ),
       ),
     );
   }
