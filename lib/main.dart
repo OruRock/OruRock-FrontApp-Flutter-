@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/function/api_func.dart';
-import 'package:oru_rock/module/analysis/analysis.dart';
-import 'package:oru_rock/module/analysis/analysis_controller.dart';
+import 'package:oru_rock/module/home/home.dart';
+import 'package:oru_rock/module/home/home_controller.dart';
 import 'package:oru_rock/module/naver_map/nmap.dart';
 import 'package:oru_rock/module/naver_map/nmap_controller.dart';
 import 'package:oru_rock/routes.dart';
@@ -29,14 +29,14 @@ class MyApp extends StatelessWidget {
             child: child!);
       },
       //첫 라우팅 페이지
-      initialRoute: Routes.analysis,
+      initialRoute: Routes.home,
       getPages: [
         //페이지 추가
         GetPage(
-            name: Routes.analysis,
-            page: () => const Analysis(),
+            name: Routes.home,
+            page: () => const Home(),
             binding: BindingsBuilder(
-              () => {Get.put(AnalysisController())},
+              () => {Get.put(HomeController())},
             )),
         GetPage(
             name: Routes.nmap,
