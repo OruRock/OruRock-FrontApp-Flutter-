@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/model/store_model.dart';
+import 'package:oru_rock/module/marker_detail/marker_detail.dart';
 
 class NMapController extends GetxController {
   var logger = Logger(
@@ -51,27 +52,31 @@ class NMapController extends GetxController {
   }
 
   Future<void> getStoreList() async {
-    try{
+    try {
       final res = await api.dio.get('/store/list');
 
       final List<dynamic>? data = res.data['payload']['result'];
       if (data != null) {
         stores.value = data.map((map) => StoreModel.fromJson(map)).toList();
       }
-    }catch(e){
+    } catch (e) {
       logger.e(e.toString());
     }
   }
 
-  //마커 만들기
+  ///뽑아온 Store 리스트[stores]에 따라 마커를 추가해준다.
+  ///각 마커마다 onTap했을시, 해당하는 마커에 대한 데이터가 들어간다.
   void setMarker() async {
     for (var elem in stores) {
-      markers.add(
-        Marker(
-            markerId: elem.storeId.toString(),
-            position: LatLng(double.parse(elem.storeLat!), double.parse(elem.storeLag!))
-        )
-      );
+      markers.add(Marker(
+          markerId: elem.storeId.toString(),
+          position: LatLng(
+              double.parse(elem.storeLat!), double.parse(elem.storeLag!)),
+          onMarkerTab: onMarkerTap));
     }
+  }
+
+  void onMarkerTap(Marker? marker, Map<String, int?> iconSize) {
+    Get.to(() => MarkerDetail(store: stores[int.parse(marker!.markerId) - 1]));
   }
 }
