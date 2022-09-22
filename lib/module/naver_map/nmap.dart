@@ -17,6 +17,14 @@ class NMap extends GetView<NMapController> {
         drawer: _buildDrawerListView(),
         appBar: AppBar(
           title: const Text("오르Rock"),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.ac_unit_outlined),
+              onPressed: (){
+                controller.setMarker();
+              },
+            )
+          ],
         ),
         body: Obx(() => Stack(
               children: [
@@ -76,22 +84,6 @@ class NMap extends GetView<NMapController> {
                               ),
                             ),
                           ),
-                          SizedBox(
-                            height: ButtonHeight.xxxLarge,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: [
-                                _buildCategoryButton(() {}, '카테고리 1'),
-                                _buildCategoryButton(() {}, '카테고리 2'),
-                                _buildCategoryButton(() {}, '카테고리 3'),
-                                _buildCategoryButton(() {}, '카테고리 4'),
-                                _buildCategoryButton(() {}, '카테고리 5'),
-                                _buildCategoryButton(() {}, '카테고리 6'),
-                                _buildCategoryButton(() {}, '카테고리 7'),
-                                _buildCategoryButton(() {}, '카테고리 8'),
-                              ],
-                            ),
-                          )
                         ],
                       ),
                     )),
