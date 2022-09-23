@@ -26,6 +26,7 @@ class LoginController extends GetxController {
     if (_isKakaoTalkInstalled) {
       try {
         authCode = await UserApi.instance.loginWithKakaoTalk();
+
         await _issueAccessToken(authCode);
       } catch (error) {
         Fluttertoast.showToast(
@@ -49,7 +50,9 @@ class LoginController extends GetxController {
   }
 
   _issueAccessToken(OAuthToken authCode) async {
-    print("여기 ${authCode.accessToken}");
+    User user;
+    user = await UserApi.instance.me();
+    print(user);
 
     // print('회원 정보 : ${tokenInfo.id}'
     //     '\n만료 시간 : ${tokenInfo.expiresIn}'
@@ -90,6 +93,8 @@ class LoginController extends GetxController {
     assert(user!.uid == currentUser!.uid);
 
     manager.user = UserData(name: user?.displayName, email: user?.email);
+
+    print(user!.uid);
   }
 
   void signOut() async {
