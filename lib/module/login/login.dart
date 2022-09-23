@@ -12,9 +12,11 @@ class Login extends GetView<LoginController> {
       appBar: AppBar(),
       body: Column(
         children: [
-          _buildLoginButton(() => controller.setLoginController("kakao"), "Kakao Login"),
-          _buildLoginButton(() => controller.setLoginController("google"), "Google Login"),
-          _buildLoginButton(() {}, "Naver Login"),
+          _buildLoginButton(
+              () => controller.KakaoLoginButtonPressed(), 'Kakao'),
+          _buildLoginButton(
+              () => controller.GoogleLoginButtonPressed(), 'Google'),
+          _buildLoginButton(() {}, "Naver"),
         ],
       ),
     );

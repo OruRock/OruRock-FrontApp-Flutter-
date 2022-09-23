@@ -49,21 +49,16 @@
     <string>lhtdt0293p</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>위치 권한의 허용이 필요합니다.</string>
-    <!-- Kakao Login-in Setting -->
     <key>LSApplicationQueriesSchemes</key>
     <array>
-        <!-- common -->
         <string>kakao42d5056b9cdc9c3b88e88d8188159cd2</string>
 
-        <!-- KakaoTalk login -->
         <string>kakaokompassauth</string>
         <string>stroykompassauth</string>
 
-        <!-- KakaoLink -->
         <string>kakaolink</string>
         <string>kakaotalk-5.9.7</string>
-
-    <!-- Google Login-in Setting -->
+    </array>
     <key>CFBundleURLTypes</key>
     <array>
         <dict>
