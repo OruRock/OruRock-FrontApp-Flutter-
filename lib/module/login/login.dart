@@ -13,9 +13,9 @@ class Login extends GetView<LoginController> {
       body: Column(
         children: [
           _buildLoginButton(
-              () => controller.KakaoLoginButtonPressed(), 'Kakao'),
+              () => controller.kakaoLoginButtonPressed(), 'Kakao'),
           _buildLoginButton(
-              () => controller.GoogleLoginButtonPressed(), 'Google'),
+              () => controller.googleLoginButtonPressed(), 'Google'),
           _buildLoginButton(() {}, "Naver"),
         ],
       ),

@@ -3,9 +3,16 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:oru_rock/model/login_user_model.dart';
+import 'package:logger/logger.dart';
+import 'package:oru_rock/function/api_func.dart';
+import 'package:oru_rock/function/auth_func.dart';
+import 'package:oru_rock/model/user_model.dart';
+import 'package:oru_rock/routes.dart';
 
 class LoginController extends GetxController {
+  final api = Get.find<ApiFunction>();
+  final userAuth = Get.find<AuthFunction>();
+
   @override
   void onInit() {
     super.onInit();
@@ -20,7 +27,7 @@ class LoginController extends GetxController {
     _isKakaoTalkInstalled = installed;
   }
 
-  Future<void> KakaoLoginButtonPressed() async {
+  Future<void> kakaoLoginButtonPressed() async {
     OAuthToken authCode;
     // 웹으로 로그인
     if (_isKakaoTalkInstalled) {
@@ -64,17 +71,23 @@ class LoginController extends GetxController {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   late firebase_auth.User? currentUser;
 
-  final manager = UserManager();
-
-  void GoogleLoginButtonPressed() async {
-    if (manager.user?.name == null || manager.user!.name!.isEmpty)
-      signIn();
-    else
-      signOut();
+  ///구글 로그인 버튼을 클릭했을 시 로그인 성공/실패를 따지는 함수
+  void googleLoginButtonPressed() async {
+    if (await signInWithGoogle()) {
+      //로그인 성공시
+      Get.offAllNamed(Routes.nmap);
+    } else {
+      //로그인 실패시
+      Logger().e("Google Login Failed");
+    }
   }
 
-  void signIn() async {
+  /// 구글 로그인을 처리하는 함수 유저 [uid]로 [jwt]을 API로 가져온다.
+  /// [AuthFunction]에 [jwt]와 유저 정보[UserModel]를 저장한다.
+  /// 성공한다면 [true] , 실패하면 [false]
+  Future<bool> signInWithGoogle() async {
     final account = await googleSignIn.signIn();
+
     final googleAuth = await account?.authentication;
 
     final credential = firebase_auth.GoogleAuthProvider.credential(
@@ -83,24 +96,41 @@ class LoginController extends GetxController {
     );
 
     final authResult = await _auth.signInWithCredential(credential);
+
     final user = authResult.user;
+    currentUser = _auth.currentUser;
 
-    assert(user != null, "Google Login Failure");
-    assert(await user?.getIdToken() != null);
+    if (user == null || user.uid != currentUser?.uid) {
+      return false;
+    }
 
-    currentUser = await _auth.currentUser;
+    try {
+      final data = {
+        "uid": user.uid,
+        "user_email": user.email,
+        "user_nickname": user.displayName,
+        "newUser": authResult.additionalUserInfo?.isNewUser
+      };
 
-    assert(user!.uid == currentUser!.uid);
+      final res = await api.dio.post('/login', data: data);
 
-    manager.user = UserData(name: user?.displayName, email: user?.email);
+      userAuth.setJwt(res.data['payload']['result']);
+      userAuth.setUser(user.displayName, user.email, user.uid);
 
-    print(user!.uid);
+      return true;
+    } catch (e) {
+      Logger().e(e.toString());
+      return false;
+    }
   }
 
+
+  /// 구글 로그아웃 처리 + [AuthFunction]에서 관리하던 데이터 초기화
+  /// 나중에 각 플랫폼마다 분기처리해서 한번에 통합해도 괜찮을 듯
   void signOut() async {
     await _auth.signOut();
     await googleSignIn.signOut();
-
-    manager.user = UserData(name: "", email: "");
+    userAuth.jwt = '';
+    userAuth.user = null;
   }
 }

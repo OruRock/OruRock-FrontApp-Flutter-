@@ -35,7 +35,8 @@ dependencies:
   logger: ^1.1.0
   proj4dart: ^2.0.0
 
-  flutter_naver_map: ^0.10.5
+  flutter_naver_map:
+    git: https://github.com/note11g/flutter_naver_map.git
   flutter_native_splash: ^2.2.7 # splah(첫 로고 화면)용 library
 
   kakao_flutter_sdk: ^1.2.2 # 카카오 로그인

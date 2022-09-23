@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "699813385517-ldmid873m0kepeetb0dj2m72fcbbm23t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orurock.ai.oru_rock",
+            "certificate_hash": "ced3cc1e167b2f8a3ad90453bf8e49a8f50f1f5e"
+          }
+        },
+        {
           "client_id": "699813385517-as6007chsmp7hi3e68pto2emk80tfn4d.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "699813385517-as6007chsmp7hi3e68pto2emk80tfn4d.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "699813385517-p61pm27c9oppgm5u0dppd28e3r9uake1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.orurock.ai.oruRock"
+              }
             }
           ]
         }

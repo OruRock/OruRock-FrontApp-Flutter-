@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/config.dart';
+import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/helper/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:oru_rock/function/api_func.dart';
@@ -16,12 +17,13 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await Get.putAsync(() => AuthFunction().init());
   await Get.putAsync(() => ApiFunction().init());
   await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform); // firebase chrlghk
   KakaoSdk.init(nativeAppKey: '${Config.kakao_native_key}');
-  FlutterNativeSplash.remove(); //로딩 끝나는 위치에 두어야 함(스플래시 제거)
+  //FlutterNativeSplash.remove(); //로딩 끝나는 위치에 두어야 함(스플래시 제거)
   runApp(const MyApp());
 }
 
