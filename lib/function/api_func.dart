@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:oru_rock/model/geocoding_model.dart';
 
 class ApiFunction extends GetxService {
   var dio = Dio();
@@ -14,12 +13,13 @@ class ApiFunction extends GetxService {
 
   Future<ApiFunction> init() async {
     //기본 url 인터셉터에 탑제
+    dio.options.baseUrl = "http://3.39.138.3:8080/api";
 
     dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
-      if (options.headers.isEmpty) {
-        options.headers = headers;
-        options.baseUrl = '';
-      }
+      loggerNoStack.v(options.data);
+      options.headers = headers; //request시에 header 탑재
+      logger.i(options.headers);
+      logger.i(options.uri);
       return handler.next(options);
     }, onResponse: (response, handler) {
       loggerNoStack.v(response.statusCode);
@@ -29,8 +29,10 @@ class ApiFunction extends GetxService {
     }, onError: (DioError exception, handler) {
       logger.e(
           "statusCode : ${exception.response?.statusCode} \n statusMessage : ${exception.message}");
+
       return handler.next(exception);
     }));
+
     return this;
   }
 
@@ -38,13 +40,7 @@ class ApiFunction extends GetxService {
     Map<String, String> headers = {};
     headers['content-type'] = 'application/json; charset=utf-8';
     headers['accept'] = 'application/json; charset=utf-8';
-    return headers;
-  }
-
-  Map<String, String> get naverApiHeaders {
-    Map<String, String> headers = {};
-    headers['X-NCP-APIGW-API-KEY-ID'] = 'lhtdt0293p';
-    headers['X-NCP-APIGW-API-KEY'] = 'UOSneSZrYXbBFwsCA5faKWpaWZFhPOS6ZJpK6KBq';
+    headers['Authorization'] = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJ1c2VyX2VtYWlsXCI6XCJlbWFpbEBnbWFpbC5jb21cIixcInVzZXJfaWRcIjo1LFwidXNlX3luXCI6MSxcInVzZXJfbmlja25hbWVcIjpcIm5pY2tOYW1lXCIsXCJjcmVhdGVfZGF0ZVwiOlwiMjAyMi0wOS0yMiAxMTowNDoxNVwiLFwidXBkYXRlX2RhdGVcIjpcIjIwMjItMDktMjIgMTY6NTY6NTFcIixcInNpZFwiOlwic2lkXCJ9IiwiaWF0IjoxNjYzODMzNDExLCJleHAiOjE2OTUzNjk0MTF9.TMdHHkK6XpcgnIEL8WwC4re_S8AqKvS_WR5-TA_oLD0";
     return headers;
   }
 }

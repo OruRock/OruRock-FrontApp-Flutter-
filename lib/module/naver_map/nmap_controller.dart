@@ -1,22 +1,29 @@
 import 'dart:async';
-import 'package:dio/dio.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:oru_rock/function/api_func.dart';
-import 'package:oru_rock/model/geocoding_model.dart';
-import 'package:proj4dart/proj4dart.dart' as proj4;
+import 'package:oru_rock/model/store_model.dart';
+import 'package:oru_rock/module/marker_detail/marker_detail.dart';
 
 class NMapController extends GetxController {
+  var logger = Logger(
+    printer: PrettyPrinter(),
+  );
   Completer<NaverMapController> completer = Completer();
   MapType mapType = MapType.Basic;
   LocationTrackingMode trackingMode = LocationTrackingMode.Follow;
+
+  var stores = <StoreModel>[].obs;
+
   RxList<Marker> markers = <Marker>[].obs;
   final api = Get.find<ApiFunction>();
-  var dio = Dio();
 
   //controller가 init될 때 실행하는 함수
   @override
   void onInit() async {
+    await getStoreList();
+    setMarker();
     super.onInit();
   }
 
@@ -44,52 +51,32 @@ class NMapController extends GetxController {
     nmapController.setLocationTrackingMode(LocationTrackingMode.Follow);
   }
 
-  //마커 만들기
+  Future<void> getStoreList() async {
+    try {
+      final res = await api.dio.get('/store/list');
+
+      final List<dynamic>? data = res.data['payload']['result'];
+      if (data != null) {
+        stores.value = data.map((map) => StoreModel.fromJson(map)).toList();
+      }
+    } catch (e) {
+      logger.e(e.toString());
+    }
+  }
+
+  ///뽑아온 Store 리스트[stores]에 따라 마커를 추가해준다.
+  ///각 마커마다 onTap했을시, 해당하는 마커에 대한 데이터가 들어간다.
   void setMarker() async {
-    final nmapController = await completer.future;
-    LatLng position = await getLatLngWithAddress("address");
-
-    markers.add(Marker(
-      markerId: "ClimbingStore",
-      position: position,
-      infoWindow: '테스트',
-    ));
-
-    final cameraPosition = CameraUpdate.scrollWithOptions(
-        LatLng(position.latitude, position.longitude),
-        zoom: 18);
-
-    nmapController.moveCamera(cameraPosition);
+    for (var elem in stores) {
+      markers.add(Marker(
+          markerId: elem.storeId.toString(),
+          position: LatLng(
+              double.parse(elem.storeLat!), double.parse(elem.storeLag!)),
+          onMarkerTab: onMarkerTap));
+    }
   }
 
-  LatLng getLatLng(double entX, double entY) {
-    //Naver지도는 EPSG:3857로 좌표계 변환을 하여 아래와 같이 proj4 라이브러리로 일반 WSG84 좌표계로 변환이 가능하다. (반대로도 가능)
-
-    final coord_X = (entX * 1000000).round() / 1000000;
-    final coord_Y = (entY * 1000000).round() / 1000000;
-
-    var pointDst = proj4.Point(x: coord_X, y: coord_Y);
-
-    var projSrc = proj4.Projection.get('EPSG:4326')!;
-    var projDst = proj4.Projection.get('EPSG:3857')!;
-
-    var point = projDst.transform(projSrc, pointDst);
-
-    return LatLng(point.y, point.x);
-  }
-
-  Future<LatLng> getLatLngWithAddress(String address) async {
-    final data = {"query": "분당구 불정로 6"};
-
-    //기본 baseUrl이 아닌 다른 Url의 Api를 사용하게 된다면 따로 header값 분기로 하므로 지정해주어야한다.
-    final res = await dio.get(
-        'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode',
-        options: Options(headers: api.naverApiHeaders),
-        queryParameters: data);
-
-    GeocodingModel geocodingModel = GeocodingModel.fromJson(res.data);
-
-    return LatLng(double.parse(geocodingModel.addresses![0].y!),
-        double.parse(geocodingModel.addresses![0].x!));
+  void onMarkerTap(Marker? marker, Map<String, int?> iconSize) {
+    Get.to(() => MarkerDetail(store: stores[int.parse(marker!.markerId) - 1]));
   }
 }

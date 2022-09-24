@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/module/home/home.dart';
 import 'package:oru_rock/module/home/home_controller.dart';
+import 'package:oru_rock/module/marker_detail/marker_detail.dart';
+import 'package:oru_rock/module/marker_detail/marker_detail_controller.dart';
 import 'package:oru_rock/module/naver_map/nmap.dart';
 import 'package:oru_rock/module/naver_map/nmap_controller.dart';
 import 'package:oru_rock/routes.dart';
@@ -43,6 +45,14 @@ class MyApp extends StatelessWidget {
             page: () => const NMap(),
             binding: BindingsBuilder(
               () => {Get.put(NMapController())},
+            )),
+        GetPage(
+            name: Routes.marker,
+            page: () => const MarkerDetail(store: null),
+            transition: Transition.zoom,
+            transitionDuration: const Duration(milliseconds: 250),
+            binding: BindingsBuilder(
+              () => {Get.put(MarkerDetailController())},
             )),
       ],
     );
