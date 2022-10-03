@@ -28,13 +28,11 @@ class LoginController extends GetxController {
   }
 
   Future<void> kakaoLoginButtonPressed() async {
-    OAuthToken authCode;
+    OAuthToken? authCode;
     // 웹으로 로그인
     if (_isKakaoTalkInstalled) {
       try {
         authCode = await UserApi.instance.loginWithKakaoTalk();
-
-        await _issueAccessToken(authCode);
       } catch (error) {
         Fluttertoast.showToast(
             msg: 'KakaoApp Login Fail',
@@ -45,7 +43,6 @@ class LoginController extends GetxController {
     } else {
       try {
         authCode = await UserApi.instance.loginWithKakaoAccount();
-        await _issueAccessToken(authCode);
       } catch (error) {
         Fluttertoast.showToast(
             msg: 'KakaoWeb Login Fail',
@@ -54,12 +51,47 @@ class LoginController extends GetxController {
             timeInSecForIosWeb: 1);
       }
     }
+    if (await _issueAccessToken(authCode!)) {
+      Get.offAllNamed(Routes.nmap);
+    }
+    else {
+      Logger().e("Login Failed");
+    }
+
   }
 
-  _issueAccessToken(OAuthToken authCode) async {
+  Future<bool> _issueAccessToken(OAuthToken authCode) async {
     User user;
     user = await UserApi.instance.me();
-    print(user);
+
+    try {
+      final kakao_data = {
+        "kakao_id": user.id.toString(),
+        "email": user.kakaoAccount?.email,
+        "displayName": user.kakaoAccount?.profile?.nickname
+      };
+
+      final kakao_res = await api.dio.post('/login/kakao', data: kakao_data);
+
+
+      final data = {
+        "uid": kakao_res.data['payload'][0],
+        "user_email": user.kakaoAccount?.email,
+        "user_nickname": user.kakaoAccount?.profile?.nickname,
+        "newUser": true
+      };
+
+      final res = await api.dio.post('/login', data: data);
+
+      userAuth.setJwt(res.data['payload']['result']);
+      userAuth.setUser(user.kakaoAccount?.profile?.nickname, user.kakaoAccount?.email, kakao_res.data['payload'][0]);
+
+      return true;
+    } catch (e) {
+      Logger().e(e.toString());
+      return false;
+    }
+
 
     // print('회원 정보 : ${tokenInfo.id}'
     //     '\n만료 시간 : ${tokenInfo.expiresIn}'
@@ -111,6 +143,8 @@ class LoginController extends GetxController {
         "user_nickname": user.displayName,
         "newUser": authResult.additionalUserInfo?.isNewUser
       };
+
+      print(data);
 
       final res = await api.dio.post('/login', data: data);
 
