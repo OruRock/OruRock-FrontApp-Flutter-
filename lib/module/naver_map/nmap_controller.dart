@@ -1,9 +1,14 @@
 import 'dart:async';
+import 'package:bottom_sheet/bottom_sheet.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:oru_rock/constant/style/size.dart';
+import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/model/store_model.dart';
+import 'package:oru_rock/module/marker_detail/detail_review.dart';
 import 'package:oru_rock/module/marker_detail/marker_detail.dart';
 
 class NMapController extends GetxController {
@@ -77,6 +82,56 @@ class NMapController extends GetxController {
   }
 
   void onMarkerTap(Marker? marker, Map<String, int?> iconSize) {
-    Get.to(() => MarkerDetail(store: stores[int.parse(marker!.markerId) - 1]));
+    showStickyFlexibleBottomSheet(
+      minHeight: 0,
+      initHeight: 0.3,
+      maxHeight: 1,
+      barrierColor: Colors.transparent,
+      bottomSheetColor: Colors.transparent,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 3,
+            blurRadius: 5,
+            offset: const Offset(0, 0), // changes position of shadow
+          )
+        ],
+        color: Colors.white,
+        borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(RadiusSize.large)),
+      ),
+      headerHeight: Get.height*0.3,
+      context: Get.context!,
+      headerBuilder: (context, offset) {
+        return MarkerDetail(store: stores[int.parse(marker!.markerId) - 1]);
+      },
+      isSafeArea: true,
+      bodyBuilder: (context, offset) {
+        return SliverChildListDelegate([
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+          ListTile(title: Text('리뷰에용')),
+
+        ]);
+      },
+      anchors: [.3],
+    );
+    print("hello");
+    //Get.to(() => MarkerDetail(store: stores[int.parse(marker!.markerId) - 1]));
   }
 }

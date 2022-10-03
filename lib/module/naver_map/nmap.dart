@@ -45,7 +45,7 @@ class NMap extends GetView<NMapController> {
   _buildSearchButton() {
     return Container(
       width: Get.width / 1.2,
-      height: ButtonHeight.xxLarge,
+      height: HeightWithRatio.small,
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
