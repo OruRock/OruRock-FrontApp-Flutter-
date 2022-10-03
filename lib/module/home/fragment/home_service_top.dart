@@ -48,7 +48,9 @@ class HomeServiceTop extends GetView<HomeController> {
                         borderRadius: BorderRadius.circular(RadiusSize.large)),
                     child: InkWell(
                       borderRadius: BorderRadius.circular(RadiusSize.large),
-                      onTap: () {},
+                      onTap: () {
+                        Get.toNamed(Routes.search);
+                      },
                       child: const Center(child: Text('검색')),
                     ),
                   ),
