@@ -23,7 +23,6 @@ class HomeController extends GetxController {
   var stores = <StoreModel>[].obs;
   var reviews = <StoreReviewModel>[].obs;
 
-  Completer<NaverMapController> completer = Completer();
   RxList<Marker> markers = <Marker>[].obs;
 
 
