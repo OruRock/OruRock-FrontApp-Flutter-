@@ -62,7 +62,10 @@ class Search extends GetView<SearchController> {
                   ),
                   itemBuilder: (BuildContext context, int index) {
                     //item 의 반목문 항목 형성
-                    return Container(
+                    return GestureDetector(
+                      onTap: () {
+                        controller.goToMap(index);
+                      },
                       child: Column(
                         children: [
                           Expanded(
@@ -95,10 +98,10 @@ class Search extends GetView<SearchController> {
                               decoration: BoxDecoration(
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
+                                      color: Colors.grey.withOpacity(0.2),
                                       spreadRadius: 3,
                                       blurRadius: 5,
-                                      offset: const Offset(0, 0), // changes position of shadow
+                                      offset: const Offset(0, 5), // changes position of shadow
                                     )
                                   ],
                                   color: Colors.grey[200]!,

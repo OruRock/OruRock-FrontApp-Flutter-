@@ -21,16 +21,16 @@ class NMap extends GetView<NMapController> {
         body: Obx(() => Stack(
               children: [
                 NaverMap(
-                  onMapCreated: controller.onMapCreated,
-                  mapType: controller.mapType,
-                  initLocationTrackingMode: controller.trackingMode,
+                  onMapCreated: controller.map.onMapCreated,
+                  mapType: controller.map.mapType,
+                  initLocationTrackingMode: controller.map.trackingMode,
                   locationButtonEnable: true,
                   indoorEnable: true,
-                  onMapTap: controller.onMapTap,
+                  onMapTap: controller.map.onMapTap,
                   maxZoom: 20,
                   minZoom: 5,
                   logoClickEnabled: false,
-                  markers: controller.markers.value,
+                  markers: controller.home.markers.value,
                 ),
                 Align(
                   alignment: Alignment.topCenter,

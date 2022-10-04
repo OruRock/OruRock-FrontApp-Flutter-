@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/function/api_func.dart';
+import 'package:oru_rock/function/map_func.dart';
 import 'package:oru_rock/module/home/home.dart';
 import 'package:oru_rock/module/home/home_controller.dart';
 import 'package:oru_rock/module/marker_detail/marker_detail.dart';
@@ -16,6 +17,7 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Get.putAsync(() => ApiFunction().init());
+  await Get.putAsync(() => MapFunction().init());
   FlutterNativeSplash.remove(); //로딩 끝나는 위치에 두어야 함(스플래시 제거)
   runApp(const MyApp());
 }
