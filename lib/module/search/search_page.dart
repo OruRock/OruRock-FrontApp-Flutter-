@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/module/home/fragment/home_service_top.dart';
 import 'package:oru_rock/module/home/home_controller.dart';
+import 'package:oru_rock/module/search/search_controller.dart';
 
 import 'package:oru_rock/routes.dart';
 
-class Search extends GetView<HomeController> {
+class Search extends GetView<SearchController> {
   const Search({Key? key}) : super(key: key);
 
   @override
@@ -52,7 +53,7 @@ class Search extends GetView<HomeController> {
               Expanded(
                 child: GridView.builder(
                   padding: EdgeInsets.symmetric(vertical: GapSize.xxSmall, horizontal: GapSize.xxSmall),
-                  itemCount: 9, //item 개수
+                  itemCount: controller.home.stores.length, //item 개수
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2, //1 개의 행에 보여줄 item 개수
                     childAspectRatio: 1 / 1.3, //item 의 가로 1, 세로 2 의 비율
@@ -105,7 +106,7 @@ class Search extends GetView<HomeController> {
                                       bottom: Radius.circular(RadiusSize.large))),
                               alignment: Alignment.center,
                               child: Text(
-                                "$index",
+                                "${controller.home.stores[index].stroreName}",
                                 style: const TextStyle(
                                   fontSize: 20,
                                 ),

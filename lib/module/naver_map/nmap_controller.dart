@@ -5,31 +5,29 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:oru_rock/constant/style/size.dart';
-import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/model/store_detail_model.dart';
-import 'package:oru_rock/model/store_model.dart';
-import 'package:oru_rock/module/marker_detail/detail_review.dart';
+import 'package:oru_rock/module/home/home_controller.dart';
 import 'package:oru_rock/module/marker_detail/marker_detail.dart';
 
 class NMapController extends GetxController {
   var logger = Logger(
     printer: PrettyPrinter(),
   );
+  final api = Get.find<ApiFunction>();
+  final home = Get.find<HomeController>();
+
   Completer<NaverMapController> completer = Completer();
   MapType mapType = MapType.Basic;
   LocationTrackingMode trackingMode = LocationTrackingMode.Follow;
 
-  var stores = <StoreModel>[].obs;
   var reviews = <StoreReviewModel>[].obs;
 
   RxList<Marker> markers = <Marker>[].obs;
-  final api = Get.find<ApiFunction>();
 
   //controller가 init될 때 실행하는 함수
   @override
   void onInit() async {
-    await getStoreList();
     setMarker();
     super.onInit();
   }
@@ -58,19 +56,6 @@ class NMapController extends GetxController {
     nmapController.setLocationTrackingMode(LocationTrackingMode.Follow);
   }
 
-  Future<void> getStoreList() async {
-    try {
-      final res = await api.dio.get('/store/list');
-
-      final List<dynamic>? data = res.data['payload']['result'];
-      if (data != null) {
-        stores.value = data.map((map) => StoreModel.fromJson(map)).toList();
-      }
-    } catch (e) {
-      logger.e(e.toString());
-    }
-  }
-
   Future<void> getReviewList(int index) async {
     try {
       final reqData = {
@@ -93,7 +78,7 @@ class NMapController extends GetxController {
   ///뽑아온 Store 리스트[stores]에 따라 마커를 추가해준다.
   ///각 마커마다 onTap했을시, 해당하는 마커에 대한 데이터가 들어간다.
   void setMarker() async {
-    for (var elem in stores) {
+    for (var elem in home.stores) {
       markers.add(Marker(
           markerId: elem.storeId.toString(),
           position: LatLng(
@@ -125,20 +110,18 @@ class NMapController extends GetxController {
       headerHeight: Get.height * 0.3,
       context: Get.context!,
       headerBuilder: (context, offset) {
-        return MarkerDetail(store: stores[int.parse(marker!.markerId) - 1]);
+        return MarkerDetail(
+            store: home.stores[int.parse(marker!.markerId) - 1]);
       },
       isSafeArea: true,
       bodyBuilder: (context, offset) {
         getReviewList(int.parse(marker!.markerId));
-        return SliverChildListDelegate(
-          List.generate(reviews.length, (index) {
-            return ListTile(
-              title: Text(reviews[index].userNickname!),
-              subtitle: Text(reviews[index].comment!),
-            );
-          }
-          )
-        );
+        return SliverChildListDelegate(List.generate(reviews.length, (index) {
+          return ListTile(
+            title: Text(reviews[index].userNickname!),
+            subtitle: Text(reviews[index].comment!),
+          );
+        }));
       },
       anchors: [.3],
     );
