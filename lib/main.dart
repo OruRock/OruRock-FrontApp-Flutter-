@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/map_func.dart';
 import 'package:oru_rock/module/home/home.dart';
@@ -14,6 +15,7 @@ import 'package:oru_rock/module/search/search_page.dart';
 import 'package:oru_rock/routes.dart';
 
 void main() async {
+  await GetStorage.init();
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Get.putAsync(() => ApiFunction().init());
@@ -48,7 +50,7 @@ class MyApp extends StatelessWidget {
             name: Routes.nmap,
             page: () => const NMap(),
             binding: BindingsBuilder(
-              () => {Get.put(NMapController())},
+              () => {Get.put(NMapController()), Get.put(MarkerDetailController())},
             )),
         GetPage(
             name: Routes.search,

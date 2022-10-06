@@ -66,7 +66,10 @@ class NMap extends GetView<NMapController> {
               borderRadius: BorderRadius.circular(RadiusSize.large)),
           child: InkWell(
             borderRadius: BorderRadius.circular(RadiusSize.large),
-            onTap: () {},
+            onTap: () {
+              Get.back();
+              Get.toNamed(Routes.search);
+            },
             child: Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: GapSize.small, vertical: GapSize.small),

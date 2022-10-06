@@ -8,9 +8,14 @@ AppBar mainAppBar = AppBar(
 const TextStyle drawerListTextStyle =
     TextStyle(fontSize: FontSize.medium, fontFamily: "NanumB");
 
+const TextStyle boldNanumTextStyle =
+TextStyle(fontSize: FontSize.medium, fontFamily: "NanumB", height: 1.6, color: Colors.black);
+
 const TextStyle regularNanumTextStyle =
 TextStyle(fontSize: FontSize.small, fontFamily: "NanumR", height: 1.6, color: Colors.black);
 
+const TextStyle pinTextStyle =
+TextStyle(fontSize: FontSize.large, fontFamily: "NanumB", height: 1.6, color: Colors.black);
 
 BoxDecoration shadowBoxDecoration = BoxDecoration(
   boxShadow: [

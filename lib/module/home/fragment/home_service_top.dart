@@ -14,21 +14,36 @@ class HomeServiceTop extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Visibility(
-          visible: controller.isPinned.value,
-          child: Container(
-            height: HeightWithRatio.medium,
-            decoration: shadowBoxDecoration,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: GapSize.small),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Icon(Icons.pin_drop_outlined),
-                  Expanded(
-                    child: Text('고정한 암장'),
-                  )
-                ],
+        Obx(
+          () => Visibility(
+            visible: controller.isPinned.value,
+            child: Container(
+              height: HeightWithRatio.small,
+              decoration: shadowBoxDecoration,
+              child: Padding(
+                padding: const EdgeInsets.only(left: GapSize.small),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Image.asset(
+                      'asset/image/icon/pin_icon.png',
+                      height: HeightWithRatio.xxxSmall,
+                    ),
+                    Expanded(
+                      child: controller.stores.isEmpty
+                          ? Container()
+                          : Center(
+                            child: Text(
+                                    controller.pinnedStoreName.value, style: pinTextStyle,),
+                          )
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          controller.removePin();
+                        },
+                        icon: Icon(Icons.close, size: 20,))
+                  ],
+                ),
               ),
             ),
           ),
@@ -57,7 +72,10 @@ class HomeServiceTop extends GetView<HomeController> {
                       child: Column(
                         children: [
                           Expanded(child: Container()),
-                          Image.asset('asset/image/icon/search_icon.png', height: WidthWithRatio.xxLarge,),
+                          Image.asset(
+                            'asset/image/icon/search_icon.png',
+                            height: WidthWithRatio.xxLarge,
+                          ),
                           SizedBox(
                             height: WidthWithRatio.small,
                           ),
@@ -77,7 +95,8 @@ class HomeServiceTop extends GetView<HomeController> {
                                   repeatForever: true,
                                   animatedTexts: [
                                     TypewriterAnimatedText(
-                                        speed: const Duration(milliseconds: 150),
+                                        speed:
+                                            const Duration(milliseconds: 150),
                                         '검색으로 찾기'),
                                   ],
                                 ),
@@ -113,7 +132,10 @@ class HomeServiceTop extends GetView<HomeController> {
                       child: Column(
                         children: [
                           Expanded(child: Container()),
-                          Image.asset('asset/image/icon/map_icon.png', height: WidthWithRatio.xxLarge,),
+                          Image.asset(
+                            'asset/image/icon/map_icon.png',
+                            height: WidthWithRatio.xxLarge,
+                          ),
                           SizedBox(
                             height: WidthWithRatio.small,
                           ),
@@ -133,7 +155,8 @@ class HomeServiceTop extends GetView<HomeController> {
                                   repeatForever: true,
                                   animatedTexts: [
                                     TypewriterAnimatedText(
-                                        speed: const Duration(milliseconds: 150),
+                                        speed:
+                                            const Duration(milliseconds: 150),
                                         '내 주변 클라이밍장 찾기'),
                                   ],
                                 ),
