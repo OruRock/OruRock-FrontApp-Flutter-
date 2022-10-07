@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:oru_rock/function/api_func.dart';
+import 'package:oru_rock/function/map_func.dart';
 import 'package:oru_rock/module/home/home.dart';
 import 'package:oru_rock/module/home/home_controller.dart';
 import 'package:oru_rock/module/marker_detail/marker_detail.dart';
 import 'package:oru_rock/module/marker_detail/marker_detail_controller.dart';
 import 'package:oru_rock/module/naver_map/nmap.dart';
 import 'package:oru_rock/module/naver_map/nmap_controller.dart';
+import 'package:oru_rock/module/search/search_controller.dart';
+import 'package:oru_rock/module/search/search_page.dart';
 import 'package:oru_rock/routes.dart';
 
 void main() async {
+  await GetStorage.init();
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Get.putAsync(() => ApiFunction().init());
+  await Get.putAsync(() => MapFunction().init());
   FlutterNativeSplash.remove(); //로딩 끝나는 위치에 두어야 함(스플래시 제거)
   runApp(const MyApp());
 }
@@ -44,7 +50,13 @@ class MyApp extends StatelessWidget {
             name: Routes.nmap,
             page: () => const NMap(),
             binding: BindingsBuilder(
-              () => {Get.put(NMapController())},
+              () => {Get.put(NMapController()), Get.put(MarkerDetailController())},
+            )),
+        GetPage(
+            name: Routes.search,
+            page: () => const Search(),
+            binding: BindingsBuilder(
+                  () => {Get.put(SearchController())},
             )),
         GetPage(
             name: Routes.marker,

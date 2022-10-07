@@ -13,7 +13,7 @@ class ApiFunction extends GetxService {
 
   Future<ApiFunction> init() async {
     //기본 url 인터셉터에 탑제
-    dio.options.baseUrl = "http://3.39.138.3:8080/api";
+    dio.options.baseUrl = "http://www.orurock.shop/api";
 
     dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
       loggerNoStack.v(options.data);

@@ -21,16 +21,16 @@ class NMap extends GetView<NMapController> {
         body: Obx(() => Stack(
               children: [
                 NaverMap(
-                  onMapCreated: controller.onMapCreated,
-                  mapType: controller.mapType,
-                  initLocationTrackingMode: controller.trackingMode,
+                  onMapCreated: controller.map.onMapCreated,
+                  mapType: controller.map.mapType,
+                  initLocationTrackingMode: controller.map.trackingMode,
                   locationButtonEnable: true,
                   indoorEnable: true,
-                  onMapTap: controller.onMapTap,
+                  onMapTap: controller.map.onMapTap,
                   maxZoom: 20,
                   minZoom: 5,
                   logoClickEnabled: false,
-                  markers: controller.markers.value,
+                  markers: controller.home.markers.value,
                 ),
                 Align(
                   alignment: Alignment.topCenter,
@@ -45,7 +45,7 @@ class NMap extends GetView<NMapController> {
   _buildSearchButton() {
     return Container(
       width: Get.width / 1.2,
-      height: ButtonHeight.xxLarge,
+      height: HeightWithRatio.small,
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -66,7 +66,10 @@ class NMap extends GetView<NMapController> {
               borderRadius: BorderRadius.circular(RadiusSize.large)),
           child: InkWell(
             borderRadius: BorderRadius.circular(RadiusSize.large),
-            onTap: () {},
+            onTap: () {
+              Get.back();
+              Get.toNamed(Routes.search);
+            },
             child: Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: GapSize.small, vertical: GapSize.small),

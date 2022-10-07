@@ -21,6 +21,7 @@ class WidthWithRatio {
   static double xLarge = Get.width / 6;
   static double xxLarge = Get.width / 4;
   static double xxxLarge = Get.width / 2;
+  static double xxxxLarge = Get.width / 1.5;
 }
 
 class HeightWithRatio {
@@ -32,6 +33,8 @@ class HeightWithRatio {
   static double large = Get.height / 8;
   static double xLarge = Get.height / 6;
   static double xxLarge = Get.height / 4;
+  static double xxxLarge = Get.height / 3;
+  static double xxxxLarge = Get.height / 2;
 }
 
 class RadiusSize {
@@ -41,12 +44,13 @@ class RadiusSize {
 }
 
 class FontSize {
-  static const double small = 12.0;
+  static const double xSmall = 12.0;
+  static const double small = 14.0;
   static const double medium = 16.0;
-  static const double large = 20.0;
-  static const double xLarge = 24.0;
-  static const double xxLarge = 28.0;
-  static const double xxxLarge = 32.0;
+  static const double large = 18.0;
+  static const double xLarge = 20.0;
+  static const double xxLarge = 22.0;
+  static const double xxxLarge = 24.0;
 }
 
 class ButtonHeight {

@@ -13,7 +13,6 @@ class Home extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(),
         body: ListView(
           children: [
             SizedBox(

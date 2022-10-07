@@ -5,10 +5,8 @@ class StoreModel {
   int? recommendCnt;
   String? stroreName;
   String? storeAddr;
-  int? useYn;
   String? storeLag;
-  String? createDate;
-  String? updateDate;
+  int? bookmarkYn;
   String? storeLat;
   String? storeDescription;
 
@@ -19,10 +17,8 @@ class StoreModel {
         this.recommendCnt,
         this.stroreName,
         this.storeAddr,
-        this.useYn,
         this.storeLag,
-        this.createDate,
-        this.updateDate,
+        this.bookmarkYn,
         this.storeLat,
         this.storeDescription});
 
@@ -33,10 +29,8 @@ class StoreModel {
     recommendCnt = json['recommend_cnt'];
     stroreName = json['strore_name'];
     storeAddr = json['store_addr'];
-    useYn = json['use_yn'];
     storeLag = json['store_lag'];
-    createDate = json['create_date'];
-    updateDate = json['update_date'];
+    bookmarkYn = json['bookmark_yn'];
     storeLat = json['store_lat'];
     storeDescription = json['store_description'];
   }
@@ -49,10 +43,8 @@ class StoreModel {
     data['recommend_cnt'] = recommendCnt;
     data['strore_name'] = stroreName;
     data['store_addr'] = storeAddr;
-    data['use_yn'] = useYn;
     data['store_lag'] = storeLag;
-    data['create_date'] = createDate;
-    data['update_date'] = updateDate;
+    data['bookmark_yn'] = bookmarkYn;
     data['store_lat'] = storeLat;
     data['store_description'] = storeDescription;
     return data;
