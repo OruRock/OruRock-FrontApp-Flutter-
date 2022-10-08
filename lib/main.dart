@@ -59,7 +59,10 @@ class MyApp extends StatelessWidget {
             name: Routes.search,
             page: () => const Search(),
             binding: BindingsBuilder(
-              () => {Get.put(SearchController())},
+              () => {
+                Get.put(SearchController()),
+                Get.put(MarkerDetailController())
+              },
             )),
       ],
     );

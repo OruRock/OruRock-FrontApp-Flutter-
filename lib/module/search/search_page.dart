@@ -63,73 +63,72 @@ class Search extends GetView<SearchController> {
                   ),
                   itemBuilder: (BuildContext context, int index) {
                     //item 의 반목문 항목 형성
-                    return _buildStoreCardContainer(index);
+                    return GestureDetector(
+                      onTap: () {
+                        controller.goMapToSelectedStore(index);
+                      },
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.2),
+                                      spreadRadius: 3,
+                                      blurRadius: 5,
+                                      offset: const Offset(
+                                          0, 0), // changes position of shadow
+                                    )
+                                  ],
+                                  color: Colors.white,
+                                  borderRadius: const BorderRadius.vertical(
+                                      top: Radius.circular(RadiusSize.large))),
+                              alignment: Alignment.center,
+                              child: const Text(
+                                '암장',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.2),
+                                      spreadRadius: 3,
+                                      blurRadius: 5,
+                                      offset: const Offset(
+                                          0, 5), // changes position of shadow
+                                    )
+                                  ],
+                                  color: Colors.grey[200]!,
+                                  borderRadius: const BorderRadius.vertical(
+                                      bottom:
+                                          Radius.circular(RadiusSize.large))),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "${controller.home.stores[index].stroreName}",
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
                   },
                 ),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  _buildStoreCardContainer(int index) {
-    GestureDetector(
-      onTap: () {
-        controller.goMapToSelectedStore(index);
-      },
-      child: Column(
-        children: [
-          Expanded(
-            flex: 3,
-            child: Container(
-              decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 3,
-                      blurRadius: 5,
-                      offset: const Offset(0, 0), // changes position of shadow
-                    )
-                  ],
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(RadiusSize.large))),
-              alignment: Alignment.center,
-              child: const Text(
-                '암장',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Container(
-              decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 3,
-                      blurRadius: 5,
-                      offset: const Offset(0, 5), // changes position of shadow
-                    )
-                  ],
-                  color: Colors.grey[200]!,
-                  borderRadius: const BorderRadius.vertical(
-                      bottom: Radius.circular(RadiusSize.large))),
-              alignment: Alignment.center,
-              child: Text(
-                "${controller.home.stores[index].stroreName}",
-                style: const TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

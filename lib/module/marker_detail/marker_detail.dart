@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/model/store_model.dart' as model;
 import 'package:oru_rock/module/home/home_controller.dart';
-import 'package:oru_rock/module/marker_detail/marker_detail_controller.dart';
 
-class MarkerDetail extends GetView<MarkerDetailController> {
+class MarkerDetail extends GetView<HomeController> {
   final model.StoreModel? store;
 
   const MarkerDetail({
@@ -56,16 +53,16 @@ class MarkerDetail extends GetView<MarkerDetailController> {
                                   height: 1.7,
                                 ),
                               ),
-                              controller.pinned.value
+                              controller.detailPinState.value
                                   ? IconButton(
                                       onPressed: () {
-                                        controller.home.removePin();
+                                        controller.removePin();
                                       },
                                       icon: const Icon(Icons.push_pin),
                                     )
                                   : IconButton(
                                       onPressed: () {
-                                        controller.home.setPin();
+                                        controller.setPin();
                                       },
                                       icon: const Icon(Icons.push_pin_outlined),
                                     ),

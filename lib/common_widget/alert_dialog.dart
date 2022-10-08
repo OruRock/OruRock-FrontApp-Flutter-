@@ -13,7 +13,7 @@ class CommonDialog extends StatelessWidget {
   }) : super(key: key);
   final title;
   final content;
-  Function positiveFunc;
+  Function() positiveFunc;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class CommonDialog extends StatelessWidget {
         TextButton(
           child: const Text("확인"),
           onPressed: () {
-            positiveFunc;
+            positiveFunc();
             Get.back();
           },
         )

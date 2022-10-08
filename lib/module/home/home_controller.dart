@@ -27,6 +27,7 @@ class HomeController extends GetxController {
   var isPinned = GetStorage().read("PIN") != null ? true.obs : false.obs;
   int? pinnedStoreId = GetStorage().read("PIN");
   var pinnedStoreName = ''.obs;
+  var detailPinState = false.obs;
 
   var stores = <StoreModel>[].obs; //store 관리
   var reviews = <StoreReviewModel>[].obs; //review 관리
@@ -77,7 +78,7 @@ class HomeController extends GetxController {
 
     selectedIndex = markerId; //selectedIndex 업데이트
 
-    Get.find<MarkerDetailController>().isPinned();
+    setDetailPinState();
 
     getReviewList(markerId);
 
@@ -147,6 +148,7 @@ class HomeController extends GetxController {
     if (pin == null) {
       appData.write("PIN", selectedIndex);
       isPinned.value = true;
+      detailPinState.value = true;
       pinnedStoreId = selectedIndex;
       pinnedStoreName.value = stores[pinnedStoreId!].stroreName!;
       Get.snackbar("알림", "선택하신 암장이 고정되었습니다");
@@ -170,13 +172,23 @@ class HomeController extends GetxController {
   void updatePin() {
     appData.write("PIN", selectedIndex);
     pinnedStoreId = selectedIndex;
+    detailPinState.value = true;
     pinnedStoreName.value = stores[pinnedStoreId!].stroreName!;
   }
 
   void removePin() {
     appData.remove("PIN");
     isPinned.value = false;
+    detailPinState.value = false;
     pinnedStoreId = null;
     pinnedStoreName.value = '';
+  }
+
+  void setDetailPinState() {
+    if (selectedIndex == appData.read("PIN")) {
+      detailPinState.value = true;
+    } else {
+      detailPinState.value = false;
+    }
   }
 }
