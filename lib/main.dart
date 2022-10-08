@@ -50,21 +50,16 @@ class MyApp extends StatelessWidget {
             name: Routes.nmap,
             page: () => const NMap(),
             binding: BindingsBuilder(
-              () => {Get.put(NMapController()), Get.put(MarkerDetailController())},
+              () => {
+                Get.put(NMapController()),
+                Get.put(MarkerDetailController())
+              },
             )),
         GetPage(
             name: Routes.search,
             page: () => const Search(),
             binding: BindingsBuilder(
-                  () => {Get.put(SearchController())},
-            )),
-        GetPage(
-            name: Routes.marker,
-            page: () => const MarkerDetail(store: null),
-            transition: Transition.zoom,
-            transitionDuration: const Duration(milliseconds: 250),
-            binding: BindingsBuilder(
-              () => {Get.put(MarkerDetailController())},
+              () => {Get.put(SearchController())},
             )),
       ],
     );

@@ -6,6 +6,7 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
+import 'package:oru_rock/common_widget/alert_dialog.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/function/api_func.dart';
@@ -27,9 +28,9 @@ class HomeController extends GetxController {
   int? pinnedStoreId = GetStorage().read("PIN");
   var pinnedStoreName = ''.obs;
 
-  var stores = <StoreModel>[].obs;
-  var reviews = <StoreReviewModel>[].obs;
-  var selectedIndex = 0;
+  var stores = <StoreModel>[].obs; //store 관리
+  var reviews = <StoreReviewModel>[].obs; //review 관리
+  var selectedIndex = 0; //선택된 storeIndex
 
   RxList<Marker> markers = <Marker>[].obs;
 
@@ -65,16 +66,16 @@ class HomeController extends GetxController {
           markerId: index.toString(),
           position: LatLng(
               double.parse(elem.storeLat!), double.parse(elem.storeLag!)),
-          onMarkerTab: onMarkerTap));
+          onMarkerTab: showDetailInformation));
       index++;
     }
   }
 
   ///각 마커 onTap시 함수
-  void onMarkerTap(Marker? marker, Map<String, int?> iconSize) async {
+  void showDetailInformation(Marker? marker, Map<String, int?> iconSize) async {
     final markerId = int.parse(marker!.markerId);
 
-    selectedIndex = markerId;
+    selectedIndex = markerId; //selectedIndex 업데이트
 
     Get.find<MarkerDetailController>().isPinned();
 
@@ -139,9 +140,10 @@ class HomeController extends GetxController {
     }
   }
 
+  ///핀버튼 누를 시에 추가, 삭제, 교체가 일어나는 함수
   void setPin() {
     int? pin = appData.read("PIN");
-
+    //핀이 없는 경우
     if (pin == null) {
       appData.write("PIN", selectedIndex);
       isPinned.value = true;
@@ -150,6 +152,7 @@ class HomeController extends GetxController {
       Get.snackbar("알림", "선택하신 암장이 고정되었습니다");
       return;
     }
+
     //같은 암장 한번 더 눌렀을 경우 핀 해제
     if (pin == selectedIndex) {
       removePin();
@@ -157,33 +160,11 @@ class HomeController extends GetxController {
       return;
     }
 
-    Get.dialog(_buildPinnedDialog());
-  }
-
-  _buildPinnedDialog() {
-    return AlertDialog(
-      title: const Text(
-        "알림",
-        style: boldNanumTextStyle,
-      ),
-      content: const Text("이미 고정되어있는 암장이 있습니다. 현재 선택한 암장으로 변경하시겠습니까?",
-          style: regularNanumTextStyle),
-      actions: [
-        TextButton(
-          child: const Text("취소"),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        TextButton(
-          child: const Text("확인"),
-          onPressed: () {
-            updatePin();
-            Get.back();
-          },
-        )
-      ],
-    );
+    //핀한 암장 교체 확인 -> [updatePin], 취소 -> 변화 X
+    Get.dialog(CommonDialog(
+        title: "알림",
+        content: "이미 고정되어있는 암장이 있습니다. 현재 선택한 암장으로 변경하시겠습니까?",
+        positiveFunc: updatePin));
   }
 
   void updatePin() {

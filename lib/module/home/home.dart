@@ -31,7 +31,8 @@ class Home extends GetView<HomeController> {
               padding: EdgeInsets.symmetric(horizontal: GapSize.medium),
               child: Text(
                 '즐겨찾는 암장',
-                style: TextStyle(fontSize: FontSize.large, fontFamily: "NanumB"),
+                style:
+                    TextStyle(fontSize: FontSize.large, fontFamily: "NanumB"),
               ),
             ),
             const SizedBox(

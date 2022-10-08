@@ -1,16 +1,15 @@
-# oru_rock
+# 오르락
 
-FrontApp With Flutter
+클라이머들을 위한 어플리케이션 with Flutter
 
-## Getting Started
+## Flutter Version
+Version : 3.0.x
 
-This project is a starting point for a Flutter application.
+## Env 정보
+- API : http://www.orurock.shop/api
+- Swagger : [API Test](http://www.orurock.shop/swagger-ui/index.html#/)
+- NaverMapClientId : lhtdt0293p
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 버전 수정
+pubspec.yaml 파일의 상단에 버전 + 버전코드 작성
+버전 코드 : 버전에 따라 5자리로 설정 (ex: 버전이 1.0.1이라면 101(버전)03(이번 버전 테스트 횟수))

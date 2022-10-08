@@ -8,18 +8,20 @@ import 'package:oru_rock/module/home/home_controller.dart';
 import 'package:oru_rock/routes.dart';
 
 class SearchController extends GetxController {
-
   final api = Get.find<ApiFunction>();
+  final map = Get.find<MapFunction>();
   final home = Get.find<HomeController>();
+
   @override
   void onInit() async {
     Get.find<MapFunction>().completer = Completer();
   }
 
-  void goToMap(int index) async {
+  void goMapToSelectedStore(int index) async {
     Get.back();
     Get.toNamed(Routes.nmap);
-    home.onMarkerTap(home.markers[index], {"height": null, "width": null});
-    Get.find<MapFunction>().setCamera(home.markers[index].position!);
+    home.showDetailInformation(
+        home.markers[index], {"height": null, "width": null});
+    map.setCamera(home.markers[index].position!, 18.0);
   }
 }

@@ -30,18 +30,22 @@ class HomeServiceTop extends GetView<HomeController> {
                       height: HeightWithRatio.xxxSmall,
                     ),
                     Expanded(
-                      child: controller.stores.isEmpty
-                          ? Container()
-                          : Center(
-                            child: Text(
-                                    controller.pinnedStoreName.value, style: pinTextStyle,),
-                          )
-                    ),
+                        child: controller.stores.isEmpty
+                            ? Container()
+                            : Center(
+                                child: Text(
+                                  controller.pinnedStoreName.value,
+                                  style: pinTextStyle,
+                                ),
+                              )),
                     IconButton(
                         onPressed: () {
                           controller.removePin();
                         },
-                        icon: Icon(Icons.close, size: 20,))
+                        icon: Icon(
+                          Icons.close,
+                          size: 20,
+                        ))
                   ],
                 ),
               ),
