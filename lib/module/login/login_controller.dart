@@ -38,7 +38,8 @@ class LoginController extends GetxController {
             msg: 'KakaoApp Login Fail',
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1);
+            timeInSecForIosWeb: 1
+        );
       }
     } else {
       try {
@@ -48,7 +49,8 @@ class LoginController extends GetxController {
             msg: 'KakaoWeb Login Fail',
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1);
+            timeInSecForIosWeb: 1
+        );
       }
     }
     if (await _issueAccessToken(authCode!)) {
