@@ -14,6 +14,9 @@ TextStyle(fontSize: FontSize.medium, fontFamily: "NanumB", height: 1.6, color: C
 const TextStyle regularNanumTextStyle =
 TextStyle(fontSize: FontSize.small, fontFamily: "NanumR", height: 1.6, color: Colors.black);
 
+const TextStyle regularNanumDetailPageTextStyle =
+TextStyle(fontSize: FontSize.medium, fontFamily: "NanumR", color: Colors.black);
+
 const TextStyle pinTextStyle =
 TextStyle(fontSize: FontSize.large, fontFamily: "NanumB", height: 1.6, color: Colors.black);
 

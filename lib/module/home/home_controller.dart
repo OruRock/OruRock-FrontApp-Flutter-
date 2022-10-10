@@ -8,13 +8,11 @@ import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:oru_rock/common_widget/alert_dialog.dart';
 import 'package:oru_rock/constant/style/size.dart';
-import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/map_func.dart';
 import 'package:oru_rock/model/store_detail_model.dart';
 import 'package:oru_rock/model/store_model.dart';
 import 'package:oru_rock/module/marker_detail/marker_detail.dart';
-import 'package:oru_rock/module/marker_detail/marker_detail_controller.dart';
 
 class HomeController extends GetxController {
   var logger = Logger(
@@ -30,7 +28,6 @@ class HomeController extends GetxController {
   var detailPinState = false.obs;
 
   var stores = <StoreModel>[].obs; //store 관리
-  var reviews = <StoreReviewModel>[].obs; //review 관리
   var selectedIndex = 0; //선택된 storeIndex
 
   RxList<Marker> markers = <Marker>[].obs;
@@ -80,8 +77,6 @@ class HomeController extends GetxController {
 
     setDetailPinState();
 
-    getReviewList(markerId);
-
     showStickyFlexibleBottomSheet(
       minHeight: 0,
       initHeight: 0.3,
@@ -108,13 +103,14 @@ class HomeController extends GetxController {
       },
       isSafeArea: true,
       bodyBuilder: (context, offset) {
-        return SliverChildListDelegate(
-            List<Widget>.generate(reviews.length, (index) {
+        return SliverChildListDelegate([]
+            /*List<Widget>.generate(reviews.length, (index) {
           return ListTile(
             title: Text(reviews[index].userNickname!),
             subtitle: Text(reviews[index].comment!),
           );
-        }));
+        })*/
+            );
       },
       anchors: [.3],
     );
@@ -122,23 +118,24 @@ class HomeController extends GetxController {
   }
 
   ///해당하는 암장의 리뷰데이터 가져오는 함수
-  Future<void> getReviewList(int index) async {
+  Future<StoreReviewModel?> getReviewList(int index) async {
     try {
       final reqData = {
         "store_id": index.toString(),
-        "commentOnly": true,
+        "commentOnly": false,
       };
 
       final res = await api.dio.get('/store/detail', queryParameters: reqData);
 
-      final List<dynamic>? data = res.data['payload']['comment'];
+      final Map<String, dynamic>? data = res.data['payload'];
       if (data != null) {
-        reviews.value =
-            data.map((map) => StoreReviewModel.fromJson(map)).toList();
+        return StoreReviewModel.fromJson(data);
       }
     } catch (e) {
       logger.e(e.toString());
+      return null;
     }
+    return null;
   }
 
   ///핀버튼 누를 시에 추가, 삭제, 교체가 일어나는 함수
