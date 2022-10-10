@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/map_func.dart';

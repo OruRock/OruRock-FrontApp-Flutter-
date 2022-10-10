@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
-import 'package:oru_rock/module/home/fragment/home_service_top.dart';
-import 'package:oru_rock/module/home/home_controller.dart';
 import 'package:oru_rock/module/search/search_controller.dart';
 
-import 'package:oru_rock/routes.dart';
 
 class Search extends GetView<SearchController> {
   const Search({Key? key}) : super(key: key);

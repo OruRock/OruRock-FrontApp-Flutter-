@@ -2,25 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:oru_rock/constant/config.dart';
+import 'package:oru_rock/function/auth_func.dart';
+import 'package:oru_rock/helper/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/map_func.dart';
 import 'package:oru_rock/module/home/home.dart';
 import 'package:oru_rock/module/home/home_controller.dart';
-import 'package:oru_rock/module/marker_detail/marker_detail.dart';
 import 'package:oru_rock/module/marker_detail/marker_detail_controller.dart';
 import 'package:oru_rock/module/naver_map/nmap.dart';
 import 'package:oru_rock/module/naver_map/nmap_controller.dart';
 import 'package:oru_rock/module/search/search_controller.dart';
 import 'package:oru_rock/module/search/search_page.dart';
 import 'package:oru_rock/routes.dart';
+import 'package:oru_rock/module/login/login.dart';
+import 'package:oru_rock/module/login/login_controller.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 void main() async {
   await GetStorage.init();
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await Get.putAsync(() => AuthFunction().init());
   await Get.putAsync(() => ApiFunction().init());
+
   await Get.putAsync(() => MapFunction().init());
   FlutterNativeSplash.remove(); //로딩 끝나는 위치에 두어야 함(스플래시 제거)
+
+  await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform); // firebase chrlghk
+  KakaoSdk.init(nativeAppKey: Config.kakao_native_key);
+  //FlutterNativeSplash.remove(); //로딩 끝나는 위치에 두어야 함(스플래시 제거)
   runApp(const MyApp());
 }
 
@@ -37,8 +50,15 @@ class MyApp extends StatelessWidget {
             child: child!);
       },
       //첫 라우팅 페이지
-      initialRoute: Routes.home,
+      initialRoute: Routes.login,
       getPages: [
+        //페이지 추가
+        GetPage(
+            name: Routes.login,
+            page: () => const Login(),
+            binding: BindingsBuilder(
+                  () => {Get.put(LoginController())},
+            )),
         //페이지 추가
         GetPage(
             name: Routes.home,
@@ -56,15 +76,7 @@ class MyApp extends StatelessWidget {
             name: Routes.search,
             page: () => const Search(),
             binding: BindingsBuilder(
-                  () => {Get.put(SearchController())},
-            )),
-        GetPage(
-            name: Routes.marker,
-            page: () => const MarkerDetail(store: null),
-            transition: Transition.zoom,
-            transitionDuration: const Duration(milliseconds: 250),
-            binding: BindingsBuilder(
-              () => {Get.put(MarkerDetailController())},
+                  () => {Get.put(SearchController()), Get.put(MarkerDetailController())},
             )),
       ],
     );
