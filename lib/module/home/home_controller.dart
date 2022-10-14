@@ -63,7 +63,7 @@ class HomeController extends GetxController {
       markers.add(Marker(
           markerId: index.toString(),
           position: LatLng(
-              double.parse(elem.storeLat!), double.parse(elem.storeLag!)),
+              elem.storeLat!, elem.storeLng!),
           onMarkerTab: showDetailInformation));
       index++;
     }

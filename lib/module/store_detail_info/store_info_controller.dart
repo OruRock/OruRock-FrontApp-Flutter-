@@ -17,6 +17,8 @@ class StoreInfoController extends GetxController {
   final api = Get.find<ApiFunction>();
   final map = Get.find<MapFunction>();
   final home = Get.find<HomeController>();
+  var toggleList = ['암장 정보', '리뷰'];
+  var selectedInfo = 0.obs;
 
   @override
   void onInit() async {

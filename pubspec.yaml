@@ -19,6 +19,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   flutter_image_slideshow: ^0.1.4
   bottom_sheet: ^3.1.2
+  flutter_toggle_tab: ^1.2.0
 
   flutter_naver_map:
     git: https://github.com/note11g/flutter_naver_map.git

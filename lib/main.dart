@@ -66,6 +66,14 @@ class MyApp extends StatelessWidget {
                 Get.put(MarkerDetailController())
               },
             )),
+        GetPage(
+            name: Routes.storeInfo,
+            page: () => StoreInfo(),
+            binding: BindingsBuilder(
+                  () => {
+                Get.put(StoreInfoController())
+              },
+            )),
       ],
     );
   }

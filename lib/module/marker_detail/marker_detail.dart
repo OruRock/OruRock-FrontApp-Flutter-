@@ -8,6 +8,8 @@ import 'package:oru_rock/module/home/home_controller.dart';
 import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
 import 'package:oru_rock/module/store_detail_info/store_info_page.dart';
 
+import '../../routes.dart';
+
 class MarkerDetail extends GetView<HomeController> {
   final StoreModel? store;
 
@@ -101,7 +103,7 @@ class MarkerDetail extends GetView<HomeController> {
                 Get.snackbar("오류", "서버 통신 오류입니다.");
                 return;
               }
-              Get.to(() => StoreInfo(store: store, review: detail));
+              Get.toNamed(Routes.storeInfo, arguments: [store, detail]);
             },
             child: Text('상세 보기'))
       ],
