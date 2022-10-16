@@ -20,6 +20,24 @@ TextStyle(fontSize: FontSize.medium, fontFamily: "NanumR", color: Colors.black);
 const TextStyle pinTextStyle =
 TextStyle(fontSize: FontSize.large, fontFamily: "NanumB", height: 1.6, color: Colors.black);
 
+const TextStyle unSelectedToggleTextStyle = TextStyle(
+    color: Colors.black,
+    fontFamily: "NanumB",
+    fontSize: FontSize.medium);
+
+const TextStyle selectedToggleTextStyle = TextStyle(
+    color: Colors.white,
+    fontFamily: "NanumB",
+    fontSize: FontSize.medium);
+
+const TextStyle reviewNickNameTextStyle = TextStyle(
+    fontFamily: "NanumB",
+    fontSize: FontSize.small);
+
+const TextStyle reviewContentTextStyle = TextStyle(
+    fontFamily: "NanumR",
+    fontSize: FontSize.small);
+
 BoxDecoration shadowBoxDecoration = BoxDecoration(
   boxShadow: [
     BoxShadow(

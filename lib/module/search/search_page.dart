@@ -86,12 +86,12 @@ class Search extends GetView<SearchController> {
                                   borderRadius: const BorderRadius.vertical(
                                       top: Radius.circular(RadiusSize.large))),
                               alignment: Alignment.center,
-                              child: const Text(
-                                '암장',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
+                              child:
+                                  controller.home.stores[index].image!.isEmpty
+                                      ? Image.asset(
+                                          'asset/image/logo/splash_logo.png')
+                                      : Image.network(controller.home
+                                          .stores[index].image![0].imageUrl!),
                             ),
                           ),
                           Expanded(

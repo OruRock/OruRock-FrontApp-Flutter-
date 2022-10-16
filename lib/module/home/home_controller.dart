@@ -77,43 +77,8 @@ class HomeController extends GetxController {
 
     setDetailPinState();
 
-    showStickyFlexibleBottomSheet(
-      minHeight: 0,
-      initHeight: 0.3,
-      maxHeight: 1,
-      barrierColor: Colors.transparent,
-      bottomSheetColor: Colors.transparent,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 3,
-            blurRadius: 5,
-            offset: const Offset(0, 0), // changes position of shadow
-          )
-        ],
-        color: Colors.white,
-        borderRadius:
-            const BorderRadius.vertical(top: Radius.circular(RadiusSize.large)),
-      ),
-      headerHeight: Get.height * 0.3,
-      context: Get.context!,
-      headerBuilder: (context, offset) {
-        return MarkerDetail(store: stores[markerId]);
-      },
-      isSafeArea: true,
-      bodyBuilder: (context, offset) {
-        return SliverChildListDelegate([]
-            /*List<Widget>.generate(reviews.length, (index) {
-          return ListTile(
-            title: Text(reviews[index].userNickname!),
-            subtitle: Text(reviews[index].comment!),
-          );
-        })*/
-            );
-      },
-      anchors: [.3],
-    );
+    Get.bottomSheet(MarkerDetail(store: stores[markerId]));
+
     //Get.to(() => MarkerDetail(store: stores[int.parse(marker!.markerId) - 1]));
   }
 

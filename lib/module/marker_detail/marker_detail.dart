@@ -20,93 +20,109 @@ class MarkerDetail extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius:
-                BorderRadius.vertical(top: Radius.circular(RadiusSize.large)),
+    return Container(
+      height: HeightWithRatio.xxxLarge,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(RadiusSize.large)),
+      ),
+      child: Column(
+        children: [
+          Container(
+            height: HeightWithRatio.xxSmall,
+            child: Center(
+              child: Icon(Icons.horizontal_rule),
+            ),
           ),
-          height: Get.height * 0.02,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: GapSize.xxSmall),
-          child: Row(
-            children: [
-              Expanded(flex: 4, child: Container()),
-              Expanded(
-                flex: 4,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: GapSize.xSmall),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Obx(
-                        () => Row(
-                          children: [
-                            Text(
-                              '${store?.stroreName}',
-                              style: const TextStyle(
-                                fontFamily: "NanumB",
-                                fontSize: FontSize.large,
-                                height: 1.7,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: GapSize.xxSmall),
+            child: Row(
+              children: [
+                Expanded(flex: 4, child: Container()),
+                Expanded(
+                  flex: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: GapSize.xSmall),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Obx(
+                          () => Row(
+                            children: [
+                              Text(
+                                '${store?.stroreName}',
+                                style: const TextStyle(
+                                  fontFamily: "NanumB",
+                                  fontSize: FontSize.large,
+                                  height: 1.7,
+                                ),
                               ),
-                            ),
-                            controller.detailPinState.value
-                                ? IconButton(
-                                    onPressed: () {
-                                      controller.removePin();
-                                    },
-                                    icon: const Icon(Icons.push_pin),
-                                  )
-                                : IconButton(
-                                    onPressed: () {
-                                      controller.setPin();
-                                    },
-                                    icon: const Icon(Icons.push_pin_outlined),
-                                  ),
-                          ],
+                              controller.detailPinState.value
+                                  ? IconButton(
+                                      onPressed: () {
+                                        controller.removePin();
+                                      },
+                                      icon: const Icon(Icons.push_pin),
+                                    )
+                                  : IconButton(
+                                      onPressed: () {
+                                        controller.setPin();
+                                      },
+                                      icon: const Icon(Icons.push_pin_outlined),
+                                    ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Text(
-                        '주소 : ${store?.storeAddr}',
-                        style: regularNanumTextStyle,
-                      ),
-                      Text(
-                        '전화번호 : ${store?.storePhone}',
-                        style: regularNanumTextStyle,
-                      ),
-                      const Text(
-                        '이용 시간',
-                        style: regularNanumTextStyle,
-                      ),
-                      Text(
-                        '평일 : ${store?.storeOpentime}',
-                        style: regularNanumTextStyle,
-                      ),
-                      Text(
-                        '주말 : ${store?.storeOpentime}',
-                        style: regularNanumTextStyle,
-                      ),
-                    ],
+                        Text(
+                          '주소 : ${store?.storeAddr}',
+                          style: regularNanumTextStyle,
+                        ),
+                        Text(
+                          '전화번호 : ${store?.storePhone}',
+                          style: regularNanumTextStyle,
+                        ),
+                        const Text(
+                          '이용 시간',
+                          style: regularNanumTextStyle,
+                        ),
+                        Text(
+                          '평일 : ${store?.storeOpentime}',
+                          style: regularNanumTextStyle,
+                        ),
+                        Text(
+                          '주말 : ${store?.storeOpentime}',
+                          style: regularNanumTextStyle,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
-        ),
-        ElevatedButton(
-            onPressed: () async {
-              final detail = await controller.getReviewList(store!.storeId!);
-              if (detail == null) {
-                Get.snackbar("오류", "서버 통신 오류입니다.");
-                return;
-              }
-              Get.toNamed(Routes.storeInfo, arguments: [store, detail]);
-            },
-            child: Text('상세 보기'))
-      ],
+          Expanded(child: Container()),
+          Align(
+            alignment: Alignment.centerRight,
+            child: OutlinedButton(
+                onPressed: () async {
+                  final detail = await controller.getReviewList(store!.storeId!);
+                  if (detail == null) {
+                    Get.snackbar("오류", "서버 통신 오류입니다.");
+                    return;
+                  }
+                  Get.toNamed(Routes.storeInfo, arguments: [store, detail]);
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('상세 정보 보러가기 '),
+                    Icon(Icons.chevron_right)
+                  ],
+                )),
+          ),
+        ],
+      ),
     );
   }
 }

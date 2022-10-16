@@ -1,6 +1,7 @@
 class StoreReviewModel {
   List<Image>? image;
   int? total;
+  List<Price>? price;
   List<Comment>? comment;
 
   StoreReviewModel({this.image, this.total, this.comment});
@@ -13,6 +14,12 @@ class StoreReviewModel {
       });
     }
     total = json['total'];
+    if (json['price'] != null) {
+      price = <Price>[];
+      json['price'].forEach((v) {
+        price!.add(Price.fromJson(v));
+      });
+    }
     if (json['comment'] != null) {
       comment = <Comment>[];
       json['comment'].forEach((v) {
@@ -53,6 +60,28 @@ class Image {
   }
 }
 
+class Price {
+  int? price;
+  String? priceDescription;
+
+  Price({
+    this.price,
+    this.priceDescription,
+  });
+
+  Price.fromJson(Map<String, dynamic> json) {
+    price = json['price'];
+    priceDescription = json['price_description'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['price'] = price;
+    data['price_description'] = priceDescription;
+    return data;
+  }
+}
+
 class Comment {
   int? storeId;
   String? userNickname;
@@ -64,12 +93,12 @@ class Comment {
 
   Comment(
       {this.storeId,
-        this.userNickname,
-        this.comment,
-        this.recommendLevel,
-        this.commentId,
-        this.createDate,
-        this.updateDate});
+      this.userNickname,
+      this.comment,
+      this.recommendLevel,
+      this.commentId,
+      this.createDate,
+      this.updateDate});
 
   Comment.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
