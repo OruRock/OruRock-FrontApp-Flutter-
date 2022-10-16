@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:oru_rock/function/api_func.dart';
-import 'package:oru_rock/function/map_func.dart';
 import 'package:oru_rock/model/store_detail_model.dart';
 import 'package:oru_rock/module/home/home_controller.dart';
 
@@ -14,10 +13,9 @@ class StoreInfoController extends GetxController {
   );
 
   final api = Get.find<ApiFunction>();
-  final map = Get.find<MapFunction>();
   final home = Get.find<HomeController>();
 
-  Rx<StoreReviewModel?> reviewModel = StoreReviewModel().obs;
+  Rx<StoreDetailModel?> detailModel = StoreDetailModel().obs;
   var isLoading = false.obs;
 
   var toggleList = ['암장 정보', '리뷰'];
@@ -30,7 +28,8 @@ class StoreInfoController extends GetxController {
   @override
   void onInit() async {
     scrollController = ScrollController();
-    reviewModel.value = await getReview();
+    detailModel.value = await getReview();
+    super.onInit();
   }
 
   Future<void> createReview(int storeId) async {
@@ -57,14 +56,17 @@ class StoreInfoController extends GetxController {
       final Map<String, dynamic>? data = comment.data['payload'];
       if (data != null) {
         isLoading.value = true;
-        reviewModel.value!.comment = StoreReviewModel.fromJson(data).comment;
+        reviewText.text = '';
+        StoreDetailModel newModel = StoreDetailModel.fromJson(data);
+        detailModel.value!.total = newModel.total;
+        detailModel.value!.comment = newModel.comment;
       }
     } catch (e) {
       logger.e(e.toString());
     }
   }
 
-  Future<StoreReviewModel?> getReview() async {
+  Future<StoreDetailModel?> getReview() async {
     try {
       isLoading.value = false;
       final reqData = {
@@ -76,7 +78,7 @@ class StoreInfoController extends GetxController {
       final Map<String, dynamic>? data = res.data['payload'];
       if (data != null) {
         isLoading.value = true;
-        return StoreReviewModel.fromJson(data);
+        return StoreDetailModel.fromJson(data);
       }
     } catch (e) {
       logger.e(e.toString());
@@ -86,7 +88,8 @@ class StoreInfoController extends GetxController {
   }
 
   bool reviewTextFieldValidator() {
-    if(reviewText.text.length < 3) {
+    if (reviewText.text.length < 3) {
+      Get.snackbar("알림", "3글자 이상 작성해주세요:)");
       return false;
     }
     return true;

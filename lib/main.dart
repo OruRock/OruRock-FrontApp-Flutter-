@@ -70,9 +70,7 @@ class MyApp extends StatelessWidget {
             name: Routes.storeInfo,
             page: () => StoreInfo(),
             binding: BindingsBuilder(
-                  () => {
-                Get.put(StoreInfoController())
-              },
+              () => {Get.put(StoreInfoController())},
             )),
       ],
     );

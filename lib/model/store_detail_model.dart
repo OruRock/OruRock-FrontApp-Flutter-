@@ -1,12 +1,12 @@
-class StoreReviewModel {
+class StoreDetailModel {
   List<Image>? image;
   int? total;
   List<Price>? price;
   List<Comment>? comment;
 
-  StoreReviewModel({this.image, this.total, this.comment});
+  StoreDetailModel({this.image, this.total, this.comment});
 
-  StoreReviewModel.fromJson(Map<String, dynamic> json) {
+  StoreDetailModel.fromJson(Map<String, dynamic> json) {
     if (json['image'] != null) {
       image = <Image>[];
       json['image'].forEach((v) {

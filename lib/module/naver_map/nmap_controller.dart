@@ -14,7 +14,7 @@ class NMapController extends GetxController {
   //controller가 init될 때 실행하는 함수
   @override
   void onInit() async {
-    Get.find<MapFunction>().completer = Completer();
+
     super.onInit();
   }
 }

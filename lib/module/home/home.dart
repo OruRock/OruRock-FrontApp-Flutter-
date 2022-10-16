@@ -4,7 +4,6 @@ import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/module/home/fragment/home_service_top.dart';
 import 'package:oru_rock/module/home/home_controller.dart';
 
-
 class Home extends GetView<HomeController> {
   const Home({Key? key}) : super(key: key);
 

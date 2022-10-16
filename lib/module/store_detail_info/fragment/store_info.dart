@@ -10,7 +10,7 @@ import 'package:oru_rock/model/store_model.dart' as storeModel;
 class StoreInfoFragment extends GetView<StoreInfoController> {
   final storeModel.StoreModel? store;
 
-  StoreInfoFragment({
+  const StoreInfoFragment({
     required this.store,
     Key? key,
   }) : super(key: key);
@@ -62,119 +62,97 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
             color: Colors.grey,
             height: HeightWithRatio.xxSmall,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Image.asset(
-                    'asset/image/icon/timer_icon.png',
-                    height: WidthWithRatio.small,
+          _buildInfoTile(
+            imageUrl: 'asset/image/icon/timer_icon.png',
+            title: "이용 시간",
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: WidthWithRatio.small),
+                  child: Text(
+                    '평일 : ${store?.storeOpentime}',
+                    style: regularNanumTextStyle,
                   ),
-                  const SizedBox(
-                    width: GapSize.xxSmall,
-                  ),
-                  const Text(
-                    '이용 시간',
-                    style: boldNanumTextStyle,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: GapSize.xxSmall,
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: WidthWithRatio.small),
-                child: Text(
-                  '평일 : ${store?.storeOpentime}',
-                  style: regularNanumTextStyle,
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: WidthWithRatio.small),
-                child: Text(
-                  '주말 : ${store?.storeOpentime}',
-                  style: regularNanumTextStyle,
+                Padding(
+                  padding: EdgeInsets.only(left: WidthWithRatio.small),
+                  child: Text(
+                    '주말 : ${store?.storeOpentime}',
+                    style: regularNanumTextStyle,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Divider(
             color: Colors.grey,
             height: HeightWithRatio.xxSmall,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Image.asset(
-                    'asset/image/icon/description_icon.png',
-                    height: WidthWithRatio.small,
-                  ),
-                  const SizedBox(
-                    width: GapSize.xxSmall,
-                  ),
-                  const Text(
-                    '설명',
-                    style: boldNanumTextStyle,
-                  ),
-                ],
+          _buildInfoTile(
+            imageUrl: 'asset/image/icon/description_icon.png',
+            title: "암장 설명",
+            content: Padding(
+              padding: EdgeInsets.only(left: WidthWithRatio.small),
+              child: Text(
+                '${store?.storeDescription}',
+                style: regularNanumTextStyle,
               ),
-              const SizedBox(
-                height: GapSize.xxSmall,
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: WidthWithRatio.small),
-                child: Text(
-                  '${store?.storeDescription}',
-                  style: regularNanumTextStyle,
-                ),
-              ),
-            ],
+            ),
           ),
           Divider(
             color: Colors.grey,
             height: HeightWithRatio.xxSmall,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Image.asset(
-                    'asset/image/icon/money_icon.png',
-                    height: WidthWithRatio.small,
+          _buildInfoTile(
+            imageUrl: 'asset/image/icon/money_icon.png',
+            title: "이용 요금",
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: List.generate(
+                  controller.detailModel.value!.price!.length, (index) {
+                return Padding(
+                  padding: EdgeInsets.only(left: WidthWithRatio.small),
+                  child: Text(
+                    '${controller.detailModel.value!.price![index].priceDescription} : ${controller.detailModel.value!.price![index].price}원',
+                    style: regularNanumTextStyle,
                   ),
-                  const SizedBox(
-                    width: GapSize.xxSmall,
-                  ),
-                  const Text(
-                    '이용 요금',
-                    style: boldNanumTextStyle,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: GapSize.xxSmall,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(
-                    controller.reviewModel.value!.price!.length, (index) {
-                  return Padding(
-                    padding: EdgeInsets.only(left: WidthWithRatio.small),
-                    child: Text(
-                      '${controller.reviewModel.value!.price![index].priceDescription} : ${controller.reviewModel.value!.price![index].price}',
-                      style: regularNanumTextStyle,
-                    ),
-                  );
-                }),
-              )
-            ],
-          ),
+                );
+              }),
+            ),
+          )
         ],
       ),
+    );
+  }
+
+  _buildInfoTile(
+      {required String imageUrl,
+      required String title,
+      required Widget content}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Image.asset(
+              imageUrl,
+              height: WidthWithRatio.small,
+            ),
+            const SizedBox(
+              width: GapSize.xxSmall,
+            ),
+            Text(
+              title,
+              style: boldNanumTextStyle,
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: GapSize.xxSmall,
+        ),
+        content
+      ],
     );
   }
 }

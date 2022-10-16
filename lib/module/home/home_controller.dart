@@ -62,8 +62,7 @@ class HomeController extends GetxController {
     for (var elem in stores) {
       markers.add(Marker(
           markerId: index.toString(),
-          position: LatLng(
-              elem.storeLat!, elem.storeLng!),
+          position: LatLng(elem.storeLat!, elem.storeLng!),
           onMarkerTab: showDetailInformation));
       index++;
     }
@@ -80,27 +79,6 @@ class HomeController extends GetxController {
     Get.bottomSheet(MarkerDetail(store: stores[markerId]));
 
     //Get.to(() => MarkerDetail(store: stores[int.parse(marker!.markerId) - 1]));
-  }
-
-  ///해당하는 암장의 리뷰데이터 가져오는 함수
-  Future<StoreReviewModel?> getReviewList(int index) async {
-    try {
-      final reqData = {
-        "store_id": index.toString(),
-        "commentOnly": false,
-      };
-
-      final res = await api.dio.get('/store/detail', queryParameters: reqData);
-
-      final Map<String, dynamic>? data = res.data['payload'];
-      if (data != null) {
-        return StoreReviewModel.fromJson(data);
-      }
-    } catch (e) {
-      logger.e(e.toString());
-      return null;
-    }
-    return null;
   }
 
   ///핀버튼 누를 시에 추가, 삭제, 교체가 일어나는 함수

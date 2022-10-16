@@ -3,15 +3,13 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
-import 'package:oru_rock/model/store_model.dart';
+import 'package:oru_rock/model/store_model.dart' as storeModel;
 import 'package:oru_rock/module/home/home_controller.dart';
-import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
-import 'package:oru_rock/module/store_detail_info/store_info_page.dart';
 
 import '../../routes.dart';
 
 class MarkerDetail extends GetView<HomeController> {
-  final StoreModel? store;
+  final storeModel.StoreModel? store;
 
   const MarkerDetail({
     Key? key,
@@ -29,9 +27,9 @@ class MarkerDetail extends GetView<HomeController> {
       ),
       child: Column(
         children: [
-          Container(
+          SizedBox(
             height: HeightWithRatio.xxSmall,
-            child: Center(
+            child: const Center(
               child: Icon(Icons.horizontal_rule),
             ),
           ),
@@ -39,7 +37,16 @@ class MarkerDetail extends GetView<HomeController> {
             padding: const EdgeInsets.symmetric(horizontal: GapSize.xxSmall),
             child: Row(
               children: [
-                Expanded(flex: 4, child: Container()),
+                Expanded(
+                    flex: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.all(GapSize.small),
+                      child: store!.image!.isEmpty
+                          ? Image.asset('asset/image/logo/splash_logo.png')
+                          : Image.network(
+                              store!.image![0].imageUrl!,
+                            ),
+                    )),
                 Expanded(
                   flex: 4,
                   child: Padding(
@@ -104,23 +111,31 @@ class MarkerDetail extends GetView<HomeController> {
           Expanded(child: Container()),
           Align(
             alignment: Alignment.centerRight,
-            child: OutlinedButton(
-                onPressed: () async {
-                  final detail = await controller.getReviewList(store!.storeId!);
-                  if (detail == null) {
-                    Get.snackbar("오류", "서버 통신 오류입니다.");
-                    return;
-                  }
-                  Get.toNamed(Routes.storeInfo, arguments: [store, detail]);
-                },
+            child: GestureDetector(
+              onTap: () {
+                Get.toNamed(Routes.storeInfo, arguments: [store]);
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: GapSize.small),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('상세 정보 보러가기 '),
-                    Icon(Icons.chevron_right)
+                  children: const [
+                    Text(
+                      '상세 정보 보러가기 ',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                    Icon(
+                      Icons.chevron_right,
+                      color: Colors.blue,
+                    )
                   ],
-                )),
+                ),
+              ),
+            ),
           ),
+          SizedBox(
+            height: GapSize.medium,
+          )
         ],
       ),
     );

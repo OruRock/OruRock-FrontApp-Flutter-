@@ -18,105 +18,124 @@ class ReviewFragment extends GetView<StoreInfoController> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: controller.reviewModel.value!.total == 0
-          ? Center(
-              child: Row(
-                children: [
-                  const Icon(Icons.cancel_presentation),
-                  const Text("리뷰가 없습니다!"),
-                ],
-              ),
-            )
-          : Padding(
-              padding: const EdgeInsets.only(top: GapSize.medium),
-              child: Column(
+    return Obx(() => Expanded(
+        child: controller.detailModel.value!.total == 0
+            ? Column(
                 children: [
                   Expanded(
-                    child: ListView(
-                        shrinkWrap: true,
-                        children: List.generate(
-                            controller.reviewModel.value!.comment!.length,
-                            (index) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    controller.reviewModel.value!
-                                        .comment![index].userNickname!,
-                                    style: reviewNickNameTextStyle,
-                                  ),
-                                  Text(
-                                    DateFormat('yy.MM.dd').format(
-                                        DateTime.parse(controller
-                                            .reviewModel
-                                            .value!
-                                            .comment![index]
-                                            .createDate!)),
-                                    style: reviewContentTextStyle,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: GapSize.xxSmall,
-                              ),
-                              Text(
-                                controller.reviewModel.value!.comment![index]
-                                    .comment!,
-                                style: reviewContentTextStyle,
-                              ),
-                              const Divider(
-                                height: GapSize.small,
-                                thickness: 1.0,
-                                color: Colors.grey,
-                              )
-                            ],
-                          );
-                        })),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 5,
-                        child: TextField(
-                          controller: controller.reviewText,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 1,
-                          decoration: const InputDecoration(
-                              filled: false,
-                              hintText: "리뷰를 입력해주세요.",
-                              hintStyle: TextStyle(
-                                  fontSize: FontSize.small,
-                                  color: Colors.grey,
-                                  fontFamily: "NanumR"),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(width: 1.0)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(width: 1.0)),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: GapSize.small,
-                                  horizontal: GapSize.small)),
-                          style: const TextStyle(
-                              fontSize: FontSize.small, fontFamily: "NanumR"),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.cancel_presentation),
+                        SizedBox(
+                          width: GapSize.small,
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: OutlinedButton(
-                            onPressed: () {
-                              controller.createReview(store!.storeId!);
-                            },
-                            child: const Text("저장")),
-                      ),
-                    ],
+                        Text("리뷰가 없습니다!"),
+                      ],
+                    ),
                   ),
+                  _buildReviewTextField()
                 ],
+              )
+            : Padding(
+                padding: const EdgeInsets.only(top: GapSize.medium),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView(
+                          shrinkWrap: true,
+                          children: List.generate(
+                              controller.detailModel.value!.comment!.length,
+                              (index) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      controller.detailModel.value!
+                                          .comment![index].userNickname!,
+                                      style: reviewNickNameTextStyle,
+                                    ),
+                                    Text(
+                                      DateFormat('yy.MM.dd').format(
+                                          DateTime.parse(controller
+                                              .detailModel
+                                              .value!
+                                              .comment![index]
+                                              .createDate!)),
+                                      style: reviewContentTextStyle,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: GapSize.xxSmall,
+                                ),
+                                Text(
+                                  controller.detailModel.value!.comment![index]
+                                      .comment!,
+                                  style: reviewContentTextStyle,
+                                ),
+                                const Divider(
+                                  height: GapSize.small,
+                                  thickness: 1.0,
+                                  color: Colors.grey,
+                                )
+                              ],
+                            );
+                          })),
+                    ),
+                    _buildReviewTextField()
+                  ],
+                ),
               ),
-            ),
+      ),
+    );
+  }
+
+  _buildReviewTextField() {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Expanded(
+          flex: 5,
+          child: TextField(
+            controller: controller.reviewText,
+            keyboardType: TextInputType.multiline,
+            maxLines: 3,
+            decoration: const InputDecoration(
+                filled: false,
+                hintText: "리뷰를 입력해주세요.",
+                hintStyle: TextStyle(
+                    fontSize: FontSize.small,
+                    color: Colors.grey,
+                    fontFamily: "NanumR"),
+                enabledBorder:
+                    OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+                focusedBorder:
+                    OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+                contentPadding: EdgeInsets.symmetric(
+                    vertical: GapSize.small, horizontal: GapSize.small)),
+            style:
+                const TextStyle(fontSize: FontSize.small, fontFamily: "NanumR"),
+          ),
+        ),
+        const SizedBox(
+          width: GapSize.xSmall,
+        ),
+        Expanded(
+          flex: 1,
+          child: OutlinedButton(
+              onPressed: () {
+                if (controller.reviewTextFieldValidator()) {
+                  controller.createReview(store!.storeId!);
+                }
+              },
+              child: const Text("저장")),
+        ),
+      ],
     );
   }
 }

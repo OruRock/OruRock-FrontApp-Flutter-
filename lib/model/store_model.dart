@@ -13,16 +13,16 @@ class StoreModel {
 
   StoreModel(
       {this.storeId,
-        this.image,
-        this.storePhone,
-        this.storeOpentime,
-        this.recommendCnt,
-        this.stroreName,
-        this.storeAddr,
-        this.storeLng,
-        this.bookmarkYn,
-        this.storeLat,
-        this.storeDescription});
+      this.image,
+      this.storePhone,
+      this.storeOpentime,
+      this.recommendCnt,
+      this.stroreName,
+      this.storeAddr,
+      this.storeLng,
+      this.bookmarkYn,
+      this.storeLat,
+      this.storeDescription});
 
   StoreModel.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];

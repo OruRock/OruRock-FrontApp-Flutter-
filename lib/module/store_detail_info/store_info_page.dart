@@ -47,12 +47,12 @@ class StoreInfo extends GetView<StoreInfoController> {
                       ImageSlideshow(
                         width: Get.width,
                         height: HeightWithRatio.xxxLarge,
-                        children: controller.reviewModel.value!.image!.isEmpty
+                        children: controller.detailModel.value!.image!.isEmpty
                             ? [Image.asset('asset/image/logo/splash_logo.png')]
                             : List.generate(
-                                controller.reviewModel.value!.image!.length,
+                                controller.detailModel.value!.image!.length,
                                 (index) {
-                                return Image.network(controller.reviewModel
+                                return Image.network(controller.detailModel
                                     .value!.image![index].imageUrl!);
                               }),
                       ),
