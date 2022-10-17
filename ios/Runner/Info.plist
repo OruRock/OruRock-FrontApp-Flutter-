@@ -49,5 +49,32 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>NMFClientId</key>
+    <string>lhtdt0293p</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>위치 권한의 허용이 필요합니다.</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>kakao42d5056b9cdc9c3b88e88d8188159cd2</string>
+
+        <string>kakaokompassauth</string>
+        <string>stroykompassauth</string>
+
+        <string>kakaolink</string>
+        <string>kakaotalk-5.9.7</string>
+    </array>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.699813385517-p61pm27c9oppgm5u0dppd28e3r9uake1</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>

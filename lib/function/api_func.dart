@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:oru_rock/function/auth_func.dart';
 
 class ApiFunction extends GetxService {
   var dio = Dio();
+  final userAuth = Get.find<AuthFunction>();
   var logger = Logger(
     printer: PrettyPrinter(),
   );
@@ -40,8 +42,7 @@ class ApiFunction extends GetxService {
     Map<String, String> headers = {};
     headers['content-type'] = 'application/json; charset=utf-8';
     headers['accept'] = 'application/json; charset=utf-8';
-    headers['Authorization'] =
-        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ7XCJ1aWRcIjpcIlRkQWFreG9EWjlTMGF3WnFGdHROMmt0eFFZbTFcIixcInVzZXJfZW1haWxcIjpcIndodGp0amRkbjUyMEBnbWFpbC5jb21cIixcInVzZXJfaWRcIjoxOCxcInVzZV95blwiOjEsXCJ1c2VyX25pY2tuYW1lXCI6XCLsobDshLHsmrBcIixcImNyZWF0ZV9kYXRlXCI6XCIyMDIyLTA5LTIzIDE2OjU3OjExXCIsXCJ1cGRhdGVfZGF0ZVwiOlwiMjAyMi0xMC0xNyAxMTowMzozMlwifSIsImlhdCI6MTY2NTk3MjIxMywiZXhwIjoxNjk3NTA4MjEzfQ.wjjlyfGnLP-YIQ-yzL3Zinr8RZwadFyBQ9pxsTaEqOk";
+    headers['Authorization'] = userAuth.jwt;
     return headers;
   }
 }

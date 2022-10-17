@@ -27,6 +27,13 @@ dependencies:
     git: https://github.com/note11g/flutter_naver_map.git
   flutter_native_splash: ^2.2.7 # splah(첫 로고 화면)용 library
 
+  kakao_flutter_sdk: ^1.2.2 # 카카오 로그인
+
+  firebase_auth: ^3.7.0
+  google_sign_in: ^5.4.1
+  flutter_signin_button: ^2.0.0
+  fluttertoast: ^8.0.9
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -82,4 +89,3 @@ flutter:
     - family: NanumACR
       fonts:
         - asset: asset/font/nanum-square/NanumSquareOTF_acR.otf
-

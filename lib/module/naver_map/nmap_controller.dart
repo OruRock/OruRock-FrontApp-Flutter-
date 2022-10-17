@@ -8,8 +8,10 @@ class NMapController extends GetxController {
   var logger = Logger(
     printer: PrettyPrinter(),
   );
+  final api = Get.find<ApiFunction>();
   final map = Get.find<MapFunction>();
   final home = Get.find<HomeController>();
+  final userAuth = Get.find<AuthFunction>();
 
   //controller가 init될 때 실행하는 함수
   @override

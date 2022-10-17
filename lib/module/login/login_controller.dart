@@ -1,0 +1,172 @@
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:logger/logger.dart';
+import 'package:oru_rock/function/api_func.dart';
+import 'package:oru_rock/function/auth_func.dart';
+import 'package:oru_rock/model/user_model.dart';
+import 'package:oru_rock/routes.dart';
+
+class LoginController extends GetxController {
+  final api = Get.find<ApiFunction>();
+  final userAuth = Get.find<AuthFunction>();
+
+  @override
+  void onInit() {
+    super.onInit();
+    _initKakaoTalkInstalled();
+  }
+
+  var _isKakaoTalkInstalled = false;
+
+  //Kakao
+  void _initKakaoTalkInstalled() async {
+    final installed = await isKakaoTalkInstalled();
+    _isKakaoTalkInstalled = installed;
+  }
+
+  Future<void> kakaoLoginButtonPressed() async {
+    OAuthToken? authCode;
+    // 웹으로 로그인
+    if (_isKakaoTalkInstalled) {
+      try {
+        authCode = await UserApi.instance.loginWithKakaoTalk();
+      } catch (error) {
+        Fluttertoast.showToast(
+            msg: 'KakaoApp Login Fail',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1
+        );
+      }
+    } else {
+      try {
+        authCode = await UserApi.instance.loginWithKakaoAccount();
+      } catch (error) {
+        Fluttertoast.showToast(
+            msg: 'KakaoWeb Login Fail',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1
+        );
+      }
+    }
+    if (await _issueAccessToken(authCode!)) {
+      Get.offAllNamed(Routes.home);
+    }
+    else {
+      Logger().e("Login Failed");
+    }
+
+  }
+
+  Future<bool> _issueAccessToken(OAuthToken authCode) async {
+    User user;
+    user = await UserApi.instance.me();
+
+    try {
+      final kakao_data = {
+        "kakao_id": user.id.toString(),
+        "email": user.kakaoAccount?.email,
+        "displayName": user.kakaoAccount?.profile?.nickname
+      };
+
+      final kakao_res = await api.dio.post('/login/kakao', data: kakao_data);
+
+
+      final data = {
+        "uid": kakao_res.data['payload'][0],
+        "user_email": user.kakaoAccount?.email,
+        "user_nickname": user.kakaoAccount?.profile?.nickname,
+        "newUser": true
+      };
+
+      final res = await api.dio.post('/login', data: data);
+
+      userAuth.setJwt(res.data['payload']['result']);
+      userAuth.setUser(user.kakaoAccount?.profile?.nickname, user.kakaoAccount?.email, kakao_res.data['payload'][0]);
+
+      return true;
+    } catch (e) {
+      Logger().e(e.toString());
+      return false;
+    }
+
+
+    // print('회원 정보 : ${tokenInfo.id}'
+    //     '\n만료 시간 : ${tokenInfo.expiresIn}'
+    //     '\n로그인 성공 : ${authCode.accessToken}');
+  }
+
+  //Google
+  final firebase_auth.FirebaseAuth _auth = firebase_auth.FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  late firebase_auth.User? currentUser;
+
+  ///구글 로그인 버튼을 클릭했을 시 로그인 성공/실패를 따지는 함수
+  void googleLoginButtonPressed() async {
+    if (await signInWithGoogle()) {
+      //로그인 성공시
+      Get.offAllNamed(Routes.home);
+    } else {
+      //로그인 실패시
+      Logger().e("Google Login Failed");
+    }
+  }
+
+  /// 구글 로그인을 처리하는 함수 유저 [uid]로 [jwt]을 API로 가져온다.
+  /// [AuthFunction]에 [jwt]와 유저 정보[UserModel]를 저장한다.
+  /// 성공한다면 [true] , 실패하면 [false]
+  Future<bool> signInWithGoogle() async {
+    final account = await googleSignIn.signIn();
+
+    final googleAuth = await account?.authentication;
+
+    final credential = firebase_auth.GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    final authResult = await _auth.signInWithCredential(credential);
+
+    final user = authResult.user;
+    currentUser = _auth.currentUser;
+
+    if (user == null || user.uid != currentUser?.uid) {
+      return false;
+    }
+
+    try {
+      final data = {
+        "uid": user.uid,
+        "user_email": user.email,
+        "user_nickname": user.displayName,
+        "newUser": authResult.additionalUserInfo?.isNewUser
+      };
+
+      print(data);
+
+      final res = await api.dio.post('/login', data: data);
+
+      userAuth.setJwt(res.data['payload']['result']);
+      userAuth.setUser(user.displayName, user.email, user.uid);
+
+      return true;
+    } catch (e) {
+      Logger().e(e.toString());
+      return false;
+    }
+  }
+
+
+  /// 구글 로그아웃 처리 + [AuthFunction]에서 관리하던 데이터 초기화
+  /// 나중에 각 플랫폼마다 분기처리해서 한번에 통합해도 괜찮을 듯
+  void signOut() async {
+    await _auth.signOut();
+    await googleSignIn.signOut();
+    userAuth.jwt = '';
+    userAuth.user = null;
+  }
+}
