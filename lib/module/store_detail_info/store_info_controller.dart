@@ -18,41 +18,29 @@ class StoreInfoController extends GetxController {
   final home = Get.find<HomeController>();
 
   Rx<StoreDetailModel?> detailModel = StoreDetailModel().obs;
-  var isLoading = false.obs;
+  var isLoading = false.obs; // 로딩용
 
   var toggleList = ['암장 정보', '리뷰'];
-  var selectedInfo = 0.obs;
-  var imageSliderHeight = HeightWithRatio.xxxLarge.obs;
-  final imageHeight = [HeightWithRatio.xxxLarge, 0.0];
+  var selectedInfo = 0.obs; //toogle 선택 index
+  var imageSliderHeight = HeightWithRatio.xxxLarge.obs; // imageSlider 높이 애니메이션용
+  final imageHeight = [HeightWithRatio.xxxLarge, 0.0]; // imageSlider 높이 애니메이션용
 
-  late ScrollController scrollController;
-
-  TextEditingController reviewText = TextEditingController();
-  TextEditingController modifyText = TextEditingController();
-  var isModifying = false.obs;
-  var modifyingIndex = (-1).obs;
+  TextEditingController reviewText =
+      TextEditingController(); //리뷰 작성 텍스트 필드 컨트롤러
+  TextEditingController modifyText =
+      TextEditingController(); //리뷰 수정 텍스트 필드 컨트롤러
+  var isModifying = false.obs; // 수정 중
+  var modifyingIndex = (-1).obs; // 수정할 리뷰 인덱스
 
   @override
   void onInit() async {
-    scrollController = ScrollController();
     detailModel.value = await getReview();
     super.onInit();
   }
 
-  ///리뷰 추가 API
-  Future<void> createReview(int storeId) async {
+  ///리뷰 새로 고침
+  Future<void> fetchReview(int storeId) async {
     try {
-      isLoading.value = false;
-
-      final reviewData = {
-        "store_id": storeId,
-        "uid": "TdAakxoDZ9S0awZqFttN2ktxQYm1",
-        "comment": reviewText.text,
-        "recommend_level": 0,
-      };
-
-      final res = await api.dio.post('/store/comment', data: reviewData);
-
       final reqData = {
         "store_id": storeId.toString(),
         "commentOnly": true,
@@ -74,12 +62,32 @@ class StoreInfoController extends GetxController {
     }
   }
 
+  ///리뷰 추가 API
+  Future<void> createReview(int storeId) async {
+    try {
+      isLoading.value = false;
+
+      final reviewData = {
+        "store_id": storeId,
+        "uid": "TdAakxoDZ9S0awZqFttN2ktxQYm1", //TODO 가져오는 UID로 수정
+        "comment": reviewText.text,
+        "recommend_level": 0,
+      };
+
+      await fetchReview(storeId);
+    } catch (e) {
+      logger.e(e.toString());
+    }
+  }
+
+  ///수정 버튼 누를 시
   void modifyButtonPressed(int index) {
     modifyText.text = detailModel.value!.comment![index].comment!;
     isModifying.value = true;
     modifyingIndex.value = index;
   }
 
+  ///수정 취소 시
   void cancelModify() {
     isModifying.value = false;
     modifyingIndex.value = -1;
@@ -100,24 +108,10 @@ class StoreInfoController extends GetxController {
 
       final res = await api.dio.post('/store/comment', data: modifyData);
 
-      final reqData = {
-        "store_id": storeId.toString(),
-        "commentOnly": true,
-      };
+      await fetchReview(storeId);
 
-      final comment =
-          await api.dio.get('/store/detail', queryParameters: reqData);
-
-      final Map<String, dynamic>? data = comment.data['payload'];
-      if (data != null) {
-        isLoading.value = true;
-        reviewText.text = '';
-        StoreDetailModel newModel = StoreDetailModel.fromJson(data);
-        detailModel.value!.total = newModel.total;
-        detailModel.value!.comment = newModel.comment;
-        isModifying.value = false;
-        modifyingIndex.value = -1;
-      }
+      isModifying.value = false;
+      modifyingIndex.value = -1;
     } catch (e) {
       logger.e(e.toString());
     }
@@ -146,28 +140,14 @@ class StoreInfoController extends GetxController {
       final res =
           await api.dio.delete('/store/comment', queryParameters: deleteData);
 
-      final reqData = {
-        "store_id": storeId.toString(),
-        "commentOnly": true,
-      };
+      await fetchReview(storeId);
 
-      final comment =
-          await api.dio.get('/store/detail', queryParameters: reqData);
-
-      final Map<String, dynamic>? data = comment.data['payload'];
-      if (data != null) {
-        isLoading.value = true;
-        reviewText.text = '';
-        StoreDetailModel newModel = StoreDetailModel.fromJson(data);
-        detailModel.value!.total = newModel.total;
-        detailModel.value!.comment = newModel.comment;
-      }
     } catch (e) {
       logger.e(e.toString());
     }
   }
 
-  ///리뷰 새로 고침
+  ///첫 리뷰 가져오는 함수
   Future<StoreDetailModel?> getReview() async {
     try {
       isLoading.value = false;
@@ -189,6 +169,7 @@ class StoreInfoController extends GetxController {
     return null;
   }
 
+  ///리뷰 텍스트 필드 (수정, 추가) validator
   bool reviewTextFieldValidator(TextEditingController controller) {
     if (controller.text.length < 3) {
       Get.snackbar("알림", "3글자 이상 작성해주세요:)");

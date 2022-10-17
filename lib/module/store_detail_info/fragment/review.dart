@@ -21,70 +21,21 @@ class ReviewFragment extends GetView<StoreInfoController> {
     return Obx(
       () => Expanded(
         child: controller.detailModel.value!.comment!.isEmpty
-            ? Column(
-                children: [
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.cancel_presentation),
-                        SizedBox(
-                          width: GapSize.small,
-                        ),
-                        Text("리뷰가 없습니다!"),
-                      ],
-                    ),
-                  ),
-                  _buildReviewTextField()
-                ],
-              )
+            ? _buildNotExistWidget()
             : Padding(
                 padding: const EdgeInsets.only(top: GapSize.medium),
                 child: Column(
                   children: [
                     Expanded(
                       child: ListView(
-                          shrinkWrap: true,
-                          children: List.generate(
-                              controller.detailModel.value!.comment!.length,
-                              (index) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      controller.detailModel.value!
-                                          .comment![index].userNickname!,
-                                      style: reviewNickNameTextStyle,
-                                    ),
-                                    Expanded(child: Container()),
-                                    Text(
-                                      DateFormat('yy.MM.dd').format(
-                                          DateTime.parse(controller
-                                              .detailModel
-                                              .value!
-                                              .comment![index]
-                                              .createDate!)),
-                                      style: reviewContentTextStyle,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: GapSize.xxSmall,
-                                ),
-                                controller.isModifying.value &&
-                                        controller.modifyingIndex.value == index
-                                    ? _buildModifyTextField(index)
-                                    : _buildCommentField(index),
-                                const Divider(
-                                  height: GapSize.small,
-                                  thickness: 1.0,
-                                  color: Colors.grey,
-                                )
-                              ],
-                            );
-                          })),
+                        shrinkWrap: true,
+                        children: List.generate(
+                          controller.detailModel.value!.comment!.length,
+                          (index) {
+                            return _buildReviewTile(index);
+                          },
+                        ),
+                      ),
                     ),
                     Visibility(
                         visible: !controller.isModifying.value,
@@ -141,8 +92,61 @@ class ReviewFragment extends GetView<StoreInfoController> {
     );
   }
 
+  _buildNotExistWidget() {
+    return Column(
+      children: [
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Icon(Icons.cancel_presentation),
+              SizedBox(
+                width: GapSize.small,
+              ),
+              Text("리뷰가 없습니다!"),
+            ],
+          ),
+        ),
+        _buildReviewTextField()
+      ],
+    );
+  }
+
+  _buildReviewTile(int index) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              controller.detailModel.value!.comment![index].userNickname!,
+              style: reviewNickNameTextStyle,
+            ),
+            Expanded(child: Container()),
+            Text(
+              DateFormat('yy.MM.dd').format(DateTime.parse(
+                  controller.detailModel.value!.comment![index].createDate!)),
+              style: reviewContentTextStyle,
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: GapSize.xxSmall,
+        ),
+        controller.isModifying.value && controller.modifyingIndex.value == index
+            ? _buildModifyTextField(index)
+            : _buildCommentField(index),
+        const Divider(
+          height: GapSize.small,
+          thickness: 1.0,
+          color: Colors.grey,
+        )
+      ],
+    );
+  }
+
   _buildModifyTextField(int index) {
-    Row(
+    return Row(
       mainAxisSize: MainAxisSize.max,
       children: [
         Expanded(
