@@ -21,7 +21,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Expanded(
-        child: controller.detailModel.value!.total == 0
+        child: controller.detailModel.value!.comment!.isEmpty
             ? Column(
                 children: [
                   Expanded(
