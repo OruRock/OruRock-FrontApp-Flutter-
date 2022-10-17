@@ -74,6 +74,8 @@ class StoreInfoController extends GetxController {
         "recommend_level": 0,
       };
 
+      final res = await api.dio.post('/store/comment', data: reviewData);
+
       await fetchReview(storeId);
     } catch (e) {
       logger.e(e.toString());

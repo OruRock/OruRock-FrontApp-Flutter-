@@ -48,47 +48,35 @@ class ReviewFragment extends GetView<StoreInfoController> {
   }
 
   _buildReviewTextField() {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Expanded(
-          flex: 5,
-          child: TextField(
-            controller: controller.reviewText,
-            keyboardType: TextInputType.multiline,
-            maxLines: 3,
-            decoration: const InputDecoration(
-                filled: false,
-                hintText: "리뷰를 입력해주세요.",
-                hintStyle: TextStyle(
-                    fontSize: FontSize.small,
-                    color: Colors.grey,
-                    fontFamily: "NanumR"),
-                enabledBorder:
-                    OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
-                focusedBorder:
-                    OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
-                contentPadding: EdgeInsets.symmetric(
-                    vertical: GapSize.small, horizontal: GapSize.small)),
-            style:
-                const TextStyle(fontSize: FontSize.small, fontFamily: "NanumR"),
+    return TextField(
+      controller: controller.reviewText,
+      keyboardType: TextInputType.multiline,
+      maxLines: 3,
+      decoration: InputDecoration(
+          suffixIcon: IconButton(
+            onPressed: () {
+              if (controller.reviewTextFieldValidator(controller.reviewText)) {
+                controller.createReview(store!.storeId!);
+              }
+            },
+            icon: const Icon(
+              Icons.send_outlined,
+              color: Colors.blue,
+            ),
           ),
-        ),
-        const SizedBox(
-          width: GapSize.xSmall,
-        ),
-        Expanded(
-          flex: 1,
-          child: OutlinedButton(
-              onPressed: () {
-                if (controller
-                    .reviewTextFieldValidator(controller.reviewText)) {
-                  controller.createReview(store!.storeId!);
-                }
-              },
-              child: const Text("저장")),
-        ),
-      ],
+          filled: false,
+          hintText: "리뷰를 입력해주세요.",
+          hintStyle: const TextStyle(
+              fontSize: FontSize.small,
+              color: Colors.grey,
+              fontFamily: "NanumR"),
+          enabledBorder:
+              const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+          focusedBorder:
+              const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+          contentPadding: const EdgeInsets.symmetric(
+              vertical: GapSize.small, horizontal: GapSize.small)),
+      style: const TextStyle(fontSize: FontSize.small, fontFamily: "NanumR"),
     );
   }
 
