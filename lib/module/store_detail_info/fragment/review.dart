@@ -208,8 +208,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
         ),
         Visibility(
           visible: controller.detailModel.value!.comment![index].uid ==
-              "TdAakxoDZ9S0awZqFttN2ktxQYm1",
-          //TODO 저장되어 있는 UID로
+              controller.auth.user?.uid,
           child: GestureDetector(
             onTap: () {
               controller.modifyButtonPressed(index);
@@ -226,8 +225,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
         ),
         Visibility(
           visible: controller.detailModel.value!.comment![index].uid ==
-              "TdAakxoDZ9S0awZqFttN2ktxQYm1",
-          //TODO 저장되어 있는 UID로
+              controller.auth.user?.uid,
           child: GestureDetector(
             onTap: () async {
               controller.buildWarningDialog(store!.storeId!,

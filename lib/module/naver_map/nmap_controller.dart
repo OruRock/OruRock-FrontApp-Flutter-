@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:oru_rock/function/api_func.dart';
+import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/function/map_func.dart';
 import 'package:oru_rock/module/home/home_controller.dart';
 

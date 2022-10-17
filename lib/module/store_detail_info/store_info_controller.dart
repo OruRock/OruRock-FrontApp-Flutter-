@@ -6,6 +6,7 @@ import 'package:logger/logger.dart';
 import 'package:oru_rock/common_widget/alert_dialog.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/function/api_func.dart';
+import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/model/store_detail_model.dart';
 import 'package:oru_rock/module/home/home_controller.dart';
 
@@ -16,6 +17,7 @@ class StoreInfoController extends GetxController {
 
   final api = Get.find<ApiFunction>();
   final home = Get.find<HomeController>();
+  final auth = Get.find<AuthFunction>();
 
   Rx<StoreDetailModel?> detailModel = StoreDetailModel().obs;
   var isLoading = false.obs; // 로딩용
@@ -69,7 +71,7 @@ class StoreInfoController extends GetxController {
 
       final reviewData = {
         "store_id": storeId,
-        "uid": "TdAakxoDZ9S0awZqFttN2ktxQYm1", //TODO 가져오는 UID로 수정
+        "uid": auth.user!.uid, //TODO 가져오는 UID로 수정
         "comment": reviewText.text,
         "recommend_level": 0,
       };
@@ -102,7 +104,7 @@ class StoreInfoController extends GetxController {
 
       final modifyData = {
         "store_id": storeId,
-        "uid": "TdAakxoDZ9S0awZqFttN2ktxQYm1",
+        "uid": auth.user!.uid,
         "comment": modifyText.text,
         "recommend_level": 0,
         "comment_id": commentId.toString(),
@@ -136,7 +138,7 @@ class StoreInfoController extends GetxController {
 
       final deleteData = {
         "comment_id": commentId,
-        "uid": "TdAakxoDZ9S0awZqFttN2ktxQYm1",
+        "uid": auth.user!.uid,
       };
 
       final res =

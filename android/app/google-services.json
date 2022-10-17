@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "699813385517-4lomenr5ctehfl4tmvqmi72ufjsq6d90.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orurock.ai.oru_rock",
+            "certificate_hash": "6fc917eaac39e46d4e72957aef5ac0987c99f654"
+          }
+        },
+        {
+          "client_id": "699813385517-jnl9i6oe9cia1l7bpnihevisum2n29k9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orurock.ai.oru_rock",
+            "certificate_hash": "0251e224ea5dc3120adacfe2be5bc1a3869268cf"
+          }
+        },
+        {
           "client_id": "699813385517-ldmid873m0kepeetb0dj2m72fcbbm23t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

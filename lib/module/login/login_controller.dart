@@ -29,7 +29,7 @@ class LoginController extends GetxController {
 
   Future<void> kakaoLoginButtonPressed() async {
     OAuthToken? authCode;
-    // 웹으로 로그인
+    // 앱으로 로그인
     if (_isKakaoTalkInstalled) {
       try {
         authCode = await UserApi.instance.loginWithKakaoTalk();
