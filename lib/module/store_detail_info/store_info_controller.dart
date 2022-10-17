@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:oru_rock/common_widget/alert_dialog.dart';
+import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/model/store_detail_model.dart';
 import 'package:oru_rock/module/home/home_controller.dart';
@@ -20,6 +22,8 @@ class StoreInfoController extends GetxController {
 
   var toggleList = ['암장 정보', '리뷰'];
   var selectedInfo = 0.obs;
+  var imageSliderHeight = HeightWithRatio.xxxLarge.obs;
+  final imageHeight = [HeightWithRatio.xxxLarge, 0.0];
 
   late ScrollController scrollController;
 
@@ -44,6 +48,83 @@ class StoreInfoController extends GetxController {
       };
 
       final res = await api.dio.post('/store/comment', data: reviewData);
+
+      final reqData = {
+        "store_id": storeId.toString(),
+        "commentOnly": true,
+      };
+
+      final comment =
+          await api.dio.get('/store/detail', queryParameters: reqData);
+
+      final Map<String, dynamic>? data = comment.data['payload'];
+      if (data != null) {
+        isLoading.value = true;
+        reviewText.text = '';
+        StoreDetailModel newModel = StoreDetailModel.fromJson(data);
+        detailModel.value!.total = newModel.total;
+        detailModel.value!.comment = newModel.comment;
+      }
+    } catch (e) {
+      logger.e(e.toString());
+    }
+  }
+
+  Future<void> modifyReview(int storeId, int commentId) async {
+    try {
+      isLoading.value = false;
+
+      final modifyData = {
+        "store_id": storeId,
+        "uid": "TdAakxoDZ9S0awZqFttN2ktxQYm1",
+        "comment": reviewText.text,
+        "recommend_level": 0,
+        "comment_id": commentId.toString(),
+      };
+
+      final res = await api.dio.post('/store/comment', data: modifyData);
+
+      final reqData = {
+        "store_id": storeId.toString(),
+        "commentOnly": true,
+      };
+
+      final comment =
+          await api.dio.get('/store/detail', queryParameters: reqData);
+
+      final Map<String, dynamic>? data = comment.data['payload'];
+      if (data != null) {
+        isLoading.value = true;
+        reviewText.text = '';
+        StoreDetailModel newModel = StoreDetailModel.fromJson(data);
+        detailModel.value!.total = newModel.total;
+        detailModel.value!.comment = newModel.comment;
+      }
+    } catch (e) {
+      logger.e(e.toString());
+    }
+  }
+
+  void buildWarningDialog(int storeId, int commentId) {
+    Get.dialog(CommonDialog(
+        title: "경고",
+        content: "정말 삭제하시겠습니까?",
+        positiveFunc: () async {
+          await deleteReview(storeId, commentId);
+        }));
+  }
+
+  Future<void> deleteReview(int storeId, int commentId) async {
+    try {
+      isLoading.value = false;
+
+      final deleteData = {
+        "comment_id": commentId,
+        "uid": "TdAakxoDZ9S0awZqFttN2ktxQYm1",
+      };
+
+      final res =
+          await api.dio.delete('/store/comment', queryParameters: deleteData);
 
       final reqData = {
         "store_id": storeId.toString(),

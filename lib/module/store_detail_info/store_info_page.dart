@@ -35,74 +35,78 @@ class StoreInfo extends GetView<StoreInfoController> {
           backgroundColor: Colors.white,
           elevation: 1,
         ),
-        body: Obx(
-          () => controller.isLoading.value == false
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ImageSlideshow(
-                        width: Get.width,
-                        height: HeightWithRatio.xxxLarge,
-                        children: controller.detailModel.value!.image!.isEmpty
-                            ? [Image.asset('asset/image/logo/splash_logo.png')]
-                            : List.generate(
-                                controller.detailModel.value!.image!.length,
-                                (index) {
-                                return Image.network(controller.detailModel
-                                    .value!.image![index].imageUrl!);
-                              }),
-                      ),
-                      const Divider(color: Colors.grey),
-                      SizedBox(
-                        height: HeightWithRatio.xxxxLarge,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: WidthWithRatio.small),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: HeightWithRatio.xxSmall,
+        body: Obx(() => controller.isLoading.value == false
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AnimatedContainer(
+                    curve: Curves.ease,
+                  height: controller.imageSliderHeight.value,
+                            duration: const Duration(milliseconds: 1000),
+                            child: ImageSlideshow(
+                                width: Get.width,
+                                children:
+                                    controller.detailModel.value!.image!.isEmpty
+                                        ? [
+                                            Image.asset(
+                                                'asset/image/logo/splash_logo.png')
+                                          ]
+                                        : List.generate(
+                                            controller.detailModel.value!.image!
+                                                .length, (index) {
+                                            return Image.network(controller
+                                                .detailModel
+                                                .value!
+                                                .image![index]
+                                                .imageUrl!);
+                                          }),
                               ),
-                              Center(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.black),
-                                      borderRadius: BorderRadius.circular(12)),
-                                  child: FlutterToggleTab(
-                                    height: Get.height / 25,
-                                    width: Get.width / 6,
-                                    isScroll: false,
-                                    borderRadius: 10,
-                                    labels: controller.toggleList,
-                                    selectedLabelIndex: (index) {
-                                      controller.selectedInfo.value = index;
-                                    },
-                                    selectedTextStyle: selectedToggleTextStyle,
-                                    unSelectedTextStyle:
-                                        unSelectedToggleTextStyle,
-                                    unSelectedBackgroundColors: [Colors.white],
-                                    selectedBackgroundColors: [Colors.black],
-                                    selectedIndex:
-                                        controller.selectedInfo.value,
-                                  ),
-                                ),
-                              ),
-                              controller.selectedInfo.value == 0
-                                  ? StoreInfoFragment(store: store)
-                                  : ReviewFragment(store: store),
-                            ],
                           ),
-                        ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: WidthWithRatio.small),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: HeightWithRatio.xxSmall,
+                          ),
+                          Center(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: FlutterToggleTab(
+                                height: Get.height / 25,
+                                width: Get.width / 6,
+                                isScroll: false,
+                                borderRadius: 10,
+                                labels: controller.toggleList,
+                                selectedLabelIndex: (index) {
+                                  controller.selectedInfo.value = index;
+                                  controller.imageSliderHeight.value = controller.imageHeight[index];
+                                },
+                                selectedTextStyle: selectedToggleTextStyle,
+                                unSelectedTextStyle: unSelectedToggleTextStyle,
+                                unSelectedBackgroundColors: [Colors.white],
+                                selectedBackgroundColors: [Colors.black],
+                                selectedIndex: controller.selectedInfo.value,
+                              ),
+                            ),
+                          ),
+                          controller.selectedInfo.value == 0
+                              ? StoreInfoFragment(store: store)
+                              : ReviewFragment(store: store),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-        ),
+                    ),
+                  )
+                ],
+              )),
       ),
     );
   }

@@ -85,6 +85,7 @@ class Price {
 class Comment {
   int? storeId;
   String? userNickname;
+  String? uid;
   String? comment;
   int? recommendLevel;
   int? commentId;
@@ -94,6 +95,7 @@ class Comment {
   Comment(
       {this.storeId,
       this.userNickname,
+        this.uid,
       this.comment,
       this.recommendLevel,
       this.commentId,
@@ -103,6 +105,7 @@ class Comment {
   Comment.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
     userNickname = json['user_nickname'];
+    uid = json['uid'];
     comment = json['comment'];
     recommendLevel = json['recommend_level'];
     commentId = json['comment_id'];
@@ -114,6 +117,7 @@ class Comment {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['store_id'] = storeId;
     data['user_nickname'] = userNickname;
+    data['uid'] = uid;
     data['comment'] = comment;
     data['recommend_level'] = recommendLevel;
     data['comment_id'] = commentId;

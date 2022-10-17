@@ -13,7 +13,7 @@ class CommonDialog extends StatelessWidget {
   }) : super(key: key);
   final title;
   final content;
-  Function() positiveFunc;
+  Function positiveFunc;
 
   @override
   Widget build(BuildContext context) {

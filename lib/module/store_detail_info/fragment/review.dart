@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:oru_rock/common_widget/alert_dialog.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
@@ -18,7 +19,8 @@ class ReviewFragment extends GetView<StoreInfoController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Expanded(
+    return Obx(
+      () => Expanded(
         child: controller.detailModel.value!.total == 0
             ? Column(
                 children: [
@@ -51,14 +53,46 @@ class ReviewFragment extends GetView<StoreInfoController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       controller.detailModel.value!
                                           .comment![index].userNickname!,
                                       style: reviewNickNameTextStyle,
                                     ),
+                                    Visibility(
+                                        visible: controller.detailModel.value!
+                                                .comment![index].uid ==
+                                            "TdAakxoDZ9S0awZqFttN2ktxQYm1",
+                                        //TODO 저장되어 있는 UID로
+                                        child: OutlinedButton(
+                                            onPressed: () {
+/*                                              controller.modifyReview(
+                                                  store!.storeId!,
+                                                  controller
+                                                      .detailModel
+                                                      .value!
+                                                      .comment![index]
+                                                      .commentId!);*/
+                                            },
+                                            child: Text('수정'))),
+                                    Visibility(
+                                      visible: controller.detailModel.value!
+                                              .comment![index].uid ==
+                                          "TdAakxoDZ9S0awZqFttN2ktxQYm1",
+                                      //TODO 저장되어 있는 UID로
+                                      child: OutlinedButton(
+                                          onPressed: () async {
+                                            controller.buildWarningDialog(
+                                                store!.storeId!,
+                                                controller
+                                                    .detailModel
+                                                    .value!
+                                                    .comment![index]
+                                                    .commentId!);
+                                          },
+                                          child: Text('삭제')),
+                                    ),
+                                    Expanded(child: Container()),
                                     Text(
                                       DateFormat('yy.MM.dd').format(
                                           DateTime.parse(controller
