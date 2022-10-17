@@ -45,7 +45,7 @@ class StoreInfo extends GetView<StoreInfoController> {
                   AnimatedContainer(
                     curve: Curves.ease,
                   height: controller.imageSliderHeight.value,
-                            duration: const Duration(milliseconds: 1000),
+                            duration: const Duration(milliseconds: 800),
                             child: ImageSlideshow(
                                 width: Get.width,
                                 children:
@@ -68,12 +68,12 @@ class StoreInfo extends GetView<StoreInfoController> {
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: WidthWithRatio.small),
+                          horizontal: WidthWithRatio.small, vertical: GapSize.xSmall),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            height: HeightWithRatio.xxSmall,
+                            height: HeightWithRatio.xxxxSmall,
                           ),
                           Center(
                             child: Container(

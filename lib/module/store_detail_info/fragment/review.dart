@@ -3,7 +3,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:oru_rock/common_widget/alert_dialog.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
@@ -59,39 +58,6 @@ class ReviewFragment extends GetView<StoreInfoController> {
                                           .comment![index].userNickname!,
                                       style: reviewNickNameTextStyle,
                                     ),
-                                    Visibility(
-                                        visible: controller.detailModel.value!
-                                                .comment![index].uid ==
-                                            "TdAakxoDZ9S0awZqFttN2ktxQYm1",
-                                        //TODO 저장되어 있는 UID로
-                                        child: OutlinedButton(
-                                            onPressed: () {
-/*                                              controller.modifyReview(
-                                                  store!.storeId!,
-                                                  controller
-                                                      .detailModel
-                                                      .value!
-                                                      .comment![index]
-                                                      .commentId!);*/
-                                            },
-                                            child: Text('수정'))),
-                                    Visibility(
-                                      visible: controller.detailModel.value!
-                                              .comment![index].uid ==
-                                          "TdAakxoDZ9S0awZqFttN2ktxQYm1",
-                                      //TODO 저장되어 있는 UID로
-                                      child: OutlinedButton(
-                                          onPressed: () async {
-                                            controller.buildWarningDialog(
-                                                store!.storeId!,
-                                                controller
-                                                    .detailModel
-                                                    .value!
-                                                    .comment![index]
-                                                    .commentId!);
-                                          },
-                                          child: Text('삭제')),
-                                    ),
                                     Expanded(child: Container()),
                                     Text(
                                       DateFormat('yy.MM.dd').format(
@@ -107,11 +73,10 @@ class ReviewFragment extends GetView<StoreInfoController> {
                                 const SizedBox(
                                   height: GapSize.xxSmall,
                                 ),
-                                Text(
-                                  controller.detailModel.value!.comment![index]
-                                      .comment!,
-                                  style: reviewContentTextStyle,
-                                ),
+                                controller.isModifying.value &&
+                                        controller.modifyingIndex.value == index
+                                    ? _buildModifyTextField(index)
+                                    : _buildCommentField(index),
                                 const Divider(
                                   height: GapSize.small,
                                   thickness: 1.0,
@@ -121,7 +86,9 @@ class ReviewFragment extends GetView<StoreInfoController> {
                             );
                           })),
                     ),
-                    _buildReviewTextField()
+                    Visibility(
+                        visible: !controller.isModifying.value,
+                        child: _buildReviewTextField())
                   ],
                 ),
               ),
@@ -163,11 +130,123 @@ class ReviewFragment extends GetView<StoreInfoController> {
           flex: 1,
           child: OutlinedButton(
               onPressed: () {
-                if (controller.reviewTextFieldValidator()) {
+                if (controller
+                    .reviewTextFieldValidator(controller.reviewText)) {
                   controller.createReview(store!.storeId!);
                 }
               },
               child: const Text("저장")),
+        ),
+      ],
+    );
+  }
+
+  _buildModifyTextField(int index) {
+    Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Expanded(
+          flex: 5,
+          child: TextField(
+            controller: controller.modifyText,
+            keyboardType: TextInputType.multiline,
+            maxLines: 3,
+            decoration: const InputDecoration(
+                filled: false,
+                hintText: "리뷰를 입력해주세요.",
+                hintStyle: TextStyle(
+                    fontSize: FontSize.small,
+                    color: Colors.grey,
+                    fontFamily: "NanumR"),
+                enabledBorder:
+                    OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+                focusedBorder:
+                    OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+                contentPadding: EdgeInsets.symmetric(
+                    vertical: GapSize.small, horizontal: GapSize.small)),
+            style:
+                const TextStyle(fontSize: FontSize.small, fontFamily: "NanumR"),
+          ),
+        ),
+        const SizedBox(
+          width: GapSize.xSmall,
+        ),
+        Expanded(
+          flex: 1,
+          child: Column(
+            children: [
+              OutlinedButton(
+                  onPressed: () {
+                    if (controller
+                        .reviewTextFieldValidator(controller.modifyText)) {
+                      controller.modifyReview(
+                          store!.storeId!,
+                          controller
+                              .detailModel.value!.comment![index].commentId!);
+                    }
+                  },
+                  child: const Text("수정")),
+              OutlinedButton(
+                  onPressed: () {
+                    controller.cancelModify();
+                  },
+                  child: const Text("취소")),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  _buildCommentField(int index) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        SizedBox(
+          width: WidthWithRatio.xxxxLarge,
+          child: Text(
+            controller.detailModel.value!.comment![index].comment!,
+            style: reviewContentTextStyle,
+            overflow: TextOverflow.clip,
+          ),
+        ),
+        Expanded(
+          child: Container(),
+        ),
+        Visibility(
+          visible: controller.detailModel.value!.comment![index].uid ==
+              "TdAakxoDZ9S0awZqFttN2ktxQYm1",
+          //TODO 저장되어 있는 UID로
+          child: GestureDetector(
+            onTap: () {
+              controller.modifyButtonPressed(index);
+            },
+            child: Icon(
+              Icons.edit_outlined,
+              color: Colors.blue,
+              size: WidthWithRatio.xSmall,
+            ),
+          ),
+        ),
+        SizedBox(
+          width: WidthWithRatio.xxxSmall,
+        ),
+        Visibility(
+          visible: controller.detailModel.value!.comment![index].uid ==
+              "TdAakxoDZ9S0awZqFttN2ktxQYm1",
+          //TODO 저장되어 있는 UID로
+          child: GestureDetector(
+            onTap: () async {
+              controller.buildWarningDialog(store!.storeId!,
+                  controller.detailModel.value!.comment![index].commentId!);
+            },
+            child: Icon(
+              Icons.delete_outline,
+              size: WidthWithRatio.xSmall,
+              color: Colors.red,
+            ),
+          ),
         ),
       ],
     );

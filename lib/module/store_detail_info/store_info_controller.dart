@@ -28,6 +28,9 @@ class StoreInfoController extends GetxController {
   late ScrollController scrollController;
 
   TextEditingController reviewText = TextEditingController();
+  TextEditingController modifyText = TextEditingController();
+  var isModifying = false.obs;
+  var modifyingIndex = (-1).obs;
 
   @override
   void onInit() async {
@@ -36,6 +39,7 @@ class StoreInfoController extends GetxController {
     super.onInit();
   }
 
+  ///리뷰 추가 API
   Future<void> createReview(int storeId) async {
     try {
       isLoading.value = false;
@@ -70,6 +74,18 @@ class StoreInfoController extends GetxController {
     }
   }
 
+  void modifyButtonPressed(int index) {
+    modifyText.text = detailModel.value!.comment![index].comment!;
+    isModifying.value = true;
+    modifyingIndex.value = index;
+  }
+
+  void cancelModify() {
+    isModifying.value = false;
+    modifyingIndex.value = -1;
+  }
+
+  ///리뷰 수정 API
   Future<void> modifyReview(int storeId, int commentId) async {
     try {
       isLoading.value = false;
@@ -77,7 +93,7 @@ class StoreInfoController extends GetxController {
       final modifyData = {
         "store_id": storeId,
         "uid": "TdAakxoDZ9S0awZqFttN2ktxQYm1",
-        "comment": reviewText.text,
+        "comment": modifyText.text,
         "recommend_level": 0,
         "comment_id": commentId.toString(),
       };
@@ -99,12 +115,15 @@ class StoreInfoController extends GetxController {
         StoreDetailModel newModel = StoreDetailModel.fromJson(data);
         detailModel.value!.total = newModel.total;
         detailModel.value!.comment = newModel.comment;
+        isModifying.value = false;
+        modifyingIndex.value = -1;
       }
     } catch (e) {
       logger.e(e.toString());
     }
   }
 
+  ///리뷰 삭제시 Dialog
   void buildWarningDialog(int storeId, int commentId) {
     Get.dialog(CommonDialog(
         title: "경고",
@@ -114,6 +133,7 @@ class StoreInfoController extends GetxController {
         }));
   }
 
+  ///리뷰 삭제 API
   Future<void> deleteReview(int storeId, int commentId) async {
     try {
       isLoading.value = false;
@@ -147,6 +167,7 @@ class StoreInfoController extends GetxController {
     }
   }
 
+  ///리뷰 새로 고침
   Future<StoreDetailModel?> getReview() async {
     try {
       isLoading.value = false;
@@ -168,8 +189,8 @@ class StoreInfoController extends GetxController {
     return null;
   }
 
-  bool reviewTextFieldValidator() {
-    if (reviewText.text.length < 3) {
+  bool reviewTextFieldValidator(TextEditingController controller) {
+    if (controller.text.length < 3) {
       Get.snackbar("알림", "3글자 이상 작성해주세요:)");
       return false;
     }
