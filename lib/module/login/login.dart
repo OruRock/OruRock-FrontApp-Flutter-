@@ -5,46 +5,88 @@ import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/module/login/login_controller.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:shadow/shadow.dart';
 
 class Login extends GetView<LoginController> {
   const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Obx(
-        () => Stack(
-          children: [
-            Column(
-              children: [
-                const Image(image: AssetImage('asset/image/logo/Logo.png')),
-                _buildLoginButton(() => controller.kakaoLoginButtonPressed(),
-                    'asset/image/logo/kakao_login.png'),
-                Center(
-                  child: SizedBox(
-                    width: WidthWithRatio.xxxxLarge,
-                    height: HeightWithRatio.xSmall,
-                    child: SignInButton(
-                      Buttons.Google,
-                      text: 'Sign In Google',
-                      onPressed: () => controller.googleLoginButtonPressed(),
+    return SafeArea(
+      child: Scaffold(
+        body: Obx(
+          () => Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: GapSize.medium, vertical: GapSize.medium),
+                child: Column(
+                  children: [
+                    const Image(
+                        image: AssetImage('asset/image/logo/app_logo.png')),
+                    SizedBox(
+                      height: HeightWithRatio.xxxxSmall,
                     ),
-                  ),
+                    const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          '오늘도 새로운 암장으로\n떠나볼까요?',
+                          style: TextStyle(
+                              fontFamily: "NanumEB",
+                              fontSize: FontSize.xxxLarge,
+                              height: 1.5),
+                        )),
+                    SizedBox(
+                      height: HeightWithRatio.xSmall,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: GapSize.xxSmall),
+                      child: Center(
+                        child: SizedBox(
+                          height: HeightWithRatio.xSmall,
+                          width: WidthWithRatio.xxxxLarge,
+                          child: SignInButton(
+                            Buttons.Google,
+                            text: 'Google 계정으로 로그인',
+                            onPressed: () =>
+                                controller.googleLoginButtonPressed(),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: GapSize.xxSmall),
+                      child: Center(
+                        child: SizedBox(
+                          height: HeightWithRatio.xSmall,
+                          width: WidthWithRatio.xxxxLarge,
+                          child: SignInButton(
+                            Buttons.AppleDark,
+                            text: 'Apple 계정으로 로그인',
+                            onPressed: () =>
+                                controller.googleLoginButtonPressed(),
+                          ),
+                        ),
+                      ),
+                    ),
+                    _buildLoginButton(
+                            () => controller.kakaoLoginButtonPressed(),
+                        'asset/image/logo/kakao_login.png'),
+                  ],
                 ),
-              ],
-            ),
-            Visibility(
-                visible: controller.isLoading.value,
-                child: Container(
-                  color: Colors.grey.withOpacity(0.3),
-                  height: Get.height,
-                  width: Get.width,
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )),
-          ],
+              ),
+              Visibility(
+                  visible: controller.isLoading.value,
+                  child: Container(
+                    color: Colors.grey.withOpacity(0.3),
+                    height: Get.height,
+                    width: Get.width,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )),
+            ],
+          ),
         ),
       ),
     );
@@ -52,30 +94,17 @@ class Login extends GetView<LoginController> {
 
   Widget _buildLoginButton(Function() onPressed, String image) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: GapSize.small),
+      padding: const EdgeInsets.symmetric(vertical: GapSize.xxSmall),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey[300]!,
-                  blurRadius: 1,
-                  spreadRadius: 0.5,
-                  offset: const Offset(0, 1.5),
-                ),
-              ],
-              borderRadius: BorderRadius.circular(RadiusSize.small),
-            ),
-            child: SizedBox(
-              width: WidthWithRatio.xxxxLarge,
-              height: HeightWithRatio.xSmall,
-              child: GestureDetector(
-                onTap: onPressed,
-                child: Image.asset(image),
-              ),
+          SizedBox(
+            height: HeightWithRatio.xSmall,
+            width: WidthWithRatio.xxxxLarge,
+            child: GestureDetector(
+              onTap: onPressed,
+              child: Image.asset(image),
             ),
           ),
         ],

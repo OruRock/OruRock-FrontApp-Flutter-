@@ -19,6 +19,7 @@ class LoginController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    await autoLogin();
     _initKakaoTalkInstalled();
   }
 
@@ -167,9 +168,6 @@ class LoginController extends GetxController {
   void signOut() async {
     await _auth.signOut();
     await googleSignIn.signOut();
-    userAuth.jwt = '';
-    userAuth.user = null;
-    appData.remove("UID");
   }
 
   Future<void> autoLogin() async {
