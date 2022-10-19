@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:dio/dio.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
+///지도와 관련된 함수를 관리하는 Service
 class MapFunction extends GetxService {
   var logger = Logger(
     printer: PrettyPrinter(),
@@ -42,10 +42,10 @@ class MapFunction extends GetxService {
     nmapController.setLocationTrackingMode(LocationTrackingMode.Follow);
   }
 
-  void setCamera(LatLng position) async {
+  ///[position]으로 카메라 위치 이동 후 [zoom]만큼 확대
+  void setCamera(LatLng position, double zoom) async {
     final nmapController = await completer.future;
-    final cameraPosition =
-    CameraUpdate.scrollWithOptions(position, zoom: 18);
+    final cameraPosition = CameraUpdate.scrollWithOptions(position, zoom: zoom);
 
     nmapController.moveCamera(cameraPosition);
   }
