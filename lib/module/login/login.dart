@@ -13,31 +13,39 @@ class Login extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: [
-          const Image(image: AssetImage('asset/image/logo/Logo.png')),
-          const Text('가입하기'),
-          _buildLoginButton(() =>
-              controller.kakaoLoginButtonPressed(),
-              'asset/image/logo/kakao_login.png'),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: GapSize.xLarge),
+      body: Obx(
+        () => Stack(
+          children: [
+            Column(
+              children: [
+                const Image(image: AssetImage('asset/image/logo/Logo.png')),
+                _buildLoginButton(() => controller.kakaoLoginButtonPressed(),
+                    'asset/image/logo/kakao_login.png'),
+                Center(
+                  child: SizedBox(
+                    width: WidthWithRatio.xxxxLarge,
+                    height: HeightWithRatio.xSmall,
                     child: SignInButton(
                       Buttons.Google,
                       text: 'Sign In Google',
                       onPressed: () => controller.googleLoginButtonPressed(),
                     ),
                   ),
-
-              ),
-            ],
-          ),
-        ],
+                ),
+              ],
+            ),
+            Visibility(
+                visible: controller.isLoading.value,
+                child: Container(
+                  color: Colors.grey.withOpacity(0.3),
+                  height: Get.height,
+                  width: Get.width,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )),
+          ],
+        ),
       ),
     );
   }
@@ -51,17 +59,19 @@ class Login extends GetView<LoginController> {
         children: [
           Container(
             decoration: BoxDecoration(
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: Color(0X50606060),
+                  color: Colors.grey[300]!,
                   blurRadius: 1,
-                  spreadRadius: 1,
-                  offset: Offset(0, 1.5),
+                  spreadRadius: 0.5,
+                  offset: const Offset(0, 1.5),
                 ),
               ],
               borderRadius: BorderRadius.circular(RadiusSize.small),
             ),
-            child: Expanded(
+            child: SizedBox(
+              width: WidthWithRatio.xxxxLarge,
+              height: HeightWithRatio.xSmall,
               child: GestureDetector(
                 onTap: onPressed,
                 child: Image.asset(image),

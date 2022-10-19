@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:logger/logger.dart';
@@ -12,9 +13,11 @@ import 'package:oru_rock/routes.dart';
 class LoginController extends GetxController {
   final api = Get.find<ApiFunction>();
   final userAuth = Get.find<AuthFunction>();
+  final appData = GetStorage();
+  var isLoading = false.obs; //로그인중 로딩용
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     _initKakaoTalkInstalled();
   }
@@ -28,6 +31,7 @@ class LoginController extends GetxController {
   }
 
   Future<void> kakaoLoginButtonPressed() async {
+    isLoading.value = true;
     OAuthToken? authCode;
     // 앱으로 로그인
     if (_isKakaoTalkInstalled) {
@@ -38,8 +42,7 @@ class LoginController extends GetxController {
             msg: 'KakaoApp Login Fail',
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1
-        );
+            timeInSecForIosWeb: 1);
       }
     } else {
       try {
@@ -49,17 +52,16 @@ class LoginController extends GetxController {
             msg: 'KakaoWeb Login Fail',
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1
-        );
+            timeInSecForIosWeb: 1);
       }
     }
     if (await _issueAccessToken(authCode!)) {
       Get.offAllNamed(Routes.home);
-    }
-    else {
+      appData.write("UID", userAuth.user!.uid);
+    } else {
       Logger().e("Login Failed");
     }
-
+    isLoading.value = false;
   }
 
   Future<bool> _issueAccessToken(OAuthToken authCode) async {
@@ -75,25 +77,23 @@ class LoginController extends GetxController {
 
       final kakao_res = await api.dio.post('/login/kakao', data: kakao_data);
 
-
       final data = {
         "uid": kakao_res.data['payload'][0],
         "user_email": user.kakaoAccount?.email,
         "user_nickname": user.kakaoAccount?.profile?.nickname,
-        "newUser": true
       };
 
       final res = await api.dio.post('/login', data: data);
 
       userAuth.setJwt(res.data['payload']['result']);
-      userAuth.setUser(user.kakaoAccount?.profile?.nickname, user.kakaoAccount?.email, kakao_res.data['payload'][0]);
+      userAuth.setUser(user.kakaoAccount?.profile?.nickname,
+          user.kakaoAccount?.email, kakao_res.data['payload'][0]);
 
       return true;
     } catch (e) {
       Logger().e(e.toString());
       return false;
     }
-
 
     // print('회원 정보 : ${tokenInfo.id}'
     //     '\n만료 시간 : ${tokenInfo.expiresIn}'
@@ -107,13 +107,16 @@ class LoginController extends GetxController {
 
   ///구글 로그인 버튼을 클릭했을 시 로그인 성공/실패를 따지는 함수
   void googleLoginButtonPressed() async {
+    isLoading.value = true;
     if (await signInWithGoogle()) {
       //로그인 성공시
       Get.offAllNamed(Routes.home);
+      appData.write("UID", userAuth.user!.uid);
     } else {
       //로그인 실패시
       Logger().e("Google Login Failed");
     }
+    isLoading.value = false;
   }
 
   /// 구글 로그인을 처리하는 함수 유저 [uid]로 [jwt]을 API로 가져온다.
@@ -143,7 +146,6 @@ class LoginController extends GetxController {
         "uid": user.uid,
         "user_email": user.email,
         "user_nickname": user.displayName,
-        "newUser": authResult.additionalUserInfo?.isNewUser
       };
 
       print(data);
@@ -160,7 +162,6 @@ class LoginController extends GetxController {
     }
   }
 
-
   /// 구글 로그아웃 처리 + [AuthFunction]에서 관리하던 데이터 초기화
   /// 나중에 각 플랫폼마다 분기처리해서 한번에 통합해도 괜찮을 듯
   void signOut() async {
@@ -168,5 +169,27 @@ class LoginController extends GetxController {
     await googleSignIn.signOut();
     userAuth.jwt = '';
     userAuth.user = null;
+    appData.remove("UID");
+  }
+
+  Future<void> autoLogin() async {
+    final cachedUid = appData.read("UID");
+
+    if (cachedUid != null) {
+      final data = {
+        "uid": cachedUid,
+      };
+
+      final res = await api.dio.post('/login', data: data);
+
+      userAuth.setJwt(res.data['payload']['result']);
+      userAuth.setUser(res.data['nick_name'], res.data['email'], cachedUid);
+
+      Get.offAllNamed(Routes.home);
+
+      return;
+    }
+
+    return;
   }
 }
