@@ -35,7 +35,7 @@ class Home extends GetView<HomeController> {
               child: Text(
                 '즐겨찾는 암장',
                 style:
-                    TextStyle(fontSize: FontSize.large, fontFamily: "NanumB"),
+                    TextStyle(fontSize: FontSize.large, fontFamily: "NotoB"),
               ),
             ),
             const SizedBox(

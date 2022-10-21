@@ -60,7 +60,7 @@ class MarkerDetail extends GetView<HomeController> {
                               Text(
                                 '${store?.stroreName}',
                                 style: const TextStyle(
-                                  fontFamily: "NanumB",
+                                  fontFamily: "NotoB",
                                   fontSize: FontSize.large,
                                   height: 1.7,
                                 ),

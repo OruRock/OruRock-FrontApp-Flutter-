@@ -65,18 +65,18 @@ class ReviewFragment extends GetView<StoreInfoController> {
             ),
           ),
           filled: false,
-          hintText: "리뷰를 입력해주세요.",
+          hintText: "리뷰를 작성해주세요.",
           hintStyle: const TextStyle(
               fontSize: FontSize.small,
               color: Colors.grey,
-              fontFamily: "NanumR"),
+              fontFamily: "NotoR"),
           enabledBorder:
               const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
           focusedBorder:
               const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
           contentPadding: const EdgeInsets.symmetric(
               vertical: GapSize.small, horizontal: GapSize.small)),
-      style: const TextStyle(fontSize: FontSize.small, fontFamily: "NanumR"),
+      style: const TextStyle(fontSize: FontSize.small, fontFamily: "NotoR"),
     );
   }
 
@@ -107,7 +107,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
         Row(
           children: [
             Text(
-              controller.detailModel.value!.comment![index].userNickname!,
+              controller.detailModel.value!.comment![index].userNickname ?? '무명 클라이머',
               style: reviewNickNameTextStyle,
             ),
             Expanded(child: Container()),
@@ -149,7 +149,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
                 hintStyle: TextStyle(
                     fontSize: FontSize.small,
                     color: Colors.grey,
-                    fontFamily: "NanumR"),
+                    fontFamily: "NotoR"),
                 enabledBorder:
                     OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
                 focusedBorder:
@@ -157,7 +157,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
                 contentPadding: EdgeInsets.symmetric(
                     vertical: GapSize.small, horizontal: GapSize.small)),
             style:
-                const TextStyle(fontSize: FontSize.small, fontFamily: "NanumR"),
+                const TextStyle(fontSize: FontSize.small, fontFamily: "NotoR"),
           ),
         ),
         const SizedBox(

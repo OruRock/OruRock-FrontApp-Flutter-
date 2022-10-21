@@ -91,7 +91,7 @@ class HomeServiceTop extends GetView<HomeController> {
                               child: DefaultTextStyle(
                                 style: const TextStyle(
                                     fontSize: FontSize.small,
-                                    fontFamily: 'NanumB',
+                                    fontFamily: 'NotoB',
                                     color: Colors.black,
                                     height: 1.5),
                                 child: AnimatedTextKit(
@@ -151,7 +151,7 @@ class HomeServiceTop extends GetView<HomeController> {
                               child: DefaultTextStyle(
                                 style: const TextStyle(
                                     fontSize: FontSize.small,
-                                    fontFamily: 'NanumB',
+                                    fontFamily: 'NotoB',
                                     color: Colors.black,
                                     height: 1.5),
                                 child: AnimatedTextKit(
