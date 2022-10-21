@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -39,32 +40,37 @@ class Login extends GetView<LoginController> {
                     SizedBox(
                       height: HeightWithRatio.xSmall,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: GapSize.xxSmall),
-                      child: Center(
-                        child: SizedBox(
-                          height: HeightWithRatio.xSmall,
-                          width: WidthWithRatio.xxxxLarge,
-                          child: SignInButton(
-                            Buttons.Google,
-                            text: 'Google 계정으로 로그인',
-                            onPressed: () =>
-                                controller.googleLoginButtonPressed(),
+                    Visibility(
+                      visible: Platform.isAndroid,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: GapSize.xxSmall),
+                        child: Center(
+                          child: SizedBox(
+                            height: HeightWithRatio.xSmall,
+                            width: WidthWithRatio.xxxxLarge,
+                            child: SignInButton(
+                              Buttons.Google,
+                              text: 'Google 계정으로 로그인',
+                              onPressed: () =>
+                                  controller.googleLoginButtonPressed(),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: GapSize.xxSmall),
-                      child: Center(
-                        child: SizedBox(
-                          height: HeightWithRatio.xSmall,
-                          width: WidthWithRatio.xxxxLarge,
-                          child: SignInButton(
-                            Buttons.AppleDark,
-                            text: 'Apple 계정으로 로그인',
-                            onPressed: () =>
-                                controller.googleLoginButtonPressed(),
+                    Visibility(
+                      visible: Platform.isIOS,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: GapSize.xxSmall),
+                        child: Center(
+                          child: SizedBox(
+                            height: HeightWithRatio.xSmall,
+                            width: WidthWithRatio.xxxxLarge,
+                            child: SignInButton(
+                              Buttons.AppleDark,
+                              text: 'Apple 계정으로 로그인',
+                              onPressed: () {}
+                            ),
                           ),
                         ),
                       ),
@@ -72,6 +78,8 @@ class Login extends GetView<LoginController> {
                     _buildLoginButton(
                             () => controller.kakaoLoginButtonPressed(),
                         'asset/image/logo/kakao_login.png'),
+                    Expanded(child: Container()),
+                    Text('@ Developed by Team Oru_rock', style: TextStyle(color: Colors.grey[400], fontSize: FontSize.small),),
                   ],
                 ),
               ),

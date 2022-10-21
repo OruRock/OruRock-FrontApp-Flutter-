@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:oru_rock/constant/config.dart';
 import 'package:oru_rock/function/auth_func.dart';
 
 class ApiFunction extends GetxService {
@@ -15,7 +16,7 @@ class ApiFunction extends GetxService {
 
   Future<ApiFunction> init() async {
     //기본 url 인터셉터에 탑제
-    dio.options.baseUrl = "http://www.orurock.shop/api";
+    dio.options.baseUrl = Config.api_url;
 
     dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
       loggerNoStack.v(options.data);
