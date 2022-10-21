@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -9,6 +10,7 @@ import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/model/user_model.dart';
 import 'package:oru_rock/routes.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginController extends GetxController {
   final api = Get.find<ApiFunction>();
@@ -20,22 +22,43 @@ class LoginController extends GetxController {
   void onInit() async {
     super.onInit();
     await autoLogin();
-    _initKakaoTalkInstalled();
   }
 
-  var _isKakaoTalkInstalled = false;
+  ///로그인 버튼을 클릭했을 시 로그인 성공/실패를 따지는 함수
+  void loginButtonPressed(String provider) async {
+    isLoading.value = true;
+    var success = false;
+
+    switch (provider) {
+      case 'Google':
+        success = await signInWithGoogle();
+        break;
+      case 'Apple':
+        success = await signInWithApple();
+        break;
+      case 'Kakao':
+        success = await signInWithKakao();
+        break;
+      default:
+        success = false;
+    }
+
+    if (success) {
+      //로그인 성공시
+      Get.offAllNamed(Routes.home);
+      appData.write("UID", userAuth.user!.uid);
+    } else {
+      //로그인 실패시
+      Logger().e("Login Failed");
+    }
+    isLoading.value = false;
+  }
 
   //Kakao
-  void _initKakaoTalkInstalled() async {
-    final installed = await isKakaoTalkInstalled();
-    _isKakaoTalkInstalled = installed;
-  }
-
-  Future<void> kakaoLoginButtonPressed() async {
-    isLoading.value = true;
+  Future<bool> signInWithKakao() async {
     OAuthToken? authCode;
     // 앱으로 로그인
-    if (_isKakaoTalkInstalled) {
+    if (await isKakaoTalkInstalled()) {
       try {
         authCode = await UserApi.instance.loginWithKakaoTalk();
       } catch (error) {
@@ -56,16 +79,7 @@ class LoginController extends GetxController {
             timeInSecForIosWeb: 1);
       }
     }
-    if (await _issueAccessToken(authCode!)) {
-      Get.offAllNamed(Routes.home);
-      appData.write("UID", userAuth.user!.uid);
-    } else {
-      Logger().e("Login Failed");
-    }
-    isLoading.value = false;
-  }
 
-  Future<bool> _issueAccessToken(OAuthToken authCode) async {
     User user;
     user = await UserApi.instance.me();
 
@@ -95,30 +109,12 @@ class LoginController extends GetxController {
       Logger().e(e.toString());
       return false;
     }
-
-    // print('회원 정보 : ${tokenInfo.id}'
-    //     '\n만료 시간 : ${tokenInfo.expiresIn}'
-    //     '\n로그인 성공 : ${authCode.accessToken}');
   }
 
   //Google
   final firebase_auth.FirebaseAuth _auth = firebase_auth.FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
   late firebase_auth.User? currentUser;
-
-  ///구글 로그인 버튼을 클릭했을 시 로그인 성공/실패를 따지는 함수
-  void googleLoginButtonPressed() async {
-    isLoading.value = true;
-    if (await signInWithGoogle()) {
-      //로그인 성공시
-      Get.offAllNamed(Routes.home);
-      appData.write("UID", userAuth.user!.uid);
-    } else {
-      //로그인 실패시
-      Logger().e("Google Login Failed");
-    }
-    isLoading.value = false;
-  }
 
   /// 구글 로그인을 처리하는 함수 유저 [uid]로 [jwt]을 API로 가져온다.
   /// [AuthFunction]에 [jwt]와 유저 정보[UserModel]를 저장한다.
@@ -135,21 +131,55 @@ class LoginController extends GetxController {
 
     final authResult = await _auth.signInWithCredential(credential);
 
-    final user = authResult.user;
-    currentUser = _auth.currentUser;
+    return await setUserAtUserModel(authResult);
+  }
 
-    if (user == null || user.uid != currentUser?.uid) {
+  //Apple
+  Future<bool> signInWithApple() async {
+    try {
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        webAuthenticationOptions: WebAuthenticationOptions(
+          clientId: 'com.orurock.app',
+          redirectUri: Uri.parse(
+            'https://orurock-fa5dd.firebaseapp.com/callback.apple',
+          ),
+        ),
+      );
+
+      final oAuthProvider = firebase_auth.OAuthProvider('apple.com');
+      final credential = oAuthProvider.credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
+
+      final authResult = await _auth.signInWithCredential(credential);
+
+      return await setUserAtUserModel(authResult);
+    } catch (e) {
+      Logger().e(e.toString());
       return false;
     }
+  }
 
+  Future<bool> setUserAtUserModel(
+      firebase_auth.UserCredential authResult) async {
     try {
+      final user = authResult.user;
+      currentUser = _auth.currentUser;
+
+      if (user == null || user.uid != currentUser?.uid) {
+        return false;
+      }
+
       final data = {
         "uid": user.uid,
         "user_email": user.email,
         "user_nickname": user.displayName,
       };
-
-      print(data);
 
       final res = await api.dio.post('/login', data: data);
 

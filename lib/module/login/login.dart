@@ -52,7 +52,7 @@ class Login extends GetView<LoginController> {
                               Buttons.Google,
                               text: 'Google 계정으로 로그인',
                               onPressed: () =>
-                                  controller.googleLoginButtonPressed(),
+                                  controller.loginButtonPressed('Google'),
                             ),
                           ),
                         ),
@@ -69,14 +69,16 @@ class Login extends GetView<LoginController> {
                             child: SignInButton(
                               Buttons.AppleDark,
                               text: 'Apple 계정으로 로그인',
-                              onPressed: () {}
+                              onPressed: () {
+                                controller.loginButtonPressed('Apple');
+                              }
                             ),
                           ),
                         ),
                       ),
                     ),
                     _buildLoginButton(
-                            () => controller.kakaoLoginButtonPressed(),
+                            () => controller.loginButtonPressed('Kakao'),
                         'asset/image/logo/kakao_login.png'),
                     Expanded(child: Container()),
                     Text('@ Developed by Team Oru_rock', style: TextStyle(color: Colors.grey[400], fontSize: FontSize.small),),
