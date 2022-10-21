@@ -6,40 +6,40 @@ AppBar mainAppBar = AppBar(
 );
 
 const TextStyle drawerListTextStyle =
-    TextStyle(fontSize: FontSize.medium, fontFamily: "NanumB");
+    TextStyle(fontSize: FontSize.medium, fontFamily: "NotoB");
 
 const TextStyle boldNanumTextStyle = TextStyle(
     fontSize: FontSize.medium,
-    fontFamily: "NanumB",
+    fontFamily: "NotoB",
     height: 1.6,
     color: Colors.black);
 
 const TextStyle regularNanumTextStyle = TextStyle(
     fontSize: FontSize.small,
-    fontFamily: "NanumR",
+    fontFamily: "NotoR",
     height: 1.6,
     color: Colors.black);
 
 const TextStyle regularNanumDetailPageTextStyle = TextStyle(
-    fontSize: FontSize.medium, fontFamily: "NanumR", color: Colors.black);
+    fontSize: FontSize.medium, fontFamily: "NotoR", color: Colors.black);
 
 const TextStyle pinTextStyle = TextStyle(
     fontSize: FontSize.large,
-    fontFamily: "NanumB",
+    fontFamily: "NotoB",
     height: 1.6,
     color: Colors.black);
 
 const TextStyle unSelectedToggleTextStyle = TextStyle(
-    color: Colors.black, fontFamily: "NanumB", fontSize: FontSize.medium);
+    color: Colors.black, fontFamily: "NotoB", fontSize: FontSize.medium);
 
 const TextStyle selectedToggleTextStyle = TextStyle(
-    color: Colors.white, fontFamily: "NanumB", fontSize: FontSize.medium);
+    color: Colors.white, fontFamily: "NotoB", fontSize: FontSize.medium);
 
 const TextStyle reviewNickNameTextStyle =
-    TextStyle(fontFamily: "NanumB", fontSize: FontSize.small);
+    TextStyle(fontFamily: "NotoB", fontSize: FontSize.small);
 
 const TextStyle reviewContentTextStyle =
-    TextStyle(fontFamily: "NanumR", fontSize: FontSize.small);
+    TextStyle(fontFamily: "NotoR", fontSize: FontSize.small);
 
 BoxDecoration shadowBoxDecoration = BoxDecoration(
   boxShadow: [

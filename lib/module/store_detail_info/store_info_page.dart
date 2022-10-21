@@ -24,7 +24,7 @@ class StoreInfo extends GetView<StoreInfoController> {
           title: Text(
             '${store?.stroreName}',
             style: const TextStyle(
-                fontFamily: "NanumB",
+                fontFamily: "NotoB",
                 fontSize: FontSize.large,
                 height: 1.7,
                 color: Colors.black),

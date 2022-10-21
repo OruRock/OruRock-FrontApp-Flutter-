@@ -22,7 +22,7 @@ class Search extends GetView<SearchController> {
               const Text(
                 "검색",
                 style:
-                    TextStyle(fontSize: FontSize.xxLarge, fontFamily: "NanumB"),
+                    TextStyle(fontSize: FontSize.xxLarge, fontFamily: "NotoB"),
               ),
               const SizedBox(
                 height: GapSize.xSmall,
@@ -34,7 +34,7 @@ class Search extends GetView<SearchController> {
                     hintStyle: TextStyle(
                         fontSize: FontSize.large,
                         color: Colors.grey,
-                        fontFamily: "NanumR"),
+                        fontFamily: "NotoR"),
                     enabledBorder:
                         OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
                     focusedBorder:
@@ -42,7 +42,7 @@ class Search extends GetView<SearchController> {
                     contentPadding: EdgeInsets.symmetric(
                         vertical: GapSize.small, horizontal: GapSize.small)),
                 style:
-                    TextStyle(fontSize: FontSize.large, fontFamily: "NanumR"),
+                    TextStyle(fontSize: FontSize.large, fontFamily: "NotoR"),
               ),
               SizedBox(
                 height: HeightWithRatio.xSmall,
