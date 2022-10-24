@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>699813385517-6s9n6kiqkjge5ll67rd4jrit3lh5nkce.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.699813385517-6s9n6kiqkjge5ll67rd4jrit3lh5nkce</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>699813385517-4lomenr5ctehfl4tmvqmi72ufjsq6d90.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDBdoj_v14olxjYAB-rz0laA_WBMrZNFGg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>699813385517</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.orurock.app</string>
+	<key>PROJECT_ID</key>
+	<string>orurock-fa5dd</string>
+	<key>STORAGE_BUCKET</key>
+	<string>orurock-fa5dd.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:699813385517:ios:5f7be3615c20043b562fa4</string>
+</dict>
+</plist>

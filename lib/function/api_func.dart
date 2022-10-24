@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:oru_rock/model/geocoding_model.dart';
+import 'package:oru_rock/constant/config.dart';
+import 'package:oru_rock/function/auth_func.dart';
 
 class ApiFunction extends GetxService {
   var dio = Dio();
+  final userAuth = Get.find<AuthFunction>();
   var logger = Logger(
     printer: PrettyPrinter(),
   );
@@ -14,12 +16,13 @@ class ApiFunction extends GetxService {
 
   Future<ApiFunction> init() async {
     //기본 url 인터셉터에 탑제
+    dio.options.baseUrl = Config.api_url;
 
     dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
-      if (options.headers.isEmpty) {
-        options.headers = headers;
-        options.baseUrl = '';
-      }
+      loggerNoStack.v(options.data);
+      options.headers = headers; //request시에 header 탑재
+      logger.i(options.headers);
+      logger.i(options.uri);
       return handler.next(options);
     }, onResponse: (response, handler) {
       loggerNoStack.v(response.statusCode);
@@ -29,8 +32,10 @@ class ApiFunction extends GetxService {
     }, onError: (DioError exception, handler) {
       logger.e(
           "statusCode : ${exception.response?.statusCode} \n statusMessage : ${exception.message}");
+
       return handler.next(exception);
     }));
+
     return this;
   }
 
@@ -38,13 +43,7 @@ class ApiFunction extends GetxService {
     Map<String, String> headers = {};
     headers['content-type'] = 'application/json; charset=utf-8';
     headers['accept'] = 'application/json; charset=utf-8';
-    return headers;
-  }
-
-  Map<String, String> get naverApiHeaders {
-    Map<String, String> headers = {};
-    headers['X-NCP-APIGW-API-KEY-ID'] = 'lhtdt0293p';
-    headers['X-NCP-APIGW-API-KEY'] = 'UOSneSZrYXbBFwsCA5faKWpaWZFhPOS6ZJpK6KBq';
+    headers['Authorization'] = userAuth.jwt;
     return headers;
   }
 }

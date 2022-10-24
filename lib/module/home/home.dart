@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
+import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/module/home/fragment/home_service_top.dart';
 import 'package:oru_rock/module/home/home_controller.dart';
-
 import 'package:oru_rock/routes.dart';
 
 class Home extends GetView<HomeController> {
@@ -13,9 +13,11 @@ class Home extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(),
         body: ListView(
           children: [
+            ElevatedButton(onPressed: (){
+              controller.signOut();
+            }, child: Text('로그아웃')),
             SizedBox(
               height: HeightWithRatio.medium,
             ),
@@ -32,7 +34,8 @@ class Home extends GetView<HomeController> {
               padding: EdgeInsets.symmetric(horizontal: GapSize.medium),
               child: Text(
                 '즐겨찾는 암장',
-                style: TextStyle(fontSize: FontSize.large, fontFamily: "NanumB"),
+                style:
+                    TextStyle(fontSize: FontSize.large, fontFamily: "NotoB"),
               ),
             ),
             const SizedBox(
