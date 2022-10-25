@@ -17,9 +17,9 @@ class Home extends GetView<HomeController> {
       child: Scaffold(
         body: ListView(
           children: [
-/*            ElevatedButton(onPressed: (){
+            ElevatedButton(onPressed: (){
               controller.signOut();
-            }, child: Text('로그아웃')),*/
+            }, child: Text('로그아웃')),
             SizedBox(
               height: HeightWithRatio.xxxxSmall,
             ),

@@ -61,40 +61,42 @@ class ReviewFragment extends GetView<StoreInfoController> {
   }
 
   _buildReviewTextField() {
-    return Container(
-      color: Colors.white,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: GapSize.small, vertical: GapSize.xSmall),
-        child: TextField(
-          controller: controller.reviewText,
-          keyboardType: TextInputType.multiline,
-          maxLines: 3,
-          decoration: InputDecoration(
-              suffixIcon: IconButton(
-                onPressed: () async {
-                  if (controller.reviewTextFieldValidator(controller.reviewText)) {
-                    await controller.createReview(store!.storeId!);
-                    Get.back();
-                  }
-                },
-                icon: const Icon(
-                  Icons.send_outlined,
-                  color: Colors.blue,
+    return SafeArea(
+      child: Container(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: GapSize.small, vertical: GapSize.xSmall),
+          child: TextField(
+            controller: controller.reviewText,
+            keyboardType: TextInputType.multiline,
+            maxLines: 3,
+            decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  onPressed: () async {
+                    if (controller.reviewTextFieldValidator(controller.reviewText)) {
+                      await controller.createReview(store!.storeId!);
+                      Get.back();
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.send_outlined,
+                    color: Colors.blue,
+                  ),
                 ),
-              ),
-              filled: false,
-              hintText: "리뷰를 작성해주세요.",
-              hintStyle: const TextStyle(
-                  fontSize: FontSize.small,
-                  color: Colors.grey,
-                  fontFamily: "NotoR"),
-              enabledBorder:
-                  const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
-              focusedBorder:
-                  const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
-              contentPadding: const EdgeInsets.symmetric(
-                  vertical: GapSize.small, horizontal: GapSize.small)),
-          style: const TextStyle(fontSize: FontSize.small, fontFamily: "NotoR"),
+                filled: false,
+                hintText: "리뷰를 작성해주세요.",
+                hintStyle: const TextStyle(
+                    fontSize: FontSize.small,
+                    color: Colors.grey,
+                    fontFamily: "NotoR"),
+                enabledBorder:
+                    const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+                focusedBorder:
+                    const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+                contentPadding: const EdgeInsets.symmetric(
+                    vertical: GapSize.small, horizontal: GapSize.small)),
+            style: const TextStyle(fontSize: FontSize.small, fontFamily: "NotoR"),
+          ),
         ),
       ),
     );

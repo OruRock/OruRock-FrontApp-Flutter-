@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
@@ -111,12 +112,11 @@ class Search extends GetView<SearchController> {
                                                       RadiusSize.large))),
                                       alignment: Alignment.center,
                                       child: controller
-                                              .stores[index].image!.isEmpty
+                                              .stores[index].imageUrl == null
                                           ? Image.asset(
                                               'asset/image/logo/splash_logo.png')
                                           : Image.network(controller
                                               .stores[index]
-                                              .image![0]
                                               .imageUrl!),
                                     ),
                                   ),
@@ -140,10 +140,17 @@ class Search extends GetView<SearchController> {
                                                   bottom: Radius.circular(
                                                       RadiusSize.large))),
                                       alignment: Alignment.center,
-                                      child: Text(
-                                        "${controller.stores[index].stroreName}",
-                                        style: const TextStyle(
-                                          fontSize: 20,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: GapSize.xSmall),
+                                        child: AutoSizeText(
+                                          "${controller.stores[index].stroreName}",
+                                          style: const TextStyle(
+                                            fontFamily: "NotoB"
+                                          ),
+                                          minFontSize: FontSize.medium,
+                                          maxFontSize: FontSize.large,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ),
