@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:oru_rock/common_widget/banner_ad.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/module/home/fragment/home_service_top.dart';
@@ -58,20 +60,20 @@ class Home extends GetView<HomeController> {
               padding: EdgeInsets.all(GapSize.medium),
               child: HomeServiceTop(),
             ),
-            SizedBox(
-              height: HeightWithRatio.medium,
-              width: Get.width,
-              child: const Center(child: Text('Admob Banner')),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: GapSize.medium),
+              child: SizedBox(
+                height: HeightWithRatio.medium,
+                width: Get.width,
+                child: const Center(child: BannerAdWidget()),
+              ),
             ),
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: GapSize.medium),
+              padding: EdgeInsets.symmetric(horizontal: GapSize.medium, vertical: GapSize.small),
               child: Text(
                 '즐겨찾는 암장',
                 style: TextStyle(fontSize: FontSize.large, fontFamily: "NotoB"),
               ),
-            ),
-            const SizedBox(
-              height: GapSize.medium,
             ),
             _buildListTile(),
             _buildListTile(),

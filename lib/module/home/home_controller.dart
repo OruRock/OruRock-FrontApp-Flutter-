@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 import 'package:oru_rock/common_widget/alert_dialog.dart';
+import 'package:oru_rock/constant/config.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
@@ -35,12 +38,15 @@ class HomeController extends GetxController {
 
   RxList<Marker> markers = <Marker>[].obs;
 
+  BannerAd? bannerAd;
+
   @override
   void onInit() async {
     await getStoreList();
     setMarker();
     pinnedStoreName.value =
         pinnedStoreId != null ? stores[pinnedStoreId!].stroreName! : '';
+    await _loadBannerAd();
     super.onInit();
   }
 
@@ -138,5 +144,23 @@ class HomeController extends GetxController {
   void signOut() {
     auth.signOut();
     Get.offAllNamed(Routes.login);
+  }
+
+  Future<void> _loadBannerAd() async {
+    BannerAd(
+        adUnitId: Platform.isAndroid
+            ? Config.aos_banner_test_id
+            : Config.ios_banner_test_id,
+        request: AdRequest(),
+        size: AdSize.banner,
+        listener: BannerAdListener(
+          onAdLoaded: (ad) {
+            bannerAd = ad as BannerAd;
+          },
+          onAdFailedToLoad: (ad, err) {
+            print('Failed to load a banner ad: ${err.message}');
+            ad.dispose();
+          },
+        )).load();
   }
 }
