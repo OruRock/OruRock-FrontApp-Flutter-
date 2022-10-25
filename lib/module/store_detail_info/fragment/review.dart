@@ -20,63 +20,83 @@ class ReviewFragment extends GetView<StoreInfoController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Expanded(
-        child: controller.detailModel.value!.comment!.isEmpty
-            ? _buildNotExistWidget()
-            : Padding(
-                padding: const EdgeInsets.only(top: GapSize.medium),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: ListView(
-                        shrinkWrap: true,
-                        children: List.generate(
-                          controller.detailModel.value!.comment!.length,
-                          (index) {
-                            return _buildReviewTile(index);
-                          },
+        child:
+        Stack(
+          children: [
+            controller.detailModel.value!.comment!.isEmpty
+                ? _buildNotExistWidget()
+                : Padding(
+                    padding: const EdgeInsets.only(top: GapSize.medium),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: ListView(
+                            shrinkWrap: true,
+                            children: List.generate(
+                              controller.detailModel.value!.comment!.length,
+                              (index) {
+                                return _buildReviewTile(index);
+                              },
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                    Visibility(
-                        visible: !controller.isModifying.value,
-                        child: _buildReviewTextField())
-                  ],
-                ),
+                  ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: FloatingActionButton(onPressed: () {
+                Get.bottomSheet(
+                    _buildReviewTextField(),
+                  barrierColor: Colors.black26
+                );
+              },
+                child: Icon(Icons.edit_outlined),
               ),
+            )
+          ]
       ),
+      )
     );
   }
 
   _buildReviewTextField() {
-    return TextField(
-      controller: controller.reviewText,
-      keyboardType: TextInputType.multiline,
-      maxLines: 3,
-      decoration: InputDecoration(
-          suffixIcon: IconButton(
-            onPressed: () {
-              if (controller.reviewTextFieldValidator(controller.reviewText)) {
-                controller.createReview(store!.storeId!);
-              }
-            },
-            icon: const Icon(
-              Icons.send_outlined,
-              color: Colors.blue,
-            ),
-          ),
-          filled: false,
-          hintText: "리뷰를 작성해주세요.",
-          hintStyle: const TextStyle(
-              fontSize: FontSize.small,
-              color: Colors.grey,
-              fontFamily: "NotoR"),
-          enabledBorder:
-              const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
-          focusedBorder:
-              const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
-          contentPadding: const EdgeInsets.symmetric(
-              vertical: GapSize.small, horizontal: GapSize.small)),
-      style: const TextStyle(fontSize: FontSize.small, fontFamily: "NotoR"),
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: GapSize.small, vertical: GapSize.xSmall),
+        child: TextField(
+          controller: controller.reviewText,
+          keyboardType: TextInputType.multiline,
+          maxLines: 3,
+          decoration: InputDecoration(
+              suffixIcon: IconButton(
+                onPressed: () async {
+                  if (controller.reviewTextFieldValidator(controller.reviewText)) {
+                    await controller.createReview(store!.storeId!);
+                    Get.back();
+                  }
+                },
+                icon: const Icon(
+                  Icons.send_outlined,
+                  color: Colors.blue,
+                ),
+              ),
+              filled: false,
+              hintText: "리뷰를 작성해주세요.",
+              hintStyle: const TextStyle(
+                  fontSize: FontSize.small,
+                  color: Colors.grey,
+                  fontFamily: "NotoR"),
+              enabledBorder:
+                  const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+              focusedBorder:
+                  const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+              contentPadding: const EdgeInsets.symmetric(
+                  vertical: GapSize.small, horizontal: GapSize.small)),
+          style: const TextStyle(fontSize: FontSize.small, fontFamily: "NotoR"),
+        ),
+      ),
     );
   }
 

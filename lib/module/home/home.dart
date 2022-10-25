@@ -15,14 +15,47 @@ class Home extends GetView<HomeController> {
       child: Scaffold(
         body: ListView(
           children: [
-            ElevatedButton(onPressed: (){
+/*            ElevatedButton(onPressed: (){
               controller.signOut();
-            }, child: Text('로그아웃')),
+            }, child: Text('로그아웃')),*/
             SizedBox(
-              height: HeightWithRatio.medium,
+              height: HeightWithRatio.xxxxSmall,
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.settings_outlined,
+                  size: 30,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: GapSize.medium, vertical: GapSize.small),
+              child: Row(
+                children: [
+                  const CircleAvatar(
+                    minRadius: 20,
+                    maxRadius: 30,
+                    backgroundColor: Colors.grey,
+                  ),
+                  SizedBox(
+                    width: Get.width * 0.03,
+                  ),
+                  Text(
+                    '${controller.auth.user!.displayName}님,\n오늘도 안전하고 즐거운 클라이밍 되세요!',
+                    style: const TextStyle(
+                        fontSize: FontSize.medium,
+                        fontFamily: "NotoB",
+                        height: 1.7),
+                  ),
+                ],
+              ),
             ),
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: GapSize.medium),
+              padding: EdgeInsets.all(GapSize.medium),
               child: HomeServiceTop(),
             ),
             SizedBox(
@@ -34,8 +67,7 @@ class Home extends GetView<HomeController> {
               padding: EdgeInsets.symmetric(horizontal: GapSize.medium),
               child: Text(
                 '즐겨찾는 암장',
-                style:
-                    TextStyle(fontSize: FontSize.large, fontFamily: "NotoB"),
+                style: TextStyle(fontSize: FontSize.large, fontFamily: "NotoB"),
               ),
             ),
             const SizedBox(

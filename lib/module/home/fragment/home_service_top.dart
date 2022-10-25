@@ -17,38 +17,52 @@ class HomeServiceTop extends GetView<HomeController> {
         Obx(
           () => Visibility(
             visible: controller.isPinned.value,
-            child: Container(
-              height: HeightWithRatio.small,
-              decoration: shadowBoxDecoration,
-              child: Padding(
-                padding: const EdgeInsets.only(left: GapSize.small),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Image.asset(
-                      'asset/image/icon/pin_icon.png',
-                      height: HeightWithRatio.xxxSmall,
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(bottom: GapSize.small),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      '클라이밍장 찾기',
+                      style: TextStyle(fontSize: FontSize.large, fontFamily: "NotoB"),
                     ),
-                    Expanded(
-                        child: controller.stores.isEmpty
-                            ? Container()
-                            : Center(
-                                child: Text(
-                                  controller.pinnedStoreName.value,
-                                  style: pinTextStyle,
-                                ),
-                              )),
-                    IconButton(
-                        onPressed: () {
-                          controller.removePin();
-                        },
-                        icon: Icon(
-                          Icons.close,
-                          size: 20,
-                        ))
-                  ],
+                  ),
                 ),
-              ),
+                Container(
+                  height: HeightWithRatio.small,
+                  decoration: shadowBoxDecoration,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: GapSize.small),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          'asset/image/icon/pin_icon.png',
+                          height: HeightWithRatio.xxxSmall,
+                        ),
+                        Expanded(
+                            child: controller.stores.isEmpty
+                                ? Container()
+                                : Center(
+                                    child: Text(
+                                      controller.pinnedStoreName.value,
+                                      style: pinTextStyle,
+                                    ),
+                                  )),
+                        IconButton(
+                            onPressed: () {
+                              controller.removePin();
+                            },
+                            icon: const Icon(
+                              Icons.close,
+                              size: 20,
+                            ))
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

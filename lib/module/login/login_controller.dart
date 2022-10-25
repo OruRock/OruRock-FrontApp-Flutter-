@@ -211,7 +211,7 @@ class LoginController extends GetxController {
       final res = await api.dio.post('/login', data: data);
 
       userAuth.setJwt(res.data['payload']['result']);
-      userAuth.setUser(res.data['nick_name'], res.data['email'], cachedUid);
+      userAuth.setUser(res.data['payload']['nick_name'], res.data['payload']['email'], cachedUid);
 
       Get.offAllNamed(Routes.home);
 

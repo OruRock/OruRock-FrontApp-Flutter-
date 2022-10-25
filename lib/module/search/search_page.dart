@@ -10,7 +10,21 @@ class Search extends GetView<SearchController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: const Text(
+            '검색',
+            style: TextStyle(
+                fontFamily: "NotoB",
+                fontSize: FontSize.xLarge,
+                height: 1.7,
+                color: Colors.black),
+          ),
+          iconTheme: const IconThemeData(
+            color: Colors.black, //change your color here
+          ),
+          backgroundColor: Colors.white,
+          elevation: 1,
+        ),
         body: Padding(
           padding: const EdgeInsets.only(
               top: GapSize.medium, left: GapSize.small, right: GapSize.small),
@@ -18,11 +32,6 @@ class Search extends GetView<SearchController> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "검색",
-                style:
-                    TextStyle(fontSize: FontSize.xxLarge, fontFamily: "NotoB"),
-              ),
               const SizedBox(
                 height: GapSize.xSmall,
               ),

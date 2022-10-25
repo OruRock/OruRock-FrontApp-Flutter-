@@ -14,10 +14,6 @@ class NMap extends GetView<NMapController> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        drawer: _buildDrawerListView(),
-        appBar: AppBar(
-          title: const Text("오르Rock"),
-        ),
         body: Obx(() => Stack(
               children: [
                 NaverMap(
