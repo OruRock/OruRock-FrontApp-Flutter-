@@ -61,6 +61,33 @@ class MarkerDetail extends GetView<AppController> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Obx(
+                              () => controller.detailPinState.value
+                                  ? IconButton(
+                                      padding: const EdgeInsets.only(
+                                          bottom: GapSize.xxxSmall),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {
+                                        controller.removePin();
+                                      },
+                                      icon: const Icon(
+                                        Icons.push_pin,
+                                        size: 25,
+                                      ),
+                                    )
+                                  : IconButton(
+                                      padding: const EdgeInsets.only(
+                                          bottom: GapSize.xxxSmall),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {
+                                        controller.setPin();
+                                      },
+                                      icon: const Icon(
+                                        Icons.push_pin_outlined,
+                                        size: 25,
+                                      ),
+                                    ),
+                            ),
                             AutoSizeText(
                               '${store?.stroreName}',
                               style: const TextStyle(
@@ -72,19 +99,6 @@ class MarkerDetail extends GetView<AppController> {
                               minFontSize: FontSize.xSmall,
                               overflow: TextOverflow.ellipsis,
                             ),
-/*                                controller.detailPinState.value
-                                      ? IconButton(
-                                          onPressed: () {
-                                            controller.removePin();
-                                          },
-                                          icon: const Icon(Icons.push_pin, size: 10,),
-                                        )
-                                      : IconButton(
-                                          onPressed: () {
-                                            controller.setPin();
-                                          },
-                                          icon: const Icon(Icons.push_pin_outlined, size: 10),
-                                        ),*/
                             Text(
                               '주소 : ${store?.storeAddr}',
                               style: regularNanumTextStyle,
@@ -132,7 +146,7 @@ class MarkerDetail extends GetView<AppController> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: GapSize.medium,
               )
             ],

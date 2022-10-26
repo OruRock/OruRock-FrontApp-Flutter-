@@ -12,57 +12,11 @@ class HomeServiceTop extends GetView<AppController> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Obx(
-          () => Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(bottom: GapSize.small),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    '클라이밍장 찾기',
-                    style: TextStyle(
-                        fontSize: FontSize.large, fontFamily: "NotoB"),
-                  ),
-                ),
-              ),
-              Visibility(
-                visible: controller.isPinned.value,
-                child: Container(
-                  height: HeightWithRatio.small,
-                  decoration: shadowBoxDecoration,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: GapSize.small),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Image.asset(
-                          'asset/image/icon/pin_icon.png',
-                          height: HeightWithRatio.xxxSmall,
-                        ),
-                        Expanded(
-                            child: controller.stores.isEmpty
-                                ? Container()
-                                : Center(
-                                    child: Text(
-                                      controller.pinnedStoreName.value,
-                                      style: pinTextStyle,
-                                    ),
-                                  )),
-                        IconButton(
-                            onPressed: () {
-                              controller.removePin();
-                            },
-                            icon: const Icon(
-                              Icons.close,
-                              size: 20,
-                            ))
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
+        const Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            '클라이밍장 찾기',
+            style: TextStyle(fontSize: FontSize.large, fontFamily: "NotoB"),
           ),
         ),
         const SizedBox(
@@ -98,13 +52,13 @@ class HomeServiceTop extends GetView<AppController> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                                bottom: GapSize.small, left: GapSize.small),
+                                bottom: GapSize.small),
                             child: Align(
-                              alignment: Alignment.bottomLeft,
+                              alignment: Alignment.bottomCenter,
                               child: DefaultTextStyle(
                                 style: const TextStyle(
-                                    fontSize: FontSize.small,
-                                    fontFamily: 'NotoB',
+                                    fontSize: FontSize.medium,
+                                    fontFamily: 'NotoM',
                                     color: Colors.black,
                                     height: 1.5),
                                 child: AnimatedTextKit(
@@ -113,7 +67,7 @@ class HomeServiceTop extends GetView<AppController> {
                                   animatedTexts: [
                                     TypewriterAnimatedText(
                                         speed:
-                                            const Duration(milliseconds: 150),
+                                            const Duration(milliseconds: 120),
                                         '검색으로 찾기'),
                                   ],
                                 ),
@@ -158,13 +112,13 @@ class HomeServiceTop extends GetView<AppController> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                                bottom: GapSize.small, left: GapSize.small),
+                                bottom: GapSize.small),
                             child: Align(
-                              alignment: Alignment.bottomLeft,
+                              alignment: Alignment.bottomCenter,
                               child: DefaultTextStyle(
                                 style: const TextStyle(
-                                    fontSize: FontSize.small,
-                                    fontFamily: 'NotoB',
+                                    fontSize: FontSize.medium,
+                                    fontFamily: 'NotoM',
                                     color: Colors.black,
                                     height: 1.5),
                                 child: AnimatedTextKit(
@@ -172,9 +126,10 @@ class HomeServiceTop extends GetView<AppController> {
                                   repeatForever: true,
                                   animatedTexts: [
                                     TypewriterAnimatedText(
+                                      textAlign: TextAlign.start,
                                         speed:
-                                            const Duration(milliseconds: 150),
-                                        '내 주변 클라이밍장 찾기'),
+                                            const Duration(milliseconds: 120),
+                                        '내 근처에서 찾기'),
                                   ],
                                 ),
                               ),

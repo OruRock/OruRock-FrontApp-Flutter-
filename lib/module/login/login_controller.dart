@@ -45,7 +45,7 @@ class LoginController extends GetxController {
 
     if (success) {
       //로그인 성공시
-      Get.offAllNamed(Routes.home);
+      Get.offAllNamed(Routes.app);
       appData.write("UID", userAuth.user!.uid);
     } else {
       //로그인 실패시
@@ -201,6 +201,8 @@ class LoginController extends GetxController {
   }
 
   Future<void> autoLogin() async {
+    isLoading.value = true;
+
     final cachedUid = appData.read("UID");
 
     if (cachedUid != null) {
@@ -214,10 +216,7 @@ class LoginController extends GetxController {
       userAuth.setUser(res.data['payload']['nick_name'], res.data['payload']['email'], cachedUid);
 
       Get.offAllNamed(Routes.app);
-
-      return;
     }
-
-    return;
+    isLoading.value = false;
   }
 }

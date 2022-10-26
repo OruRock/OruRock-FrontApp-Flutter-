@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -23,6 +24,8 @@ class AppController extends GetxController {
   final auth = Get.find<AuthFunction>();
   final map = Get.find<MapFunction>();
   final appData = GetStorage();
+
+  var isOnCloseApp = false;
 
   var stores = <StoreModel>[].obs; //store 관리
   var searchStores = <StoreModel>[].obs;
@@ -47,7 +50,6 @@ class AppController extends GetxController {
     pinnedStoreName.value =
         pinnedStoreId != null ? stores[pinnedStoreId!].stroreName! : '';
 
-
     ever(selectedTabIndex, (value) {
       switch (value) {
         case Tabs.home:
@@ -61,6 +63,13 @@ class AppController extends GetxController {
         case Tabs.setting:
           break;
       }
+    });
+  }
+
+  void onCloseApp() {
+    isOnCloseApp = true;
+    Future.delayed(const Duration(milliseconds: 3000), () {
+      isOnCloseApp = false;
     });
   }
 
@@ -82,8 +91,13 @@ class AppController extends GetxController {
   ///각 마커마다 onTap했을시, 해당하는 마커에 대한 데이터가 들어간다.
   void setMarker() async {
     int index = 0;
+    OverlayImage overlayImage = await OverlayImage.fromAssetImage(
+        assetName: 'asset/image/icon/pin_icon.png'); //마커 이미지
     for (var elem in stores) {
       markers.add(Marker(
+          icon: overlayImage,
+          width: 30,
+          height: 30,
           markerId: index.toString(),
           position: LatLng(elem.storeLat!, elem.storeLng!),
           onMarkerTab: showDetailInformation));
@@ -114,16 +128,10 @@ class AppController extends GetxController {
       detailPinState.value = true;
       pinnedStoreId = selectedIndex;
       pinnedStoreName.value = stores[pinnedStoreId!].stroreName!;
-      Get.snackbar("알림", "선택하신 암장이 고정되었습니다");
+      Fluttertoast.showToast(msg: "선택하신 암장이 고정되었습니다.");
       return;
     }
 
-    //같은 암장 한번 더 눌렀을 경우 핀 해제
-    if (pin == selectedIndex) {
-      removePin();
-      Get.snackbar("알림", "핀 해제");
-      return;
-    }
 
     //핀한 암장 교체 확인 -> [updatePin], 취소 -> 변화 X
     Get.dialog(CommonDialog(
@@ -145,6 +153,7 @@ class AppController extends GetxController {
     detailPinState.value = false;
     pinnedStoreId = null;
     pinnedStoreName.value = '';
+    Fluttertoast.showToast(msg: "핀이 해제되었습니다.");
   }
 
   void setDetailPinState() {
