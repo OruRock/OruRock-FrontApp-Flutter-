@@ -117,7 +117,6 @@ class ReviewFragment extends GetView<StoreInfoController> {
             ],
           ),
         ),
-        _buildReviewTextField()
       ],
     );
   }

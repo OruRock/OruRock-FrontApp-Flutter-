@@ -5,11 +5,11 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/model/store_model.dart' as storeModel;
-import 'package:oru_rock/module/home/home_controller.dart';
+import 'package:oru_rock/module/app/app_controller.dart';
 
 import '../../routes.dart';
 
-class MarkerDetail extends GetView<HomeController> {
+class MarkerDetail extends GetView<AppController> {
   final storeModel.StoreModel? store;
 
   const MarkerDetail({

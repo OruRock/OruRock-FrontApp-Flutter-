@@ -2,9 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
-import 'package:oru_rock/module/search/search_controller.dart';
+import 'package:oru_rock/module/app/app_controller.dart';
 
-class Search extends GetView<SearchController> {
+class Search extends GetView<AppController> {
   const Search({Key? key}) : super(key: key);
 
   @override
@@ -74,7 +74,7 @@ class Search extends GetView<SearchController> {
                           padding: const EdgeInsets.symmetric(
                               vertical: GapSize.xxSmall,
                               horizontal: GapSize.xxSmall),
-                          itemCount: controller.stores.length, //item 개수
+                          itemCount: controller.searchStores.length, //item 개수
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2, //1 개의 행에 보여줄 item 개수
@@ -112,11 +112,11 @@ class Search extends GetView<SearchController> {
                                                       RadiusSize.large))),
                                       alignment: Alignment.center,
                                       child: controller
-                                              .stores[index].imageUrl == null
+                                              .searchStores[index].imageUrl == null
                                           ? Image.asset(
                                               'asset/image/logo/splash_logo.png')
                                           : Image.network(controller
-                                              .stores[index]
+                                              .searchStores[index]
                                               .imageUrl!),
                                     ),
                                   ),
@@ -143,7 +143,7 @@ class Search extends GetView<SearchController> {
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: GapSize.xSmall),
                                         child: AutoSizeText(
-                                          "${controller.stores[index].stroreName}",
+                                          "${controller.searchStores[index].stroreName}",
                                           style: const TextStyle(
                                             fontFamily: "NotoB"
                                           ),

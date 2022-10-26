@@ -4,11 +4,11 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:oru_rock/common_widget/banner_ad.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/function/auth_func.dart';
+import 'package:oru_rock/module/app/app_controller.dart';
 import 'package:oru_rock/module/home/fragment/home_service_top.dart';
-import 'package:oru_rock/module/home/home_controller.dart';
 import 'package:oru_rock/routes.dart';
 
-class Home extends GetView<HomeController> {
+class Home extends GetView<AppController> {
   const Home({Key? key}) : super(key: key);
 
   @override
@@ -17,21 +17,11 @@ class Home extends GetView<HomeController> {
       child: Scaffold(
         body: ListView(
           children: [
-            ElevatedButton(onPressed: (){
+/*            ElevatedButton(onPressed: (){
               controller.signOut();
-            }, child: Text('로그아웃')),
+            }, child: Text('로그아웃')),*/
             SizedBox(
               height: HeightWithRatio.xxxxSmall,
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.settings_outlined,
-                  size: 30,
-                ),
-              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -65,7 +55,7 @@ class Home extends GetView<HomeController> {
               child: SizedBox(
                 height: HeightWithRatio.medium,
                 width: Get.width,
-                child: const Center(child: BannerAdWidget()),
+                child: const Center(child: Text("admob Banner")),
               ),
             ),
             const Padding(

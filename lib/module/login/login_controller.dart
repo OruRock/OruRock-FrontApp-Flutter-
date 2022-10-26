@@ -213,7 +213,7 @@ class LoginController extends GetxController {
       userAuth.setJwt(res.data['payload']['result']);
       userAuth.setUser(res.data['payload']['nick_name'], res.data['payload']['email'], cachedUid);
 
-      Get.offAllNamed(Routes.home);
+      Get.offAllNamed(Routes.app);
 
       return;
     }

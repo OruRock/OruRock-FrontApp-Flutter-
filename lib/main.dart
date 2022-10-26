@@ -9,14 +9,9 @@ import 'package:oru_rock/helper/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/map_func.dart';
-import 'package:oru_rock/module/home/home.dart';
-import 'package:oru_rock/module/home/home_controller.dart';
-import 'package:oru_rock/module/marker_detail/marker_detail.dart';
-import 'package:oru_rock/module/marker_detail/marker_detail_controller.dart';
-import 'package:oru_rock/module/naver_map/nmap.dart';
-import 'package:oru_rock/module/naver_map/nmap_controller.dart';
-import 'package:oru_rock/module/search/search_controller.dart';
-import 'package:oru_rock/module/search/search_page.dart';
+import 'package:oru_rock/module/app/app.dart';
+import 'package:oru_rock/module/app/app_controller.dart';
+import 'package:oru_rock/module/setting/setting_controller.dart';
 import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
 import 'package:oru_rock/module/store_detail_info/store_info_page.dart';
 import 'package:oru_rock/routes.dart';
@@ -37,8 +32,8 @@ void main() async {
       options: DefaultFirebaseOptions.currentPlatform); // firebase chrlghk
   KakaoSdk.init(nativeAppKey: Config.kakao_native_key);
   MobileAds.instance.initialize();
-  MobileAds.instance.updateRequestConfiguration(
-      RequestConfiguration(testDeviceIds: ['C7570CF719C5585A62E09942D0982A1A']));
+  MobileAds.instance.updateRequestConfiguration(RequestConfiguration(
+      testDeviceIds: ['C7570CF719C5585A62E09942D0982A1A']));
   //FlutterNativeSplash.remove(); //로딩 끝나는 위치에 두어야 함(스플래시 제거)
   runApp(const MyApp());
 }
@@ -63,31 +58,15 @@ class MyApp extends StatelessWidget {
             name: Routes.login,
             page: () => const Login(),
             binding: BindingsBuilder(
-                  () => {Get.put(LoginController())},
-            )),
-        //페이지 추가
-        GetPage(
-            name: Routes.home,
-            page: () => const Home(),
-            binding: BindingsBuilder(
-              () => {Get.put(HomeController())},
+              () => {Get.put(LoginController())},
             )),
         GetPage(
-            name: Routes.nmap,
-            page: () => const NMap(),
+            name: Routes.app,
+            page: () => App(),
             binding: BindingsBuilder(
               () => {
-                Get.put(NMapController()),
-                Get.put(MarkerDetailController())
-              },
-            )),
-        GetPage(
-            name: Routes.search,
-            page: () => const Search(),
-            binding: BindingsBuilder(
-              () => {
-                Get.put(SearchController()),
-                Get.put(MarkerDetailController())
+                Get.put(AppController()),
+                Get.put(SettingController()),
               },
             )),
         GetPage(

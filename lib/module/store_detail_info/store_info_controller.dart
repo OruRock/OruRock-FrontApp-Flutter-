@@ -8,7 +8,7 @@ import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/model/store_detail_model.dart';
-import 'package:oru_rock/module/home/home_controller.dart';
+import 'package:oru_rock/module/app/app_controller.dart';
 
 class StoreInfoController extends GetxController {
   var logger = Logger(
@@ -16,7 +16,7 @@ class StoreInfoController extends GetxController {
   );
 
   final api = Get.find<ApiFunction>();
-  final home = Get.find<HomeController>();
+  final app = Get.find<AppController>();
   final auth = Get.find<AuthFunction>();
 
   Rx<StoreDetailModel?> detailModel = StoreDetailModel().obs;
@@ -156,7 +156,7 @@ class StoreInfoController extends GetxController {
     try {
       isLoading.value = false;
       final reqData = {
-        "store_id": home.stores[home.selectedIndex].storeId.toString(),
+        "store_id": app.stores[app.selectedIndex].storeId.toString(),
         "commentOnly": false
       };
       final res = await api.dio.get('/store/detail', queryParameters: reqData);

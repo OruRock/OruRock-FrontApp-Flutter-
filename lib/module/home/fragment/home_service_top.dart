@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
-import 'package:oru_rock/module/home/home_controller.dart';
+import 'package:oru_rock/module/app/app_controller.dart';
 
-import 'package:oru_rock/routes.dart';
-
-class HomeServiceTop extends GetView<HomeController> {
+class HomeServiceTop extends GetView<AppController> {
   const HomeServiceTop({Key? key}) : super(key: key);
 
   @override
@@ -15,21 +13,22 @@ class HomeServiceTop extends GetView<HomeController> {
     return Column(
       children: [
         Obx(
-          () => Visibility(
-            visible: controller.isPinned.value,
-            child: Column(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(bottom: GapSize.small),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '클라이밍장 찾기',
-                      style: TextStyle(fontSize: FontSize.large, fontFamily: "NotoB"),
-                    ),
+          () => Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(bottom: GapSize.small),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '클라이밍장 찾기',
+                    style: TextStyle(
+                        fontSize: FontSize.large, fontFamily: "NotoB"),
                   ),
                 ),
-                Container(
+              ),
+              Visibility(
+                visible: controller.isPinned.value,
+                child: Container(
                   height: HeightWithRatio.small,
                   decoration: shadowBoxDecoration,
                   child: Padding(
@@ -62,8 +61,8 @@ class HomeServiceTop extends GetView<HomeController> {
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         const SizedBox(
@@ -85,7 +84,7 @@ class HomeServiceTop extends GetView<HomeController> {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(RadiusSize.large),
                       onTap: () {
-                        Get.toNamed(Routes.search);
+                        controller.selectedTabIndex.value = Tabs.search;
                       },
                       child: Column(
                         children: [
@@ -145,7 +144,7 @@ class HomeServiceTop extends GetView<HomeController> {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(RadiusSize.large),
                       onTap: () {
-                        Get.toNamed(Routes.nmap);
+                        controller.selectedTabIndex.value = Tabs.nmap;
                       },
                       child: Column(
                         children: [

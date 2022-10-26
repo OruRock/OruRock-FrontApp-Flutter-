@@ -3,10 +3,10 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
-import 'package:oru_rock/module/naver_map/nmap_controller.dart';
+import 'package:oru_rock/module/app/app_controller.dart';
 import 'package:oru_rock/routes.dart';
 
-class NMap extends GetView<NMapController> {
+class NMap extends GetView<AppController> {
   const NMap({Key? key}) : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class NMap extends GetView<NMapController> {
                   maxZoom: 20,
                   minZoom: 5,
                   logoClickEnabled: false,
-                  markers: controller.home.markers.value,
+                  markers: controller.markers.value,
                 ),
                 Align(
                   alignment: Alignment.topCenter,
