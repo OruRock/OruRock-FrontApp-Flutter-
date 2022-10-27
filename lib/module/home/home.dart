@@ -140,7 +140,18 @@ class Home extends GetView<AppController> {
             _buildListTile(),
             _buildListTile(),
             _buildListTile(),
-            _buildListTile(),
+            // Obx(
+            //     () => Expanded(
+            //       child: controller.isLoading.value
+            //           ? const Center(child: CircularProgressIndicator())
+            //           : GridView.builder(
+            //         padding: const EdgeInsets.symmetric(
+            //             vertical: GapSize.xxSmall,
+            //             horizontal: GapSize.xxSmall),
+            //         itemCount: controller. ,
+            //       ),
+            //     ),
+            // )
           ],
         ),
       ),

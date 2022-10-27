@@ -37,6 +37,9 @@ class AppController extends GetxController {
   var pinnedStoreName = ''.obs;
   var detailPinState = false.obs;
 
+  var detailFavoriteState = false.obs;
+
+
   BannerAd? bannerAd;
   TextEditingController searchText = TextEditingController();
 
@@ -192,6 +195,15 @@ class AppController extends GetxController {
   void signOut() {
     auth.signOut();
     Get.offAllNamed(Routes.login);
+  }
+
+  ///핀버튼 누를 시에 추가, 삭제, 교체가 일어나는 함수
+  void setFavorite() {
+    detailFavoriteState.value = true;
+  }
+
+  void removeFavorite() {
+    detailFavoriteState.value = false;
   }
 }
 

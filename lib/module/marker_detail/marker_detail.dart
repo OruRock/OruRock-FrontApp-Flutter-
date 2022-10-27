@@ -61,32 +61,65 @@ class MarkerDetail extends GetView<AppController> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Obx(
-                              () => controller.detailPinState.value
-                                  ? IconButton(
-                                      padding: const EdgeInsets.only(
-                                          bottom: GapSize.xxxSmall),
-                                      constraints: const BoxConstraints(),
-                                      onPressed: () {
-                                        controller.removePin();
-                                      },
-                                      icon: const Icon(
-                                        Icons.push_pin,
-                                        size: 25,
-                                      ),
-                                    )
-                                  : IconButton(
-                                      padding: const EdgeInsets.only(
-                                          bottom: GapSize.xxxSmall),
-                                      constraints: const BoxConstraints(),
-                                      onPressed: () {
-                                        controller.setPin();
-                                      },
-                                      icon: const Icon(
-                                        Icons.push_pin_outlined,
-                                        size: 25,
-                                      ),
-                                    ),
+                            Row(
+                                children: [
+                                  Obx(
+                                        () => controller.detailPinState.value
+                                            ? IconButton(
+                                          padding: const EdgeInsets.only(
+                                              bottom: GapSize.xxxSmall),
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {
+                                            controller.removePin();
+                                            },
+                                          icon: const Icon(
+                                            Icons.push_pin,
+                                            size: 25,
+                                          ),
+                                        )
+                                            : IconButton(
+                                          padding: const EdgeInsets.only(
+                                              bottom: GapSize.xxxSmall),
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {
+                                            controller.setPin();
+                                            },
+                                          icon: const Icon(
+                                            Icons.push_pin_outlined,
+                                            size: 25,
+                                          ),
+                                        ),
+                                  ),
+                                  Obx(
+                                        () => controller.detailFavoriteState.value
+                                            ? IconButton(
+                                          padding: const EdgeInsets.only(
+                                              left: GapSize.xxxSmall,
+                                              bottom: GapSize.xxSmall),
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {
+                                            controller.removeFavorite();
+                                            },
+                                          icon: const Icon(
+                                            Icons.star,
+                                            size: 26,
+                                          ),
+                                        )
+                                            : IconButton(
+                                          padding: const EdgeInsets.only(
+                                              left: GapSize.xxxSmall,
+                                              bottom: GapSize.xxSmall),
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {
+                                            controller.setFavorite();
+                                            },
+                                          icon: const Icon(
+                                            Icons.star_border,
+                                            size: 26,
+                                          ),
+                                        ),
+                                  ),
+                                ]
                             ),
                             AutoSizeText(
                               '${store?.stroreName}',
