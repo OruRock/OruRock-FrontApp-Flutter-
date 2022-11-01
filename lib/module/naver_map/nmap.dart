@@ -63,8 +63,7 @@ class NMap extends GetView<AppController> {
           child: InkWell(
             borderRadius: BorderRadius.circular(RadiusSize.large),
             onTap: () {
-              Get.back();
-              Get.toNamed(Routes.search);
+              controller.selectedTabIndex.value = Tabs.search;
             },
             child: Padding(
                 padding: const EdgeInsets.symmetric(

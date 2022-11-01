@@ -13,9 +13,9 @@ dependencies:
   get: ^4.6.5
   dio: ^4.0.6
   logger: ^1.1.0
-  proj4dart: ^2.0.0
   get_storage: ^2.0.3
   intl: ^0.17.0
+  permission_handler: ^10.2.0
   #UI
   shadow: ^1.5.0
   animated_text_kit: ^4.2.2
@@ -27,7 +27,6 @@ dependencies:
 
   flutter_naver_map:
     git: https://github.com/note11g/flutter_naver_map.git
-  flutter_native_splash: ^2.2.7 # splah(첫 로고 화면)용 library
   google_mobile_ads: ^2.0.1
   # Login
   kakao_flutter_sdk: ^1.3.0-beta.4 # 카카오 로그인
@@ -41,6 +40,14 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  flutter_native_splash: ^2.2.4 # splah(첫 로고 화면)용 library
+  flutter_launcher_icons: ^0.10.0
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "asset/image/logo/app_icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 flutter:
   uses-material-design: true

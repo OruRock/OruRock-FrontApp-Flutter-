@@ -68,9 +68,44 @@ class Search extends GetView<AppController> {
               ),
               Obx(
                 () => Expanded(
-                  child: controller.isLoading.value
-                      ? const Center(child: CircularProgressIndicator())
-                      : GridView.builder(
+                    child: controller.isLoading.value
+                        ? const Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            itemCount: controller.searchStores.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onTap: (){
+                                  controller.goMapToSelectedStore(index);
+                                },
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: GapSize.small),
+                                      child: ListTile(
+                                          leading: controller
+                                                      .searchStores[index].imageUrl ==
+                                                  null
+                                              ? Image.asset(
+                                                  'asset/image/logo/splash_logo.png')
+                                              : Image.network(controller
+                                                  .searchStores[index].imageUrl!),
+                                          title: Text(
+                                            controller.searchStores[index].stroreName!,
+                                            style: const TextStyle(fontFamily: "NotoB", overflow: TextOverflow.ellipsis),
+                                          ),
+                                        subtitle: Text(
+                                          controller.searchStores[index].storeDescription!,
+                                          style: const TextStyle(fontFamily: "NotoR"),
+                                        ),
+                                      ),
+                                    ),
+                                    Divider(height: 1.0, color: Colors.black26,)
+                                  ],
+                                ),
+                              );
+                            })
+
+                    /*GridView.builder(
                           padding: const EdgeInsets.symmetric(
                               vertical: GapSize.xxSmall,
                               horizontal: GapSize.xxSmall),
@@ -159,8 +194,8 @@ class Search extends GetView<AppController> {
                               ),
                             );
                           },
-                        ),
-                ),
+                        ),*/
+                    ),
               ),
             ],
           ),

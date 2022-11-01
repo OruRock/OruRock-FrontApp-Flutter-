@@ -15,6 +15,7 @@ import 'package:oru_rock/function/map_func.dart';
 import 'package:oru_rock/model/store_model.dart';
 import 'package:oru_rock/module/marker_detail/marker_detail.dart';
 import 'package:oru_rock/routes.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class AppController extends GetxController {
   var logger = Logger(
@@ -59,6 +60,7 @@ class AppController extends GetxController {
           searchStores.value = stores.value; //검색 초기화
           break;
         case Tabs.nmap:
+          getLocationPermission();
           break;
         case Tabs.setting:
           break;
@@ -86,7 +88,9 @@ class AppController extends GetxController {
       logger.e(e.toString());
     }
   }
-
+  void getLocationPermission() async {
+    final locationPermissionStatus = await Permission.location.request();
+  }
   ///뽑아온 Store 리스트[stores]에 따라 마커를 추가해준다.
   ///각 마커마다 onTap했을시, 해당하는 마커에 대한 데이터가 들어간다.
   void setMarker() async {
