@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:dio/src/response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -12,7 +13,9 @@ import 'package:oru_rock/common_widget/alert_dialog.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/function/map_func.dart';
+import 'package:oru_rock/model/client_store_book_mark_model.dart';
 import 'package:oru_rock/model/store_model.dart';
+import 'package:oru_rock/model/user_model.dart';
 import 'package:oru_rock/module/marker_detail/marker_detail.dart';
 import 'package:oru_rock/routes.dart';
 
@@ -37,8 +40,8 @@ class AppController extends GetxController {
   var pinnedStoreName = ''.obs;
   var detailPinState = false.obs;
 
-  var detailFavoriteState = false.obs;
-
+  var detailClientStoreBookMark = false.obs;
+  var clientStoreBookMark = <ClientStoreBookMarkModel>[].obs;
 
   BannerAd? bannerAd;
   TextEditingController searchText = TextEditingController();
@@ -48,6 +51,7 @@ class AppController extends GetxController {
 
   void onInit() async {
     await getStoreList();
+    await getClientStoreBookMark();
     setMarker();
 
     pinnedStoreName.value =
@@ -197,13 +201,49 @@ class AppController extends GetxController {
     Get.offAllNamed(Routes.login);
   }
 
-  ///핀버튼 누를 시에 추가, 삭제, 교체가 일어나는 함수
-  void setFavorite() {
-    detailFavoriteState.value = true;
+  /// 즐겨찾기 버튼 누를 시에 추가, 삭제, 교체가 일어나는 함수
+  void setBookMarkState(int? storeId) async {
+    try {
+      final data = {"store_id": storeId, "uid": appData.read("UID")};
+      final res;
+      if (detailClientStoreBookMark.value) {
+        res = await api.dio.delete(
+            '/store/bookMark/', queryParameters: data);
+      }
+      else {
+        res = await api.dio.post(
+            '/store/bookMark/', queryParameters: data);
+      }
+
+      final List<dynamic>? setBookmark = res.data['payload']['result'];
+
+      if (setBookmark != null) {
+        detailClientStoreBookMark.value = !detailClientStoreBookMark.value;
+      }
+      else {
+        print("에러다욧");
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 
-  void removeFavorite() {
-    detailFavoriteState.value = false;
+  ///북마크 list 정보 API
+  Future<void> getClientStoreBookMark() async {
+    try {
+      final data = {"uid": appData.read("UID")};
+      final res = await api.dio.get('/store/list/', queryParameters: data);
+
+      final List<dynamic>? bookmarkData = res.data['payload']['result'];
+
+      if (bookmarkData != null) {
+        clientStoreBookMark.value =
+            bookmarkData.map((map) => ClientStoreBookMarkModel.fromJson(map)).toList();
+        clientStoreBookMark.refresh();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 }
 

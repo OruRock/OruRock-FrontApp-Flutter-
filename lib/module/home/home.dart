@@ -136,22 +136,47 @@ class Home extends GetView<AppController> {
             ),
             _buildListTile(),
             _buildListTile(),
-            _buildListTile(),
-            _buildListTile(),
-            _buildListTile(),
-            _buildListTile(),
             // Obx(
-            //     () => Expanded(
-            //       child: controller.isLoading.value
-            //           ? const Center(child: CircularProgressIndicator())
-            //           : GridView.builder(
-            //         padding: const EdgeInsets.symmetric(
-            //             vertical: GapSize.xxSmall,
-            //             horizontal: GapSize.xxSmall),
-            //         itemCount: controller. ,
-            //       ),
+            //     () => ListView.builder(
+            //         physics: const NeverScrollableScrollPhysics(),
+            //         shrinkWrap: true,
+            //         itemCount: controller.clientStoreBookMark.value.length,
+            //         itemBuilder: (BuildContext context, int index) {
+            //           return GestureDetector(
+            //             onTap: () {
+            //               controller.goMapToSelectedStore(index);
+            //             },
+            //             child: Column(
+            //               children: [
+            //                 Expanded(
+            //                   child: Container(
+            //                     decoration: BoxDecoration(
+            //                       boxShadow: [
+            //                         BoxShadow(
+            //                           color:
+            //                             Colors.grey.withOpacity(0.2),
+            //                           spreadRadius: 3,
+            //                           blurRadius: 5,
+            //                           offset: const Offset(0,
+            //                               0), // changes position of shadow
+            //                         ),
+            //                       ],
+            //                       color: Colors.white,
+            //                       borderRadius:
+            //                           const BorderRadius.vertical(
+            //                               top: Radius.circular(
+            //                                   RadiusSize.large))),
+            //                     alignment: Alignment.center,
+            //                     child: Text(controller
+            //                             .clientStoreBookMark[index].uid.toString())
+            //                   ),
+            //                 ),
+            //               ],
+            //             )
+            //           );
+            //         },
             //     ),
-            // )
+            //   ),
           ],
         ),
       ),

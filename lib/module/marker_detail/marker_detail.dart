@@ -91,14 +91,14 @@ class MarkerDetail extends GetView<AppController> {
                                         ),
                                   ),
                                   Obx(
-                                        () => controller.detailFavoriteState.value
+                                        () => controller.detailClientStoreBookMark.value
                                             ? IconButton(
                                           padding: const EdgeInsets.only(
                                               left: GapSize.xxxSmall,
                                               bottom: GapSize.xxSmall),
                                           constraints: const BoxConstraints(),
                                           onPressed: () {
-                                            controller.removeFavorite();
+                                            controller.setBookMarkState(store?.storeId);
                                             },
                                           icon: const Icon(
                                             Icons.star,
@@ -111,7 +111,7 @@ class MarkerDetail extends GetView<AppController> {
                                               bottom: GapSize.xxSmall),
                                           constraints: const BoxConstraints(),
                                           onPressed: () {
-                                            controller.setFavorite();
+                                            controller.setBookMarkState(store?.storeId);
                                             },
                                           icon: const Icon(
                                             Icons.star_border,
