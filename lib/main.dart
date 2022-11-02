@@ -22,19 +22,20 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 void main() async {
   await GetStorage.init();
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Get.putAsync(() => AuthFunction().init());
   await Get.putAsync(() => ApiFunction().init());
   await Get.putAsync(() => MapFunction().init());
-  FlutterNativeSplash.remove(); //로딩 끝나는 위치에 두어야 함(스플래시 제거)
-
   await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform); // firebase chrlghk
   KakaoSdk.init(nativeAppKey: Config.kakao_native_key);
   MobileAds.instance.initialize();
   MobileAds.instance.updateRequestConfiguration(RequestConfiguration(
       testDeviceIds: ['C7570CF719C5585A62E09942D0982A1A']));
-  //FlutterNativeSplash.remove(); //로딩 끝나는 위치에 두어야 함(스플래시 제거)
+  Future.delayed(Duration(milliseconds: 3000), () {
+    FlutterNativeSplash.remove(); //로딩 끝나는 위치에 두어야 함(스플래시 제거)
+  });
+
   runApp(const MyApp());
 }
 

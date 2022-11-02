@@ -4,7 +4,7 @@ class StoreModel {
   String? storePhone;
   String? storeOpentime;
   int? recommendCnt;
-  String? stroreName;
+  String? storeName;
   String? storeAddr;
   double? storeLng;
   int? bookmarkYn;
@@ -17,7 +17,7 @@ class StoreModel {
       this.storePhone,
       this.storeOpentime,
       this.recommendCnt,
-      this.stroreName,
+      this.storeName,
       this.storeAddr,
       this.storeLng,
       this.bookmarkYn,
@@ -30,7 +30,7 @@ class StoreModel {
     storePhone = json['store_phone'];
     storeOpentime = json['store_opentime'];
     recommendCnt = json['recommend_cnt'];
-    stroreName = json['strore_name'];
+    storeName = json['store_name'];
     storeAddr = json['store_addr'];
     storeLng = json['store_lng'];
     bookmarkYn = json['bookmark_yn'];
@@ -45,7 +45,7 @@ class StoreModel {
     data['store_phone'] = storePhone;
     data['store_opentime'] = storeOpentime;
     data['recommend_cnt'] = recommendCnt;
-    data['strore_name'] = stroreName;
+    data['store_name'] = storeName;
     data['store_addr'] = storeAddr;
     data['store_lng'] = storeLng;
     data['bookmark_yn'] = bookmarkYn;

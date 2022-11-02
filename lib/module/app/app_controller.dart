@@ -18,6 +18,7 @@ import 'package:oru_rock/model/store_model.dart';
 import 'package:oru_rock/model/user_model.dart';
 import 'package:oru_rock/module/marker_detail/marker_detail.dart';
 import 'package:oru_rock/routes.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class AppController extends GetxController {
   var logger = Logger(
@@ -55,7 +56,7 @@ class AppController extends GetxController {
     setMarker();
 
     pinnedStoreName.value =
-        pinnedStoreId != null ? stores[pinnedStoreId!].stroreName! : '';
+        pinnedStoreId != null ? stores[pinnedStoreId!].storeName! : '';
 
     ever(selectedTabIndex, (value) {
       switch (value) {
@@ -66,6 +67,7 @@ class AppController extends GetxController {
           searchStores.value = stores.value; //검색 초기화
           break;
         case Tabs.nmap:
+          getLocationPermission();
           break;
         case Tabs.setting:
           break;
@@ -92,6 +94,10 @@ class AppController extends GetxController {
     } catch (e) {
       logger.e(e.toString());
     }
+  }
+
+  void getLocationPermission() async {
+    final locationPermissionStatus = await Permission.location.request();
   }
 
   ///뽑아온 Store 리스트[stores]에 따라 마커를 추가해준다.
@@ -134,11 +140,10 @@ class AppController extends GetxController {
       isPinned.value = true;
       detailPinState.value = true;
       pinnedStoreId = selectedIndex;
-      pinnedStoreName.value = stores[pinnedStoreId!].stroreName!;
+      pinnedStoreName.value = stores[pinnedStoreId!].storeName!;
       Fluttertoast.showToast(msg: "선택하신 암장이 고정되었습니다.");
       return;
     }
-
 
     //핀한 암장 교체 확인 -> [updatePin], 취소 -> 변화 X
     Get.dialog(CommonDialog(
@@ -151,7 +156,7 @@ class AppController extends GetxController {
     appData.write("PIN", selectedIndex);
     pinnedStoreId = selectedIndex;
     detailPinState.value = true;
-    pinnedStoreName.value = stores[pinnedStoreId!].stroreName!;
+    pinnedStoreName.value = stores[pinnedStoreId!].storeName!;
   }
 
   void removePin() {

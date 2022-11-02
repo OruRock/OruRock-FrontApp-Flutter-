@@ -41,7 +41,7 @@ class NMap extends GetView<AppController> {
   _buildSearchButton() {
     return Container(
       width: Get.width / 1.2,
-      height: HeightWithRatio.small,
+      height: ButtonHeight.xxxLarge,
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -63,8 +63,7 @@ class NMap extends GetView<AppController> {
           child: InkWell(
             borderRadius: BorderRadius.circular(RadiusSize.large),
             onTap: () {
-              Get.back();
-              Get.toNamed(Routes.search);
+              controller.selectedTabIndex.value = Tabs.search;
             },
             child: Padding(
                 padding: const EdgeInsets.symmetric(
