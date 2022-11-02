@@ -12,7 +12,7 @@ class MapFunction extends GetxService {
   var loggerNoStack = Logger(
     printer: PrettyPrinter(methodCount: 0),
   );
-  late Completer<NaverMapController> completer;
+  Completer<NaverMapController> nmapController = Completer();
   MapType mapType = MapType.Basic;
   LocationTrackingMode trackingMode = LocationTrackingMode.Follow;
 
@@ -32,21 +32,27 @@ class MapFunction extends GetxService {
 
   //지도가 만들어지고 나서 일어나는 함수
   void onMapCreated(NaverMapController controller) async {
-    if (completer.isCompleted) completer = Completer();
-    completer.complete(controller);
+    if (nmapController.isCompleted) nmapController = Completer();
+    nmapController.complete(controller);
   }
 
-  //처음 켰을 때 내 현위치로 이동
+/*  //처음 켰을 때 내 현위치로 이동
   void goToMyLocation() async {
     final nmapController = await completer.future;
     nmapController.setLocationTrackingMode(LocationTrackingMode.Follow);
-  }
+  }*/
 
   ///[position]으로 카메라 위치 이동 후 [zoom]만큼 확대
   void setCamera(LatLng position, double zoom) async {
-    final nmapController = await completer.future;
-    final cameraPosition = CameraUpdate.scrollWithOptions(position, zoom: zoom);
+    try {
+      final controller = await nmapController.future;
 
-    nmapController.moveCamera(cameraPosition);
+      final cameraPosition =
+          CameraUpdate.scrollWithOptions(position, zoom: zoom);
+      await controller.moveCamera(cameraPosition);
+      print("HI");
+    } catch(e) {
+      print(e.toString());
+    }
   }
 }

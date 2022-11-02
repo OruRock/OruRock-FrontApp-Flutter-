@@ -45,6 +45,7 @@ class RadiusSize {
 }
 
 class FontSize {
+  static const double xxSmall = 8.0;
   static const double xSmall = 12.0;
   static const double small = 14.0;
   static const double medium = 16.0;
@@ -58,7 +59,7 @@ class ButtonHeight {
   static const double small = 5.0;
   static const double medium = 15.0;
   static const double large = 20.0;
-  static const double xLarge = 25.0;
-  static const double xxLarge = 30.0;
-  static const double xxxLarge = 50.0;
+  static const double xLarge = 30.0;
+  static const double xxLarge = 40.0;
+  static const double xxxLarge = 60.0;
 }

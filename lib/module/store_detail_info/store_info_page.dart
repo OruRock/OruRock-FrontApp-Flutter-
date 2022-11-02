@@ -22,7 +22,7 @@ class StoreInfo extends GetView<StoreInfoController> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            '${store?.stroreName}',
+            '${store?.storeName}',
             style: const TextStyle(
                 fontFamily: "NotoB",
                 fontSize: FontSize.large,

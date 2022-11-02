@@ -3,53 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
-import 'package:oru_rock/module/home/home_controller.dart';
+import 'package:oru_rock/module/app/app_controller.dart';
 
-import 'package:oru_rock/routes.dart';
-
-class HomeServiceTop extends GetView<HomeController> {
+class HomeServiceTop extends GetView<AppController> {
   const HomeServiceTop({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Obx(
-          () => Visibility(
-            visible: controller.isPinned.value,
-            child: Container(
-              height: HeightWithRatio.small,
-              decoration: shadowBoxDecoration,
-              child: Padding(
-                padding: const EdgeInsets.only(left: GapSize.small),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Image.asset(
-                      'asset/image/icon/pin_icon.png',
-                      height: HeightWithRatio.xxxSmall,
-                    ),
-                    Expanded(
-                        child: controller.stores.isEmpty
-                            ? Container()
-                            : Center(
-                                child: Text(
-                                  controller.pinnedStoreName.value,
-                                  style: pinTextStyle,
-                                ),
-                              )),
-                    IconButton(
-                        onPressed: () {
-                          controller.removePin();
-                        },
-                        icon: Icon(
-                          Icons.close,
-                          size: 20,
-                        ))
-                  ],
-                ),
-              ),
-            ),
+        const Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            '클라이밍장 찾기',
+            style: TextStyle(fontSize: FontSize.large, fontFamily: "NotoB"),
           ),
         ),
         const SizedBox(
@@ -71,7 +38,7 @@ class HomeServiceTop extends GetView<HomeController> {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(RadiusSize.large),
                       onTap: () {
-                        Get.toNamed(Routes.search);
+                        controller.selectedTabIndex.value = Tabs.search;
                       },
                       child: Column(
                         children: [
@@ -85,13 +52,13 @@ class HomeServiceTop extends GetView<HomeController> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                                bottom: GapSize.small, left: GapSize.small),
+                                bottom: GapSize.small),
                             child: Align(
-                              alignment: Alignment.bottomLeft,
+                              alignment: Alignment.bottomCenter,
                               child: DefaultTextStyle(
                                 style: const TextStyle(
-                                    fontSize: FontSize.small,
-                                    fontFamily: 'NotoB',
+                                    fontSize: FontSize.medium,
+                                    fontFamily: 'NotoM',
                                     color: Colors.black,
                                     height: 1.5),
                                 child: AnimatedTextKit(
@@ -100,7 +67,7 @@ class HomeServiceTop extends GetView<HomeController> {
                                   animatedTexts: [
                                     TypewriterAnimatedText(
                                         speed:
-                                            const Duration(milliseconds: 150),
+                                            const Duration(milliseconds: 120),
                                         '검색으로 찾기'),
                                   ],
                                 ),
@@ -131,7 +98,7 @@ class HomeServiceTop extends GetView<HomeController> {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(RadiusSize.large),
                       onTap: () {
-                        Get.toNamed(Routes.nmap);
+                        controller.selectedTabIndex.value = Tabs.nmap;
                       },
                       child: Column(
                         children: [
@@ -145,13 +112,13 @@ class HomeServiceTop extends GetView<HomeController> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(
-                                bottom: GapSize.small, left: GapSize.small),
+                                bottom: GapSize.small),
                             child: Align(
-                              alignment: Alignment.bottomLeft,
+                              alignment: Alignment.bottomCenter,
                               child: DefaultTextStyle(
                                 style: const TextStyle(
-                                    fontSize: FontSize.small,
-                                    fontFamily: 'NotoB',
+                                    fontSize: FontSize.medium,
+                                    fontFamily: 'NotoM',
                                     color: Colors.black,
                                     height: 1.5),
                                 child: AnimatedTextKit(
@@ -159,9 +126,10 @@ class HomeServiceTop extends GetView<HomeController> {
                                   repeatForever: true,
                                   animatedTexts: [
                                     TypewriterAnimatedText(
+                                      textAlign: TextAlign.start,
                                         speed:
-                                            const Duration(milliseconds: 150),
-                                        '내 주변 클라이밍장 찾기'),
+                                            const Duration(milliseconds: 120),
+                                        '내 근처에서 찾기'),
                                   ],
                                 ),
                               ),

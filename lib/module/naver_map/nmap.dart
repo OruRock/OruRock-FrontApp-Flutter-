@@ -3,10 +3,10 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
-import 'package:oru_rock/module/naver_map/nmap_controller.dart';
+import 'package:oru_rock/module/app/app_controller.dart';
 import 'package:oru_rock/routes.dart';
 
-class NMap extends GetView<NMapController> {
+class NMap extends GetView<AppController> {
   const NMap({Key? key}) : super(key: key);
 
   @override
@@ -14,10 +14,6 @@ class NMap extends GetView<NMapController> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        drawer: _buildDrawerListView(),
-        appBar: AppBar(
-          title: const Text("오르Rock"),
-        ),
         body: Obx(() => Stack(
               children: [
                 NaverMap(
@@ -30,7 +26,7 @@ class NMap extends GetView<NMapController> {
                   maxZoom: 20,
                   minZoom: 5,
                   logoClickEnabled: false,
-                  markers: controller.home.markers.value,
+                  markers: controller.markers.value,
                 ),
                 Align(
                   alignment: Alignment.topCenter,
@@ -45,7 +41,7 @@ class NMap extends GetView<NMapController> {
   _buildSearchButton() {
     return Container(
       width: Get.width / 1.2,
-      height: HeightWithRatio.small,
+      height: ButtonHeight.xxxLarge,
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -67,8 +63,7 @@ class NMap extends GetView<NMapController> {
           child: InkWell(
             borderRadius: BorderRadius.circular(RadiusSize.large),
             onTap: () {
-              Get.back();
-              Get.toNamed(Routes.search);
+              controller.selectedTabIndex.value = Tabs.search;
             },
             child: Padding(
                 padding: const EdgeInsets.symmetric(

@@ -6,7 +6,7 @@
 
     <application
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:label="oru_rock">
         <activity
             android:name=".MainActivity"
@@ -57,5 +57,8 @@
         <meta-data
             android:name="com.naver.sdk.clientName"
             android:value="@string/client_name" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3155451907591531~8704740193"/>
     </application>
 </manifest>

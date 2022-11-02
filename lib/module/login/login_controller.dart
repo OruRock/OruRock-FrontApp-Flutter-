@@ -45,7 +45,7 @@ class LoginController extends GetxController {
 
     if (success) {
       //로그인 성공시
-      Get.offAllNamed(Routes.home);
+      Get.offAllNamed(Routes.app);
       appData.write("UID", userAuth.user!.uid);
     } else {
       //로그인 실패시
@@ -184,7 +184,7 @@ class LoginController extends GetxController {
       final res = await api.dio.post('/login', data: data);
 
       userAuth.setJwt(res.data['payload']['result']);
-      userAuth.setUser(user.displayName, user.email, user.uid);
+      userAuth.setUser(res.data['payload']['nick_name'], res.data['payload']['email'], user.uid);
 
       return true;
     } catch (e) {
@@ -201,6 +201,8 @@ class LoginController extends GetxController {
   }
 
   Future<void> autoLogin() async {
+    isLoading.value = true;
+
     final cachedUid = appData.read("UID");
 
     if (cachedUid != null) {
@@ -211,13 +213,10 @@ class LoginController extends GetxController {
       final res = await api.dio.post('/login', data: data);
 
       userAuth.setJwt(res.data['payload']['result']);
-      userAuth.setUser(res.data['nick_name'], res.data['email'], cachedUid);
+      userAuth.setUser(res.data['payload']['nick_name'], res.data['payload']['email'], cachedUid);
 
-      Get.offAllNamed(Routes.home);
-
-      return;
+      Get.offAllNamed(Routes.app);
     }
-
-    return;
+    isLoading.value = false;
   }
 }
