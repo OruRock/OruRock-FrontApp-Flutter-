@@ -140,7 +140,7 @@ class Home extends GetView<AppController> {
             //     () => ListView.builder(
             //         physics: const NeverScrollableScrollPhysics(),
             //         shrinkWrap: true,
-            //         itemCount: controller.clientStoreBookMark.value.length,
+            //         itemCount: controller.onlyBookMark.value.length,
             //         itemBuilder: (BuildContext context, int index) {
             //           return GestureDetector(
             //             onTap: () {
@@ -166,9 +166,7 @@ class Home extends GetView<AppController> {
             //                           const BorderRadius.vertical(
             //                               top: Radius.circular(
             //                                   RadiusSize.large))),
-            //                     alignment: Alignment.center,
-            //                     child: Text(controller
-            //                             .clientStoreBookMark[index].uid.toString())
+            //                     alignment: Alignment.center
             //                   ),
             //                 ),
             //               ],

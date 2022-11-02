@@ -25,7 +25,7 @@ class MarkerDetail extends GetView<AppController> {
           Get.toNamed(Routes.storeInfo, arguments: [store]);
         },
         child: Container(
-          height: HeightWithRatio.xxxLarge,
+          height: 275,
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius:
@@ -33,133 +33,151 @@ class MarkerDetail extends GetView<AppController> {
           ),
           child: Column(
             children: [
-              SizedBox(
-                height: HeightWithRatio.xxSmall,
-                child: const Center(
+              const SizedBox(
+                height: 30,
+                child: Center(
                   child: Icon(Icons.horizontal_rule),
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: GapSize.xxSmall),
-                child: Row(
+                padding: const EdgeInsets.symmetric(horizontal: GapSize.small),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                        flex: 4,
-                        child: Padding(
-                          padding: const EdgeInsets.all(GapSize.small),
-                          child: store!.imageUrl == null
-                              ? Image.asset('asset/image/logo/splash_logo.png')
-                              : Image.network(
-                                  store!.imageUrl!,
-                                ),
-                        )),
-                    Expanded(
-                      flex: 4,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: GapSize.xSmall),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                    Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: GapSize.small),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                                children: [
-                                  Obx(
-                                        () => controller.detailPinState.value
-                                            ? IconButton(
-                                          padding: const EdgeInsets.only(
-                                              bottom: GapSize.xxxSmall),
-                                          constraints: const BoxConstraints(),
-                                          onPressed: () {
-                                            controller.removePin();
-                                            },
-                                          icon: const Icon(
-                                            Icons.push_pin,
-                                            size: 25,
-                                          ),
-                                        )
-                                            : IconButton(
-                                          padding: const EdgeInsets.only(
-                                              bottom: GapSize.xxxSmall),
-                                          constraints: const BoxConstraints(),
-                                          onPressed: () {
-                                            controller.setPin();
-                                            },
-                                          icon: const Icon(
-                                            Icons.push_pin_outlined,
-                                            size: 25,
-                                          ),
-                                        ),
-                                  ),
-                                  Obx(
-                                        () => controller.detailClientStoreBookMark.value
-                                            ? IconButton(
-                                          padding: const EdgeInsets.only(
-                                              left: GapSize.xxxSmall,
-                                              bottom: GapSize.xxSmall),
-                                          constraints: const BoxConstraints(),
-                                          onPressed: () {
-                                            controller.setBookMarkState(store?.storeId);
-                                            },
-                                          icon: const Icon(
-                                            Icons.star,
-                                            size: 26,
-                                          ),
-                                        )
-                                            : IconButton(
-                                          padding: const EdgeInsets.only(
-                                              left: GapSize.xxxSmall,
-                                              bottom: GapSize.xxSmall),
-                                          constraints: const BoxConstraints(),
-                                          onPressed: () {
-                                            controller.setBookMarkState(store?.storeId);
-                                            },
-                                          icon: const Icon(
-                                            Icons.star_border,
-                                            size: 26,
-                                          ),
-                                        ),
-                                  ),
-                                ]
-                            ),
-                            AutoSizeText(
-                              '${store?.stroreName}',
+                            Text(
+                              '${store?.storeName}',
                               style: const TextStyle(
                                 fontFamily: "NotoB",
+                                overflow: TextOverflow.ellipsis,
+                                fontSize: FontSize.large,
                                 height: 1.3,
                               ),
-                              maxLines: 2,
-                              maxFontSize: FontSize.large,
-                              minFontSize: FontSize.xSmall,
-                              overflow: TextOverflow.ellipsis,
                             ),
-                            Text(
-                              '주소 : ${store?.storeAddr}',
-                              style: regularNanumTextStyle,
+                            Obx(
+                              () => controller.detailPinState.value
+                                  ? IconButton(
+                                      padding: const EdgeInsets.only(
+                                          bottom: GapSize.xxxSmall),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {
+                                        controller.removePin();
+                                      },
+                                      icon: const Icon(
+                                        Icons.push_pin,
+                                        size: 25,
+                                      ),
+                                    )
+                                  : IconButton(
+                                      padding: const EdgeInsets.only(
+                                          bottom: GapSize.xxxSmall),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {
+                                        controller.setPin();
+                                      },
+                                      icon: const Icon(
+                                        Icons.push_pin_outlined,
+                                        size: 25,
+                                      ),
+                                    ),
                             ),
-                            Text(
-                              '전화번호 : ${store?.storePhone}',
-                              style: regularNanumTextStyle,
+                            Obx(
+                              () => controller.detailClientStoreBookMark.value
+                                  ? IconButton(
+                                      padding: const EdgeInsets.only(
+                                          left: GapSize.xxxSmall,
+                                          bottom: GapSize.xxSmall),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {
+                                        controller
+                                            .setBookMarkState(store?.storeId);
+                                      },
+                                      icon: const Icon(
+                                        Icons.star,
+                                        size: 26,
+                                      ),
+                                    )
+                                  : IconButton(
+                                      padding: const EdgeInsets.only(
+                                          left: GapSize.xxxSmall,
+                                          bottom: GapSize.xxSmall),
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {
+                                        controller
+                                            .setBookMarkState(store?.storeId);
+                                      },
+                                      icon: const Icon(
+                                        Icons.star_border,
+                                        size: 26,
+                                      ),
+                                    ),
                             ),
-                            const Text(
-                              '이용 시간',
-                              style: regularNanumTextStyle,
-                            ),
-                            Text(
-                              '평일 : ${store?.storeOpentime}',
-                              style: regularNanumTextStyle,
-                            ),
-                            Text(
-                              '주말 : ${store?.storeOpentime}',
-                              style: regularNanumTextStyle,
-                            ),
-                          ],
-                        ),
+                          ]),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: GapSize.xxSmall),
+                      child: Divider(
+                        height: 1.0,
+                        thickness: 1.0,
                       ),
-                    )
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 150,
+                          height: 150,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: GapSize.xxSmall),
+                            child: store!.imageUrl == null
+                                ? Image.asset(
+                                    'asset/image/logo/splash_logo.png')
+                                : Image.network(
+                                    store!.imageUrl!,
+                                  ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: GapSize.xSmall),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '주소 : ${store?.storeAddr}',
+                                  style: regularNanumTextStyle,
+                                ),
+                                Text(
+                                  '전화번호 : ${store?.storePhone}',
+                                  style: regularNanumTextStyle,
+                                ),
+                                const Text(
+                                  '이용 시간',
+                                  style: regularNanumTextStyle,
+                                ),
+                                Text(
+                                  '평일 : ${store?.storeOpentime}',
+                                  style: regularNanumTextStyle,
+                                ),
+                                Text(
+                                  '주말 : ${store?.storeOpentime}',
+                                  style: regularNanumTextStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ),
-              Expanded(child: Container()),
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
@@ -167,9 +185,11 @@ class MarkerDetail extends GetView<AppController> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: const [
-                      Text(
+                      AutoSizeText(
                         '상세 정보 보러가기 ',
                         style: TextStyle(color: Colors.blue),
+                        minFontSize: FontSize.xSmall,
+                        maxFontSize: FontSize.medium,
                       ),
                       Icon(
                         Icons.chevron_right,
@@ -180,7 +200,7 @@ class MarkerDetail extends GetView<AppController> {
                 ),
               ),
               const SizedBox(
-                height: GapSize.medium,
+                height: GapSize.small,
               )
             ],
           ),

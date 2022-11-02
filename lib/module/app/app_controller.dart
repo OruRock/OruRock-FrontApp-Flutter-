@@ -43,6 +43,7 @@ class AppController extends GetxController {
 
   var detailClientStoreBookMark = false.obs;
   var clientStoreBookMark = <ClientStoreBookMarkModel>[].obs;
+  var onlyBookMark = <ClientStoreBookMarkModel>[].obs;
 
   BannerAd? bannerAd;
   TextEditingController searchText = TextEditingController();
@@ -217,7 +218,7 @@ class AppController extends GetxController {
       }
       else {
         res = await api.dio.post(
-            '/store/bookMark/', queryParameters: data);
+            '/store/bookMark/', data: data );
       }
 
       final List<dynamic>? setBookmark = res.data['payload']['result'];
@@ -225,9 +226,7 @@ class AppController extends GetxController {
       if (setBookmark != null) {
         detailClientStoreBookMark.value = !detailClientStoreBookMark.value;
       }
-      else {
-        print("에러다욧");
-      }
+
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -241,9 +240,14 @@ class AppController extends GetxController {
 
       final List<dynamic>? bookmarkData = res.data['payload']['result'];
 
-      if (bookmarkData != null) {
+    if (bookmarkData != null) {
         clientStoreBookMark.value =
             bookmarkData.map((map) => ClientStoreBookMarkModel.fromJson(map)).toList();
+
+        // 이거 되나
+        for (var bookMark in clientStoreBookMark) {
+          onlyBookMark.addIf(bookMark.bookmarkYn == 1, bookMark);
+        }
         clientStoreBookMark.refresh();
       }
     } catch (e) {
