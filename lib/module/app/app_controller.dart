@@ -49,7 +49,7 @@ class AppController extends GetxController {
     setMarker();
 
     pinnedStoreName.value =
-        pinnedStoreId != null ? stores[pinnedStoreId!].stroreName! : '';
+        pinnedStoreId != null ? stores[pinnedStoreId!].storeName! : '';
 
     ever(selectedTabIndex, (value) {
       switch (value) {
@@ -88,9 +88,11 @@ class AppController extends GetxController {
       logger.e(e.toString());
     }
   }
+
   void getLocationPermission() async {
     final locationPermissionStatus = await Permission.location.request();
   }
+
   ///뽑아온 Store 리스트[stores]에 따라 마커를 추가해준다.
   ///각 마커마다 onTap했을시, 해당하는 마커에 대한 데이터가 들어간다.
   void setMarker() async {
@@ -131,11 +133,10 @@ class AppController extends GetxController {
       isPinned.value = true;
       detailPinState.value = true;
       pinnedStoreId = selectedIndex;
-      pinnedStoreName.value = stores[pinnedStoreId!].stroreName!;
+      pinnedStoreName.value = stores[pinnedStoreId!].storeName!;
       Fluttertoast.showToast(msg: "선택하신 암장이 고정되었습니다.");
       return;
     }
-
 
     //핀한 암장 교체 확인 -> [updatePin], 취소 -> 변화 X
     Get.dialog(CommonDialog(
@@ -148,7 +149,7 @@ class AppController extends GetxController {
     appData.write("PIN", selectedIndex);
     pinnedStoreId = selectedIndex;
     detailPinState.value = true;
-    pinnedStoreName.value = stores[pinnedStoreId!].stroreName!;
+    pinnedStoreName.value = stores[pinnedStoreId!].storeName!;
   }
 
   void removePin() {

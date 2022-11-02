@@ -53,7 +53,12 @@ BoxDecoration shadowBoxDecoration = BoxDecoration(
   color: Colors.white,
   borderRadius: const BorderRadius.all(Radius.circular(RadiusSize.large)),
   border: Border.all(color: Colors.black26, width: 1.0),
+);
 
+BoxDecoration noShadowBoxDecoration = BoxDecoration(
+  color: Colors.white,
+  borderRadius: const BorderRadius.all(Radius.circular(RadiusSize.large)),
+  border: Border.all(color: Colors.black26, width: 1.0),
 );
 
 BoxDecoration imageSliderBoxDecoration = BoxDecoration(
