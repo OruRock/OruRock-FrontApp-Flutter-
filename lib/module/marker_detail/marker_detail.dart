@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:like_button/like_button.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/model/store_model.dart' as storeModel;
@@ -48,7 +49,6 @@ class MarkerDetail extends GetView<AppController> {
                       padding:
                           const EdgeInsets.symmetric(horizontal: GapSize.small),
                       child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               '${store?.storeName}',
@@ -59,63 +59,59 @@ class MarkerDetail extends GetView<AppController> {
                                 height: 1.3,
                               ),
                             ),
+                            Expanded(child: Container(),),
                             Obx(
-                              () => controller.detailPinState.value
-                                  ? IconButton(
-                                      padding: const EdgeInsets.only(
-                                          bottom: GapSize.xxxSmall),
-                                      constraints: const BoxConstraints(),
-                                      onPressed: () {
-                                        controller.removePin();
-                                      },
-                                      icon: const Icon(
-                                        Icons.push_pin,
-                                        size: 25,
-                                      ),
-                                    )
-                                  : IconButton(
-                                      padding: const EdgeInsets.only(
-                                          bottom: GapSize.xxxSmall),
-                                      constraints: const BoxConstraints(),
-                                      onPressed: () {
-                                        controller.setPin();
-                                      },
-                                      icon: const Icon(
-                                        Icons.push_pin_outlined,
-                                        size: 25,
-                                      ),
-                                    ),
+                              () => LikeButton(
+                                circleColor: const CircleColor(
+                                    start: Color(0xff00ddff),
+                                    end: Color(0xff0099cc)),
+                                bubblesColor: const BubblesColor(
+                                  dotPrimaryColor: Color(0xff33b5e5),
+                                  dotSecondaryColor: Color(0xff0099cc),
+                                ),
+                                likeBuilder: (bool isLiked) {
+                                  return Icon(
+                                    Icons.pin_drop,
+                                    color: isLiked ? Colors.black : Colors.grey,
+                                    size: 25,
+                                  );
+                                },
+                                isLiked: controller.detailPinState.value,
+                                onTap: (bool isLiked) async {
+                                  if (isLiked) {
+                                    controller.removePin();
+                                  } else {
+                                    controller.setPin();
+                                  }
+                                  return !isLiked;
+                                },
+                              ),
                             ),
                             Obx(
-                              () => controller.isLoading.value
-                                  ? CircularProgressIndicator()
-                                  : controller.detailClientStoreBookMark.value
-                                      ? IconButton(
-                                          padding: const EdgeInsets.only(
-                                              left: GapSize.xxxSmall,
-                                              bottom: GapSize.xxSmall),
-                                          constraints: const BoxConstraints(),
-                                          onPressed: () {
-                                            controller.updateBookMark(store);
-                                          },
-                                          icon: const Icon(
-                                            Icons.star,
-                                            size: 26,
-                                          ),
-                                        )
-                                      : IconButton(
-                                          padding: const EdgeInsets.only(
-                                              left: GapSize.xxxSmall,
-                                              bottom: GapSize.xxSmall),
-                                          constraints: const BoxConstraints(),
-                                          onPressed: () {
-                                            controller.updateBookMark(store);
-                                          },
-                                          icon: const Icon(
-                                            Icons.star_border,
-                                            size: 26,
-                                          ),
-                                        ),
+                              () => LikeButton(
+                                circleColor: const CircleColor(
+                                    start: Color(0xff00ddff),
+                                    end: Color(0xff0099cc)),
+                                bubblesColor: const BubblesColor(
+                                  dotPrimaryColor: Color(0xff33b5e5),
+                                  dotSecondaryColor: Color(0xff0099cc),
+                                ),
+                                likeBuilder: (bool isLiked) {
+                                  return Icon(
+                                    Icons.favorite,
+                                    color: isLiked
+                                        ? Colors.pinkAccent
+                                        : Colors.grey,
+                                    size: 25,
+                                  );
+                                },
+                                isLiked:
+                                    controller.detailClientStoreBookMark.value,
+                                onTap: (bool isLiked) async {
+                                  controller.updateBookMark(store);
+                                  return !isLiked;
+                                },
+                              ),
                             ),
                           ]),
                     ),

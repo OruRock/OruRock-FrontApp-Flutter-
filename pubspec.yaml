@@ -25,7 +25,8 @@ dependencies:
   animations: ^2.0.7
   auto_size_text: ^3.0.0
   flutter_staggered_animations: ^1.0.0
-
+  like_button: ^2.0.5
+  
   flutter_naver_map:
     git: https://github.com/note11g/flutter_naver_map.git
   google_mobile_ads: ^2.0.1
