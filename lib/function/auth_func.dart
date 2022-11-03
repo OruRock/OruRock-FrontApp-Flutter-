@@ -31,5 +31,6 @@ class AuthFunction extends GetxService {
     jwt = '';
     user = null;
     appData.remove("UID");
+    appData.remove("PIN");
   }
 }

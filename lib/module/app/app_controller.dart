@@ -193,11 +193,6 @@ class AppController extends GetxController {
     }
     isLoading.value = false;
   }
-
-  void signOut() {
-    auth.signOut();
-    Get.offAllNamed(Routes.login);
-  }
 }
 
 enum Tabs {
