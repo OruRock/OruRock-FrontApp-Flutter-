@@ -50,13 +50,16 @@ class MarkerDetail extends GetView<AppController> {
                           const EdgeInsets.symmetric(horizontal: GapSize.small),
                       child: Row(
                           children: [
-                            Text(
-                              '${store?.storeName}',
-                              style: const TextStyle(
-                                fontFamily: "NotoB",
-                                overflow: TextOverflow.ellipsis,
-                                fontSize: FontSize.large,
-                                height: 1.3,
+                            Expanded(
+                              flex: 7,
+                              child: Text(
+                                '${store?.storeName}',
+                                style: const TextStyle(
+                                  fontFamily: "NotoB",
+                                  overflow: TextOverflow.ellipsis,
+                                  fontSize: FontSize.large,
+                                  height: 1.3,
+                                ),
                               ),
                             ),
                             Expanded(child: Container(),),
@@ -83,7 +86,7 @@ class MarkerDetail extends GetView<AppController> {
                                   } else {
                                     controller.setPin();
                                   }
-                                  return !isLiked;
+                                  return controller.detailPinState.value;
                                 },
                               ),
                             ),
