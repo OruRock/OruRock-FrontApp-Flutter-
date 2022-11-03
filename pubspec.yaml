@@ -100,3 +100,6 @@ flutter:
     - family: NanumACR
       fonts:
         - asset: asset/font/nanum-square/NanumSquareOTF_acR.otf
+    - family: JungMock
+      fonts:
+        - asset: asset/font/SSRockRegular_otf.otf
