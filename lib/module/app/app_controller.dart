@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:dio/src/response.dart';
+import 'package:dio/src/response.dart' as Dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -42,8 +42,7 @@ class AppController extends GetxController {
   var detailPinState = false.obs;
 
   var detailClientStoreBookMark = false.obs;
-  var clientStoreBookMark = <ClientStoreBookMarkModel>[].obs;
-  var onlyBookMark = <ClientStoreBookMarkModel>[].obs;
+  var clientStoreBookMark = <StoreModel>[].obs;
 
   BannerAd? bannerAd;
   TextEditingController searchText = TextEditingController();
@@ -86,9 +85,12 @@ class AppController extends GetxController {
   ///암장 리스트 정보 API 연결 함수
   Future<void> getStoreList() async {
     try {
-      final res = await api.dio.get('/store/list');
+      final bookMarkData = {"uid": auth.user?.uid};
+      final res =
+          await api.dio.get('/store/list', queryParameters: bookMarkData);
 
       final List<dynamic>? data = res.data['payload']['result'];
+
       if (data != null) {
         stores.value = data.map((map) => StoreModel.fromJson(map)).toList();
       }
@@ -126,6 +128,7 @@ class AppController extends GetxController {
     selectedIndex = markerId; //selectedIndex 업데이트
 
     setDetailPinState();
+    setBookMarkState(stores[markerId]);
 
     Get.bottomSheet(MarkerDetail(store: stores[markerId]));
 
@@ -184,6 +187,14 @@ class AppController extends GetxController {
     showDetailInformation(markers[index], {"height": null, "width": null});
   }
 
+  void goMapToSelectedStoreAtBookMark(int index) async {
+    final storeIndex = stores.indexOf(clientStoreBookMark[index]);
+    selectedTabIndex.value = Tabs.nmap;
+    map.nmapController = Completer();
+    map.setCamera(markers[storeIndex].position!, 18.0);
+    showDetailInformation(markers[storeIndex], {"height": null, "width": null});
+  }
+
   Future<void> search() async {
     isLoading.value = true;
     try {
@@ -195,64 +206,63 @@ class AppController extends GetxController {
         searchStores.value =
             storeData.map((map) => StoreModel.fromJson(map)).toList();
       }
-      print(searchStores.value.length);
     } catch (e) {
       Logger().e(e.toString());
     }
     isLoading.value = false;
   }
 
-  void signOut() {
-    auth.signOut();
-    Get.offAllNamed(Routes.login);
+  // 즐겨찾기 아이콘 상태 관리 함수
+  void setBookMarkState(StoreModel? store) {
+    if (clientStoreBookMark.contains(store)) {
+      detailClientStoreBookMark.value = true;
+    } else {
+      detailClientStoreBookMark.value = false;
+    }
   }
 
   /// 즐겨찾기 버튼 누를 시에 추가, 삭제, 교체가 일어나는 함수
-  void setBookMarkState(int? storeId) async {
+  void updateBookMark(StoreModel? store) async {
+    isLoading.value = true;
     try {
-      final data = {"store_id": storeId, "uid": appData.read("UID")};
-      final res;
+      final data = {"store_id": store!.storeId, "uid": auth.user?.uid};
+      Dio.Response res;
+
       if (detailClientStoreBookMark.value) {
-        res = await api.dio.delete(
-            '/store/bookMark/', queryParameters: data);
+        res = await api.dio.delete('/store/bookMark', data: data);
+        clientStoreBookMark.remove(store);
+      } else {
+        res = await api.dio.post('/store/bookMark', data: data);
+        clientStoreBookMark.add(store);
       }
-      else {
-        res = await api.dio.post(
-            '/store/bookMark/', data: data );
-      }
-
-      final List<dynamic>? setBookmark = res.data['payload']['result'];
-
-      if (setBookmark != null) {
+      //성공 시
+      if (res.statusCode == 200 || res.statusCode == 201) {
         detailClientStoreBookMark.value = !detailClientStoreBookMark.value;
       }
-
     } catch (e) {
+      Fluttertoast.showToast(msg: "즐겨찾기 업데이트가 실패하였습니다.");
       Logger().e(e.toString());
+      isLoading.value = false;
     }
+    isLoading.value = false;
   }
 
   ///북마크 list 정보 API
   Future<void> getClientStoreBookMark() async {
     try {
-      final data = {"uid": appData.read("UID")};
-      final res = await api.dio.get('/store/list/', queryParameters: data);
-
-      final List<dynamic>? bookmarkData = res.data['payload']['result'];
-
-    if (bookmarkData != null) {
-        clientStoreBookMark.value =
-            bookmarkData.map((map) => ClientStoreBookMarkModel.fromJson(map)).toList();
-
-        // 이거 되나
-        for (var bookMark in clientStoreBookMark) {
-          onlyBookMark.addIf(bookMark.bookmarkYn == 1, bookMark);
+      for (var elem in stores) {
+        if (elem.bookmarkYn == 1) {
+          clientStoreBookMark.add(elem);
         }
-        clientStoreBookMark.refresh();
       }
     } catch (e) {
       Logger().e(e.toString());
     }
+  }
+
+  void signOut() {
+    auth.signOut();
+    Get.offAllNamed(Routes.login);
   }
 }
 

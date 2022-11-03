@@ -87,35 +87,35 @@ class MarkerDetail extends GetView<AppController> {
                                     ),
                             ),
                             Obx(
-                              () => controller.detailClientStoreBookMark.value
-                                  ? IconButton(
-                                      padding: const EdgeInsets.only(
-                                          left: GapSize.xxxSmall,
-                                          bottom: GapSize.xxSmall),
-                                      constraints: const BoxConstraints(),
-                                      onPressed: () {
-                                        controller
-                                            .setBookMarkState(store?.storeId);
-                                      },
-                                      icon: const Icon(
-                                        Icons.star,
-                                        size: 26,
-                                      ),
-                                    )
-                                  : IconButton(
-                                      padding: const EdgeInsets.only(
-                                          left: GapSize.xxxSmall,
-                                          bottom: GapSize.xxSmall),
-                                      constraints: const BoxConstraints(),
-                                      onPressed: () {
-                                        controller
-                                            .setBookMarkState(store?.storeId);
-                                      },
-                                      icon: const Icon(
-                                        Icons.star_border,
-                                        size: 26,
-                                      ),
-                                    ),
+                              () => controller.isLoading.value
+                                  ? CircularProgressIndicator()
+                                  : controller.detailClientStoreBookMark.value
+                                      ? IconButton(
+                                          padding: const EdgeInsets.only(
+                                              left: GapSize.xxxSmall,
+                                              bottom: GapSize.xxSmall),
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {
+                                            controller.updateBookMark(store);
+                                          },
+                                          icon: const Icon(
+                                            Icons.star,
+                                            size: 26,
+                                          ),
+                                        )
+                                      : IconButton(
+                                          padding: const EdgeInsets.only(
+                                              left: GapSize.xxxSmall,
+                                              bottom: GapSize.xxSmall),
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {
+                                            controller.updateBookMark(store);
+                                          },
+                                          icon: const Icon(
+                                            Icons.star_border,
+                                            size: 26,
+                                          ),
+                                        ),
                             ),
                           ]),
                     ),

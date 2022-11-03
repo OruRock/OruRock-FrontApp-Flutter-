@@ -134,47 +134,26 @@ class Home extends GetView<AppController> {
                 style: TextStyle(fontSize: FontSize.large, fontFamily: "NotoB"),
               ),
             ),
-            _buildListTile(),
-            _buildListTile(),
-            // Obx(
-            //     () => ListView.builder(
-            //         physics: const NeverScrollableScrollPhysics(),
-            //         shrinkWrap: true,
-            //         itemCount: controller.onlyBookMark.value.length,
-            //         itemBuilder: (BuildContext context, int index) {
-            //           return GestureDetector(
-            //             onTap: () {
-            //               controller.goMapToSelectedStore(index);
-            //             },
-            //             child: Column(
-            //               children: [
-            //                 Expanded(
-            //                   child: Container(
-            //                     decoration: BoxDecoration(
-            //                       boxShadow: [
-            //                         BoxShadow(
-            //                           color:
-            //                             Colors.grey.withOpacity(0.2),
-            //                           spreadRadius: 3,
-            //                           blurRadius: 5,
-            //                           offset: const Offset(0,
-            //                               0), // changes position of shadow
-            //                         ),
-            //                       ],
-            //                       color: Colors.white,
-            //                       borderRadius:
-            //                           const BorderRadius.vertical(
-            //                               top: Radius.circular(
-            //                                   RadiusSize.large))),
-            //                     alignment: Alignment.center
-            //                   ),
-            //                 ),
-            //               ],
-            //             )
-            //           );
-            //         },
-            //     ),
-            //   ),
+            Obx(
+                () => Expanded(
+                  child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: controller.clientStoreBookMark.value.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () {
+                            controller.goMapToSelectedStoreAtBookMark(index);
+                          },
+                          child: ListTile(
+                            title: Text(controller.clientStoreBookMark[index].storeName!),
+                            subtitle: Text(controller.clientStoreBookMark[index].storePhone!),
+                          )
+                        );
+                      },
+                  ),
+                ),
+              ),
           ],
         ),
       ),
