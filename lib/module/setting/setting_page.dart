@@ -162,14 +162,26 @@ class Setting extends GetView<SettingController> {
                   width: Get.width,
                   child: GestureDetector(
                     onTap: () {},
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: GapSize.small),
-                      child: Text(
-                        '앱 버전',
-                        style: TextStyle(
-                            fontSize: FontSize.medium,
-                            fontFamily: "NotoR",
-                            color: Colors.black87),
+                    child:  Padding(
+                      padding: const EdgeInsets.symmetric(vertical: GapSize.small),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            '앱 버전',
+                            style: TextStyle(
+                                fontSize: FontSize.medium,
+                                fontFamily: "NotoR",
+                                color: Colors.black87),
+                          ),
+                          Text(
+                            'v ${controller.appVersion.value}',
+                            style: const TextStyle(
+                                fontSize: FontSize.medium,
+                                fontFamily: "NotoR",
+                                color: Colors.grey),
+                          ),
+                        ],
                       ),
                     ),
                   ),

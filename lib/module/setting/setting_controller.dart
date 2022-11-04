@@ -7,6 +7,7 @@ import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/function/map_func.dart';
 import 'package:oru_rock/helper/nickname_checker.dart';
 import 'package:oru_rock/routes.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingController extends GetxController {
   final api = Get.find<ApiFunction>();
@@ -15,10 +16,13 @@ class SettingController extends GetxController {
   var nickname = ''.obs;
   final nicknameController = TextEditingController();
   var isLoading = false.obs;
+  var appVersion = ''.obs;
 
   @override
   void onInit() async {
+    final packageInfo = await PackageInfo.fromPlatform();
     setNicknameAtUserModel();
+    appVersion.value = packageInfo.version;
   }
 
   void signOut() {
