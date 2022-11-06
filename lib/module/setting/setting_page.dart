@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
+import 'package:oru_rock/module/setting/bookmark_list.dart';
 import 'package:oru_rock/module/setting/change_nickname.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
 
@@ -97,7 +98,9 @@ class Setting extends GetView<SettingController> {
                 SizedBox(
                   width: Get.width,
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(const BookmarkList());
+                    },
                     child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: GapSize.small),
                       child: Text(
