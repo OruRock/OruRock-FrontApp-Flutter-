@@ -1,14 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:like_button/like_button.dart';
 import 'package:oru_rock/common_widget/banner_ad.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
-import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
 import 'package:oru_rock/module/home/fragment/home_service_top.dart';
-import 'package:oru_rock/routes.dart';
+import 'package:flutter/material.dart';
 
 class Home extends GetView<AppController> {
   const Home({Key? key}) : super(key: key);
@@ -136,7 +135,7 @@ class Home extends GetView<AppController> {
             ),
             Obx(
                 () => Expanded(
-                  child: ListView.builder(
+                  child: ListView.separated(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: controller.clientStoreBookMark.value.length,
@@ -146,6 +145,7 @@ class Home extends GetView<AppController> {
                             controller.goMapToSelectedStoreAtBookMark(index);
                           },
                           child: ListTile(
+
                             leading: SizedBox(
                               width: 50,
                               height: 50,
@@ -162,9 +162,38 @@ class Home extends GetView<AppController> {
                             ),
                             title: Text(controller.clientStoreBookMark[index].storeName!),
                             subtitle: Text(controller.clientStoreBookMark[index].storePhone!),
-                          )
+                            trailing: SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: LikeButton(
+                                circleColor: const CircleColor(
+                                    start: Color(0xff00ddff),
+                                    end: Color(0xff0099cc)),
+                                bubblesColor: const BubblesColor(
+                                  dotPrimaryColor: Color(0xff33b5e5),
+                                  dotSecondaryColor: Color(0xff0099cc),
+                                ),
+                                likeBuilder: (bool isLiked) {
+                                  return Icon(
+                                    Icons.favorite,
+                                    color: isLiked
+                                        ? Colors.pinkAccent
+                                        : Colors.grey,
+                                    size: 25,
+                                  );
+                                  },
+                                isLiked:
+                                controller.detailClientStoreBookMark.value,
+                                onTap: (bool isLiked) async {
+                                  controller.updateBookMark(controller.clientStoreBookMark[index]);
+                                  return isLiked;
+                                  },
+                              ),
+                            ),
+                          ),
                         );
-                      },
+                        },
+                    separatorBuilder: (BuildContext context, int index) => const Divider(indent: 10, endIndent: 10),
                   ),
                 ),
               ),
