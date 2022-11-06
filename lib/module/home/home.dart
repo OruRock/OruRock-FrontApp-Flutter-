@@ -146,6 +146,20 @@ class Home extends GetView<AppController> {
                             controller.goMapToSelectedStoreAtBookMark(index);
                           },
                           child: ListTile(
+                            leading: SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: GapSize.xxSmall),
+                                child: controller.clientStoreBookMark[index].imageUrl == null
+                                    ? Image.asset(
+                                      'asset/image/logo/splash_logo.png')
+                                    : Image.network(
+                                      controller.clientStoreBookMark[index].imageUrl!,
+                                ),
+                              ),
+                            ),
                             title: Text(controller.clientStoreBookMark[index].storeName!),
                             subtitle: Text(controller.clientStoreBookMark[index].storePhone!),
                           )
