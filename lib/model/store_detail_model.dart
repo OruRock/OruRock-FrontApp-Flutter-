@@ -61,7 +61,7 @@ class Image {
 }
 
 class Price {
-  int? price;
+  String? price;
   String? priceDescription;
 
   Price({
