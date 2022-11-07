@@ -134,8 +134,7 @@ class Home extends GetView<AppController> {
               ),
             ),
             Obx(
-                () => Expanded(
-                  child: ListView.separated(
+                () => ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: controller.clientStoreBookMark.value.length,
@@ -193,20 +192,10 @@ class Home extends GetView<AppController> {
                           ),
                         );
                         },
-                    separatorBuilder: (BuildContext context, int index) => const Divider(indent: 10, endIndent: 10),
                   ),
-                ),
               ),
           ],
         ),
-      ),
-    );
-  }
-
-  _buildListTile() {
-    return const Center(
-      child: ListTile(
-        title: Text('암장 1'),
       ),
     );
   }
