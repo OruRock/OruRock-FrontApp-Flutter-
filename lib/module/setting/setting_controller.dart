@@ -15,6 +15,20 @@ class SettingController extends GetxController {
   final auth = Get.find<AuthFunction>();
   var nickname = ''.obs;
   final nicknameController = TextEditingController();
+  List<String> levelImage = [
+    'asset/image/icon/profile/level_red.png',
+    'asset/image/icon/profile/level_orange.png',
+    'asset/image/icon/profile/level_yellow.png',
+    'asset/image/icon/profile/level_green.png',
+    'asset/image/icon/profile/level_blue.png',
+    'asset/image/icon/profile/level_navy.png',
+    'asset/image/icon/profile/level_purple.png',
+    'asset/image/icon/profile/level_white.png',
+    'asset/image/icon/profile/level_grey.png',
+    'asset/image/icon/profile/level_black.png',
+    'asset/image/icon/profile/level_master.png',
+  ];
+  final userLevel = 0.obs;
   var isLoading = false.obs;
   var appVersion = ''.obs;
 
@@ -22,6 +36,7 @@ class SettingController extends GetxController {
   void onInit() async {
     final packageInfo = await PackageInfo.fromPlatform();
     setNicknameAtUserModel();
+    userLevel.value = auth.user!.userLevel!;
     appVersion.value = packageInfo.version;
   }
 
@@ -34,7 +49,7 @@ class SettingController extends GetxController {
     isLoading.value = true;
     final changeNickname = nicknameController.text.trim();
     try {
-      if(!nickNameChecker(changeNickname)) {
+      if (!nickNameChecker(changeNickname)) {
         Fluttertoast.showToast(msg: "닉네임이 부적절하거나 이미 사용중인 닉네임입니다.");
         isLoading.value = false;
         return;
@@ -48,11 +63,11 @@ class SettingController extends GetxController {
 
       final res = await api.dio.post('/user', data: data);
 
-      if(res.statusCode == 200 || res.statusCode == 201) {
+      if (res.statusCode == 200 || res.statusCode == 201) {
         auth.user!.displayName = changeNickname;
         setNicknameAtUserModel();
       }
-    } catch(e) {
+    } catch (e) {
       Logger().e(e.toString());
       isLoading.value = false;
       return;
@@ -65,5 +80,30 @@ class SettingController extends GetxController {
 
   void setNicknameAtUserModel() {
     nickname.value = auth.user!.displayName!;
+  }
+
+  void setUserLevel(int index) async {
+    isLoading.value = true;
+    try {
+      final data = {
+        "uid": auth.user!.uid,
+        "user_email": auth.user!.email,
+        "user_level": index
+      };
+
+      final res = await api.dio.post('/user', data: data);
+
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        auth.user!.userLevel = index;
+        userLevel.value = index;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      isLoading.value = false;
+      return;
+    }
+    isLoading.value = false;
+    Get.back();
+    Fluttertoast.showToast(msg: "프로필 설정이 완료되었습니다.");
   }
 }

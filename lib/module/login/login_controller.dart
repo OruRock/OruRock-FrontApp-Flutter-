@@ -108,8 +108,8 @@ class LoginController extends GetxController {
       final res = await api.dio.post('/login', data: data);
 
       userAuth.setJwt(res.data['payload']['result']);
-      userAuth.setUser(res.data['payload']['nick_name'],
-          user.kakaoAccount?.email, kakao_res.data['payload']['uid']);
+
+      userAuth.setUser(res.data['payload']['user']['user_nickname'], user.kakaoAccount?.email, kakao_res.data['payload']['uid'], res.data['payload']['user']['user_level']);
 
       if(kakao_res.data['payload']['isNewUser']) {
         return LoginResult(status: LoginStatus.newUser);
@@ -194,7 +194,7 @@ class LoginController extends GetxController {
       final res = await api.dio.post('/login', data: data);
 
       userAuth.setJwt(res.data['payload']['result']);
-      userAuth.setUser(res.data['payload']['nick_name'], res.data['payload']['email'], user.uid);
+      userAuth.setUser(res.data['payload']['user']['user_nickname'], res.data['payload']['user']['user_email'], user.uid, res.data['payload']['user']['user_level']);
 
       if(authResult.additionalUserInfo!.isNewUser) {
         return LoginResult(status: LoginStatus.newUser);
@@ -226,7 +226,7 @@ class LoginController extends GetxController {
       final res = await api.dio.post('/login', data: data);
 
       userAuth.setJwt(res.data['payload']['result']);
-      userAuth.setUser(res.data['payload']['nick_name'], res.data['payload']['email'], cachedUid);
+      userAuth.setUser(res.data['payload']['user']['user_nickname'], res.data['payload']['user']['user_email'], cachedUid, res.data['payload']['user']['user_level']);
 
       Get.offAllNamed(Routes.app);
     }
