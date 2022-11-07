@@ -81,7 +81,7 @@ class AppController extends GetxController {
   }
   _searchScrollListener() {
     if (searchScrollController.offset >=
-        searchScrollController.position.maxScrollExtent * 0.8 &&
+        searchScrollController.position.maxScrollExtent &&
         !searchScrollController.position.outOfRange &&
         !isEnd.value) {
       ++searchListPage;
