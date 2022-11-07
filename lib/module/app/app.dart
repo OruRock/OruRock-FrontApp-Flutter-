@@ -46,6 +46,8 @@ class App extends GetView<AppController> {
                 onTap: (index) {
                   controller.selectedTabIndex.value = Tabs.getTabByIndex(index);
                 },
+                showSelectedLabels: false,
+                showUnselectedLabels: false,
                 currentIndex: controller.selectedTabIndex.value.index,
                 type: BottomNavigationBarType.fixed,
                 unselectedLabelStyle: const TextStyle(
