@@ -237,7 +237,7 @@ class LoginController extends GetxController {
     isLoading.value = true;
     final changeNickname = nicknameController.text.trim();
     try {
-      if(!nickNameChecker(changeNickname)) {
+      if(!await nickNameChecker(changeNickname)) {
         Fluttertoast.showToast(msg: "닉네임이 부적절하거나 이미 사용중인 닉네임입니다.");
         isLoading.value = false;
         return;
