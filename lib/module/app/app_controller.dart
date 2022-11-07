@@ -214,11 +214,11 @@ class AppController extends GetxController {
 
   // 즐겨찾기 아이콘 상태 관리 함수
   void setBookMarkState(StoreModel? store) {
-    if (clientStoreBookMark.contains(store)) {
-      detailClientStoreBookMark.value = true;
-    } else {
-      detailClientStoreBookMark.value = false;
-    }
+      if (clientStoreBookMark.contains(store)) {
+        detailClientStoreBookMark.value = true;
+      } else {
+        detailClientStoreBookMark.value = false;
+      }
   }
 
   /// 즐겨찾기 버튼 누를 시에 추가, 삭제, 교체가 일어나는 함수

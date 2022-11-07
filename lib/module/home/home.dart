@@ -41,9 +41,7 @@ class Home extends GetView<AppController> {
                     maxLines: 2,
                     minFontSize: FontSize.medium,
                     maxFontSize: FontSize.large,
-                    style: const TextStyle(
-                        fontFamily: "NotoM",
-                        height: 1.7),
+                    style: const TextStyle(fontFamily: "NotoM", height: 1.7),
                   ),
                 ],
               ),
@@ -134,79 +132,91 @@ class Home extends GetView<AppController> {
               ),
             ),
             Obx(
-                () => Expanded(
-                  child: ListView.separated(
+              () => controller.isLoading.value
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: controller.clientStoreBookMark.value.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () {
-                            controller.goMapToSelectedStoreAtBookMark(index);
-                          },
-                          child: ListTile(
-
-                            leading: SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: GapSize.xxSmall),
-                                child: controller.clientStoreBookMark[index].imageUrl == null
-                                    ? Image.asset(
-                                      'asset/image/logo/splash_logo.png')
-                                    : Image.network(
-                                      controller.clientStoreBookMark[index].imageUrl!,
+                        return Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                controller
+                                    .goMapToSelectedStoreAtBookMark(index);
+                              },
+                              child: ListTile(
+                                leading: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: GapSize.xxSmall),
+                                    child: controller.clientStoreBookMark[index]
+                                                .imageUrl ==
+                                            null
+                                        ? Image.asset(
+                                            'asset/image/logo/splash_logo.png')
+                                        : Image.network(
+                                            controller
+                                                .clientStoreBookMark[index]
+                                                .imageUrl!,
+                                          ),
+                                  ),
+                                ),
+                                title: Text(controller
+                                    .clientStoreBookMark[index].storeName!),
+                                subtitle: Text(controller
+                                    .clientStoreBookMark[index].storePhone!),
+                                trailing: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: LikeButton(
+                                    circleColor: const CircleColor(
+                                        start: Color(0xff00ddff),
+                                        end: Color(0xff0099cc)),
+                                    bubblesColor: const BubblesColor(
+                                      dotPrimaryColor: Color(0xff33b5e5),
+                                      dotSecondaryColor: Color(0xff0099cc),
+                                    ),
+                                    likeBuilder: (bool isLiked) {
+                                      return Icon(
+                                        Icons.favorite,
+                                        color: isLiked
+                                            ? Colors.pinkAccent
+                                            : Colors.grey,
+                                        size: 25,
+                                      );
+                                    },
+                                    isLiked: true,
+                                    onTap: (bool isLiked) async {
+                                      controller.detailClientStoreBookMark
+                                          .value = true;
+                                      controller.updateBookMark(controller
+                                          .clientStoreBookMark.value[index]);
+                                      return !isLiked;
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
-                            title: Text(controller.clientStoreBookMark[index].storeName!),
-                            subtitle: Text(controller.clientStoreBookMark[index].storePhone!),
-                            trailing: SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: LikeButton(
-                                circleColor: const CircleColor(
-                                    start: Color(0xff00ddff),
-                                    end: Color(0xff0099cc)),
-                                bubblesColor: const BubblesColor(
-                                  dotPrimaryColor: Color(0xff33b5e5),
-                                  dotSecondaryColor: Color(0xff0099cc),
-                                ),
-                                likeBuilder: (bool isLiked) {
-                                  return Icon(
-                                    Icons.favorite,
-                                    color: isLiked
-                                        ? Colors.pinkAccent
-                                        : Colors.grey,
-                                    size: 25,
-                                  );
-                                  },
-                                isLiked:
-                                controller.detailClientStoreBookMark.value,
-                                onTap: (bool isLiked) async {
-                                  controller.updateBookMark(controller.clientStoreBookMark[index]);
-                                  return isLiked;
-                                  },
+                            const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: GapSize.medium),
+                              child: Divider(
+                                height: 1.0,
+                                thickness: 1.0,
+                                color: Colors.grey,
                               ),
                             ),
-                          ),
+                          ],
                         );
-                        },
-                    separatorBuilder: (BuildContext context, int index) => const Divider(indent: 10, endIndent: 10),
-                  ),
-                ),
-              ),
+                      },
+                    ),
+            ),
           ],
         ),
-      ),
-    );
-  }
-
-  _buildListTile() {
-    return const Center(
-      child: ListTile(
-        title: Text('암장 1'),
       ),
     );
   }
