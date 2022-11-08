@@ -2,6 +2,7 @@ class StoreDetailModel {
   List<Image>? image;
   int? total;
   List<Price>? price;
+  List<OpenTime>? openTime;
   List<Comment>? comment;
 
   StoreDetailModel({this.image, this.total, this.comment});
@@ -18,6 +19,12 @@ class StoreDetailModel {
       price = <Price>[];
       json['price'].forEach((v) {
         price!.add(Price.fromJson(v));
+      });
+    }
+    if (json['open_time'] != null) {
+      openTime = <OpenTime>[];
+      json['open_time'].forEach((v) {
+        openTime!.add(OpenTime.fromJson(v));
       });
     }
     if (json['comment'] != null) {
@@ -78,6 +85,32 @@ class Price {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['price'] = price;
     data['price_description'] = priceDescription;
+    return data;
+  }
+}
+
+class OpenTime {
+  int? dayType;
+  String? dayName;
+  String? openTime;
+
+  OpenTime({
+    this.dayType,
+    this.dayName,
+    this.openTime,
+  });
+
+  OpenTime.fromJson(Map<String, dynamic> json) {
+    dayType = json['day_type'];
+    dayName = json['day_name'];
+    openTime = json['open_time'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['day_type'] = dayType;
+    data['day_name'] = dayName;
+    data['open_time'] = openTime;
     return data;
   }
 }

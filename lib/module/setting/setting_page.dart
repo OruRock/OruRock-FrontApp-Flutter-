@@ -86,7 +86,8 @@ class Setting extends GetView<SettingController> {
                 SizedBox(
                   width: Get.width,
                   child: GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      controller.myReviewList.value = await controller.getMyReview();
                       Get.to(const MyReviewList());
                     },
                     child: const Padding(

@@ -74,22 +74,16 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
             title: "이용 시간",
             content: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
+              children: List.generate(
+                  controller.detailModel.value!.openTime!.length, (index) {
+                return Padding(
                   padding: EdgeInsets.only(left: WidthWithRatio.small),
                   child: Text(
-                    '평일 : ${store?.storeOpentime}',
+                    '${controller.detailModel.value!.openTime![index].dayName} : ${controller.detailModel.value!.openTime![index].openTime}',
                     style: regularNanumTextStyle,
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: WidthWithRatio.small),
-                  child: Text(
-                    '주말 : ${store?.storeOpentime}',
-                    style: regularNanumTextStyle,
-                  ),
-                ),
-              ],
+                );
+              }),
             ),
           ),
           Divider(

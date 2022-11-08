@@ -40,7 +40,6 @@ class SettingController extends GetxController {
     setNicknameAtUserModel();
     userLevel.value = auth.user!.userLevel!;
     appVersion.value = packageInfo.version;
-    myReviewList = getMyReview() as RxList<Comment>;
   }
 
   void signOut() {
@@ -109,19 +108,33 @@ class SettingController extends GetxController {
     Fluttertoast.showToast(msg: "프로필 설정이 완료되었습니다.");
   }
 
-  Future<List<Comment>?> getMyReview() async {
+  Future<List<Comment>> getMyReview() async {
+    List<Comment> comment = [];
     try {
       final data = {"uid": auth.user?.uid, "page": 1};
       final res = await api.dio.get('/store/myReview', queryParameters: data);
 
       final List<dynamic>? reviewData = res.data['payload']['result'];
       if (reviewData != null) {
-        List<Comment> comment = reviewData.map((map) => Comment.fromJson(map)).toList();
+        comment = reviewData.map((map) => Comment.fromJson(map)).toList();
         return comment;
       }
     } catch (e) {
       Logger().e(e.toString());
     }
-    return null;
+    return comment;
+  }
+
+
+
+  Future<void> removeCommentAtMyReview(Comment comment) async {
+    final data = {"comment_id": comment.commentId.toString(), "uid": auth.user!.uid};
+    final res = await api.dio.delete('/store/comment', queryParameters: data);
+    if(res.statusCode == 200 || res.statusCode == 201) {
+      myReviewList.remove(comment);
+      Fluttertoast.showToast(msg: "선택하신 리뷰가 삭제되었습니다.");
+      return;
+    }
+    Fluttertoast.showToast(msg: "리뷰 삭제에 실패하였습니다.");
   }
 }
