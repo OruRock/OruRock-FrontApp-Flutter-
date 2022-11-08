@@ -121,7 +121,7 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
                 return Padding(
                   padding: EdgeInsets.only(left: WidthWithRatio.small),
                   child: Text(
-                    '${controller.detailModel.value!.price![index].priceDescription} : ${controller.detailModel.value!.price![index].price}원',
+                    '${controller.detailModel.value!.price![index].priceDescription} : ${controller.detailModel.value!.price![index].price}',
                     style: regularNanumTextStyle,
                   ),
                 );
