@@ -47,7 +47,7 @@ class MarkerDetail extends GetView<AppController> {
                   children: [
                     Padding(
                       padding:
-                          const EdgeInsets.symmetric(horizontal: GapSize.small),
+                          const EdgeInsets.symmetric(horizontal: GapSize.xxxSmall),
                       child: Row(
                           children: [
                             Expanded(
@@ -74,9 +74,9 @@ class MarkerDetail extends GetView<AppController> {
                                 ),
                                 likeBuilder: (bool isLiked) {
                                   return Icon(
-                                    Icons.pin_drop,
-                                    color: isLiked ? Colors.black : Colors.grey,
-                                    size: 25,
+                                    Icons.push_pin,
+                                    color: isLiked ? Colors.redAccent : Colors.grey,
+                                    size: 23,
                                   );
                                 },
                                 isLiked: controller.detailPinState.value,
@@ -101,9 +101,9 @@ class MarkerDetail extends GetView<AppController> {
                                 ),
                                 likeBuilder: (bool isLiked) {
                                   return Icon(
-                                    Icons.favorite,
+                                    Icons.stars,
                                     color: isLiked
-                                        ? Colors.pinkAccent
+                                        ? Colors.yellow[600]
                                         : Colors.grey,
                                     size: 25,
                                   );
