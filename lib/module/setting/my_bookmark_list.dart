@@ -13,47 +13,43 @@ class MyBookmarkList extends GetView<SettingController> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text(
-              'My 즐겨찾기',
-              style: TextStyle(
-                  fontFamily: "NoteB",
-                  fontSize: FontSize.xLarge,
-                  height: 1,
-                  color: Colors.black),
-            ),
-            iconTheme: const IconThemeData(
-              color: Colors.black,
-            ),
-            backgroundColor: Colors.white,
-            elevation: 1,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'My 즐겨찾기',
+            style: TextStyle(
+                fontFamily: "NoteB",
+                fontSize: FontSize.xLarge,
+                height: 1,
+                color: Colors.black),
           ),
-            body: ListView(
-                children: [
-                  Obx(
-                        () => Expanded(
-                          child: ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            // itemCount: controller.clientStoreBookMark.value.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                  onTap: () {
-                                    // controller.goMapToSelectedStoreAtBookMark(index);
-                                    },
-                                  child: ListTile(
-                                    // title: Text(controller.clientStoreBookMark[index].storeName!),
-                                    // subtitle: Text(controller.clientStoreBookMark[index].storePhone!),
-                                  ),
-                              );
-                            },
-                          ),
-                        ),
-                  ),
-                ],
-            )
+          iconTheme: const IconThemeData(
+            color: Colors.black,
+          ),
+          backgroundColor: Colors.white,
+          elevation: 1,
         ),
+        body: Obx(
+          () => ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: controller.app.clientStoreBookMark.value.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                onTap: () {
+                  controller.app.goMapToSelectedStoreAtBookMark(index);
+                },
+                child: ListTile(
+                  title: Text(
+                      controller.app.clientStoreBookMark[index].storeName!),
+                  subtitle: Text(
+                      controller.app.clientStoreBookMark[index].storePhone!),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:oru_rock/common_widget/banner_ad.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
+import 'package:oru_rock/module/home/fragment/home_favorites.dart';
 import 'package:oru_rock/module/home/fragment/home_service_top.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class Home extends GetView<AppController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFFFFFFFF),
+        backgroundColor: Colors.grey[100],
         body: ListView(
           children: [
             SizedBox(
@@ -120,98 +121,7 @@ class Home extends GetView<AppController> {
                 child: const Center(child: BannerAdWidget()),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: GapSize.medium, vertical: GapSize.small),
-              child: Text(
-                '즐겨찾는 암장',
-                style: TextStyle(fontSize: FontSize.large, fontFamily: "NotoB"),
-              ),
-            ),
-            Obx(
-              () => controller.isLoading.value
-                  ? const Center(child: CircularProgressIndicator())
-                  : ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: controller.clientStoreBookMark.value.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                controller
-                                    .goMapToSelectedStoreAtBookMark(index);
-                              },
-                              child: ListTile(
-                                leading: SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: GapSize.xxSmall),
-                                    child: controller.clientStoreBookMark[index]
-                                                .imageUrl ==
-                                            null
-                                        ? Image.asset(
-                                            'asset/image/logo/splash_logo.png')
-                                        : Image.network(
-                                            controller
-                                                .clientStoreBookMark[index]
-                                                .imageUrl!,
-                                          ),
-                                  ),
-                                ),
-                                title: Text(controller
-                                    .clientStoreBookMark[index].storeName!),
-                                subtitle: Text(controller
-                                    .clientStoreBookMark[index].storePhone!),
-                                trailing: SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: LikeButton(
-                                    circleColor: const CircleColor(
-                                        start: Color(0xff00ddff),
-                                        end: Color(0xff0099cc)),
-                                    bubblesColor: const BubblesColor(
-                                      dotPrimaryColor: Color(0xff33b5e5),
-                                      dotSecondaryColor: Color(0xff0099cc),
-                                    ),
-                                    likeBuilder: (bool isLiked) {
-                                      return Icon(
-                                        Icons.favorite,
-                                        color: isLiked
-                                            ? Colors.pinkAccent
-                                            : Colors.grey,
-                                        size: 25,
-                                      );
-                                    },
-                                    isLiked: true,
-                                    onTap: (bool isLiked) async {
-                                      controller.detailClientStoreBookMark
-                                          .value = true;
-                                      controller.updateBookMark(controller
-                                          .clientStoreBookMark.value[index]);
-                                      return !isLiked;
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: GapSize.medium),
-                              child: Divider(
-                                height: 1.0,
-                                thickness: 1.0,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-            ),
+            HomeFavorites(),
           ],
         ),
       ),

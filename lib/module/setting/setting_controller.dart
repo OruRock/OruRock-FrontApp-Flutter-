@@ -6,6 +6,7 @@ import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/function/map_func.dart';
 import 'package:oru_rock/helper/nickname_checker.dart';
+import 'package:oru_rock/module/app/app_controller.dart';
 import 'package:oru_rock/routes.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:oru_rock/model/store_detail_model.dart';
@@ -14,6 +15,8 @@ class SettingController extends GetxController {
   final api = Get.find<ApiFunction>();
   final map = Get.find<MapFunction>();
   final auth = Get.find<AuthFunction>();
+  final app = Get.find<AppController>();
+
   var nickname = ''.obs;
   final nicknameController = TextEditingController();
   List<String> levelImage = [

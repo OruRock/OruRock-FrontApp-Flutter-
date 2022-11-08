@@ -44,21 +44,26 @@ const TextStyle reviewContentTextStyle =
 BoxDecoration shadowBoxDecoration = BoxDecoration(
   boxShadow: [
     BoxShadow(
-      color: Colors.grey.withOpacity(0.2),
-      spreadRadius: 3,
-      blurRadius: 5,
+      color: Colors.grey.withOpacity(0.1),
+      spreadRadius: 1,
+      blurRadius: 3,
       offset: const Offset(0, 0), // changes position of shadow
     )
   ],
   color: Colors.white,
   borderRadius: const BorderRadius.all(Radius.circular(RadiusSize.large)),
-  border: Border.all(color: Colors.black26, width: 1.0),
 );
 
 BoxDecoration noShadowBoxDecoration = BoxDecoration(
   color: Colors.white,
   borderRadius: const BorderRadius.all(Radius.circular(RadiusSize.large)),
   border: Border.all(color: Colors.black26, width: 1.0),
+);
+
+BoxDecoration searchListBoxDecoration = BoxDecoration(
+  color: Colors.white,
+  borderRadius: const BorderRadius.all(Radius.circular(RadiusSize.large)),
+  border: Border.all(color: Colors.black, width: 0.5),
 );
 
 BoxDecoration imageSliderBoxDecoration = BoxDecoration(
