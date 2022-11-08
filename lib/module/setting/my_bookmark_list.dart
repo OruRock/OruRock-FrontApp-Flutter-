@@ -7,8 +7,8 @@ import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
 import '../../constant/style/size.dart';
 
-class BookmarkList extends GetView<SettingController> {
-  const BookmarkList({Key? key}) : super(key: key);
+class MyBookmarkList extends GetView<SettingController> {
+  const MyBookmarkList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +18,10 @@ class BookmarkList extends GetView<SettingController> {
             title: const Text(
               'My 즐겨찾기',
               style: TextStyle(
-                fontFamily: "NoteB",
-                fontSize: FontSize.xLarge,
-                height: 1,
-                color: Colors.black),
+                  fontFamily: "NoteB",
+                  fontSize: FontSize.xLarge,
+                  height: 1,
+                  color: Colors.black),
             ),
             iconTheme: const IconThemeData(
               color: Colors.black,

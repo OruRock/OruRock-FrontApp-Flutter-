@@ -8,6 +8,7 @@ import 'package:oru_rock/function/map_func.dart';
 import 'package:oru_rock/helper/nickname_checker.dart';
 import 'package:oru_rock/routes.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:oru_rock/model/store_detail_model.dart';
 
 class SettingController extends GetxController {
   final api = Get.find<ApiFunction>();
@@ -31,6 +32,7 @@ class SettingController extends GetxController {
   final userLevel = 0.obs;
   var isLoading = false.obs;
   var appVersion = ''.obs;
+  var myReviewList = <Comment>[].obs;
 
   @override
   void onInit() async {
@@ -38,6 +40,7 @@ class SettingController extends GetxController {
     setNicknameAtUserModel();
     userLevel.value = auth.user!.userLevel!;
     appVersion.value = packageInfo.version;
+    myReviewList = getMyReview() as RxList<Comment>;
   }
 
   void signOut() {
@@ -104,5 +107,21 @@ class SettingController extends GetxController {
     isLoading.value = false;
     Get.back();
     Fluttertoast.showToast(msg: "프로필 설정이 완료되었습니다.");
+  }
+
+  Future<List<Comment>?> getMyReview() async {
+    try {
+      final data = {"uid": auth.user?.uid, "page": 1};
+      final res = await api.dio.get('/store/myReview', queryParameters: data);
+
+      final List<dynamic>? reviewData = res.data['payload']['result'];
+      if (reviewData != null) {
+        List<Comment> comment = reviewData.map((map) => Comment.fromJson(map)).toList();
+        return comment;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+    return null;
   }
 }
