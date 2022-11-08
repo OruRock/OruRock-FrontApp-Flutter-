@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
@@ -33,9 +34,15 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
               const SizedBox(
                 width: GapSize.xxSmall,
               ),
-              Text(
-                '${store?.storeAddr}',
-                style: regularNanumDetailPageTextStyle,
+              Expanded(
+                child: Text(
+                  '${store?.storeAddr}',
+                  style: const TextStyle(
+                    fontFamily: "NotoR",
+                    fontSize: FontSize.small,
+                    overflow: TextOverflow.clip,
+                  ),
+                ),
               ),
             ],
           ),
@@ -114,7 +121,7 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
                 return Padding(
                   padding: EdgeInsets.only(left: WidthWithRatio.small),
                   child: Text(
-                    '${controller.detailModel.value!.price![index].priceDescription} : ${controller.detailModel.value!.price![index].price}원',
+                    '${controller.detailModel.value!.price![index].priceDescription} : ${controller.detailModel.value!.price![index].price}',
                     style: regularNanumTextStyle,
                   ),
                 );

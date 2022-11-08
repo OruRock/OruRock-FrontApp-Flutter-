@@ -25,8 +25,11 @@ class App extends GetView<AppController> {
           if (controller.isOnCloseApp == false) {
             Fluttertoast.showToast(msg: "한 번 더 누르면 종료됩니다.");
             controller.onCloseApp();
+            return false;
           }
-          return false;
+          else {
+            return true;
+          }
         } else {
           controller.selectedTabIndex.value = Tabs.home;
           return false;
@@ -43,6 +46,8 @@ class App extends GetView<AppController> {
                 onTap: (index) {
                   controller.selectedTabIndex.value = Tabs.getTabByIndex(index);
                 },
+                showSelectedLabels: false,
+                showUnselectedLabels: false,
                 currentIndex: controller.selectedTabIndex.value.index,
                 type: BottomNavigationBarType.fixed,
                 unselectedLabelStyle: const TextStyle(

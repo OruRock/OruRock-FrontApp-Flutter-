@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
@@ -16,15 +15,14 @@ class Home extends GetView<AppController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: const Color(0xFFFFFFFF),
         body: ListView(
           children: [
-/*            ElevatedButton(onPressed: (){
-              controller.signOut();
-            }, child: Text('로그아웃')),*/
             SizedBox(
-              height: HeightWithRatio.xSmall,
+              height: HeightWithRatio.xLarge,
+              child: Center(child: Text('오 르 락', style: TextStyle(fontFamily: "JungMock", fontSize: 70),)),
             ),
-            Padding(
+/*            Padding(
               padding: const EdgeInsets.symmetric(horizontal: GapSize.medium),
               child: Row(
                 children: [
@@ -41,14 +39,13 @@ class Home extends GetView<AppController> {
                     maxLines: 2,
                     minFontSize: FontSize.medium,
                     maxFontSize: FontSize.large,
-                    style: const TextStyle(fontFamily: "NotoM", height: 1.7),
+                    style: const TextStyle(
+                        fontFamily: "NotoM",
+                        height: 1.7),
                   ),
                 ],
               ),
-            ),
-            SizedBox(
-              height: HeightWithRatio.xxxSmall,
-            ),
+            ),*/
             Obx(
               () => Visibility(
                 visible: controller.isPinned.value,

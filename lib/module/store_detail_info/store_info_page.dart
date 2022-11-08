@@ -61,7 +61,7 @@ class StoreInfo extends GetView<StoreInfoController> {
                                                 .detailModel
                                                 .value!
                                                 .image![index]
-                                                .imageUrl!);
+                                                .imageUrl!, scale: 0.1,);
                                           }),
                               ),
                           ),

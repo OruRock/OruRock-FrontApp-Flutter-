@@ -33,6 +33,10 @@ class AppController extends GetxController {
 
   var stores = <StoreModel>[].obs; //store 관리
   var searchStores = <StoreModel>[].obs;
+  ScrollController searchScrollController = ScrollController();
+  var searchListPage = 1.obs;
+  var isEnd = false.obs;
+  var isGetMoreData = false.obs;
   var selectedIndex = 0; //선택된 storeIndex
   RxList<Marker> markers = <Marker>[].obs;
 
@@ -54,7 +58,7 @@ class AppController extends GetxController {
     await getStoreList();
     await getClientStoreBookMark();
     setMarker();
-
+    searchScrollController.addListener(_searchScrollListener);
     pinnedStoreName.value =
         pinnedStoreId != null ? stores[pinnedStoreId!].storeName! : '';
 
@@ -65,6 +69,7 @@ class AppController extends GetxController {
         case Tabs.search:
           searchText.text = '';
           searchStores.value = stores.value; //검색 초기화
+          isEnd.value = true;
           break;
         case Tabs.nmap:
           getLocationPermission();
@@ -81,7 +86,15 @@ class AppController extends GetxController {
       isOnCloseApp = false;
     });
   }
-
+  _searchScrollListener() {
+    if (searchScrollController.offset >=
+        searchScrollController.position.maxScrollExtent &&
+        !searchScrollController.position.outOfRange &&
+        !isEnd.value) {
+      ++searchListPage;
+      addSearch();
+    }
+  }
   ///암장 리스트 정보 API 연결 함수
   Future<void> getStoreList() async {
     try {
@@ -197,8 +210,9 @@ class AppController extends GetxController {
 
   Future<void> search() async {
     isLoading.value = true;
+    isEnd.value = false;
     try {
-      final data = {"search_txt": searchText.text};
+      final data = {"search_txt": searchText.text, "page": searchListPage.value};
       final res = await api.dio.get('/store/list', queryParameters: data);
 
       final List<dynamic>? storeData = res.data['payload']['result'];
@@ -206,6 +220,11 @@ class AppController extends GetxController {
         searchStores.value =
             storeData.map((map) => StoreModel.fromJson(map)).toList();
       }
+      if(res.data['payload']['isEnd']) {
+        isEnd.value = true;
+        searchListPage.value = 1;
+      }
+      print(searchStores.value.length);
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -247,6 +266,31 @@ class AppController extends GetxController {
     isLoading.value = false;
   }
 
+  Future<void> addSearch() async {
+    isGetMoreData.value = true;
+    try {
+      final data = {
+        "search_txt": searchText.text,
+        "page": searchListPage.value
+      };
+      final res = await api.dio.get('/store/list', queryParameters: data);
+
+      final List<dynamic>? storeData = res.data['payload']['result'];
+      if (storeData != null) {
+        searchStores +=
+            storeData.map((map) => StoreModel.fromJson(map)).toList();
+      }
+      if (res.data['payload']['isEnd']) {
+        isEnd.value = true;
+        searchListPage.value = 1;
+      }
+      print(searchStores.value.length);
+    } catch (e) {
+      Logger().e(e.toString());
+      isGetMoreData.value = false;
+    }
+    isGetMoreData.value = false;
+  }
   ///북마크 list 정보 API
   Future<void> getClientStoreBookMark() async {
     try {

@@ -2,6 +2,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
+import 'package:oru_rock/constant/style/style.dart';
+import 'package:oru_rock/module/setting/my_bookmark_list.dart';
+import 'package:oru_rock/module/setting/change_nickname.dart';
+import 'package:oru_rock/module/setting/level_setting.dart';
+import 'package:oru_rock/module/setting/my_review_list.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
 
 class Setting extends GetView<SettingController> {
@@ -11,9 +16,10 @@ class Setting extends GetView<SettingController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text(
-            '검색',
+            '설정',
             style: TextStyle(
                 fontFamily: "NotoB",
                 fontSize: FontSize.xLarge,
@@ -26,45 +32,189 @@ class Setting extends GetView<SettingController> {
           backgroundColor: Colors.white,
           elevation: 1,
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(
-              top: GapSize.medium, left: GapSize.small, right: GapSize.small),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: GapSize.xSmall,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                    filled: false,
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                      },
-                      icon: const Icon(
-                        Icons.search,
-                        color: Colors.black,
+        body: Obx(() => Padding(
+            padding: EdgeInsets.fromLTRB(WidthWithRatio.small,
+                HeightWithRatio.xSmall, WidthWithRatio.small, 0),
+            child: ListView(
+              physics: const BouncingScrollPhysics(),
+              children: [
+                Container(
+                  decoration: noShadowBoxDecoration,
+                  padding: const EdgeInsets.symmetric(horizontal: GapSize.small, vertical: GapSize.small),
+                  width: Get.width,
+                  child: Column(
+                    children: [
+                      Image.asset(controller.levelImage[controller.userLevel.value], width: WidthWithRatio.xxxLarge,),
+                      const SizedBox(
+                        height: GapSize.medium,
+                      ),
+                      Text(controller.nickname.value, style: const TextStyle(fontFamily: "NotoB", fontSize: FontSize.large),),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: GapSize.medium,
+                ),
+                const Text(
+                  '프로필 설정',
+                  style: TextStyle(
+                      fontFamily: "NotoM",
+                      fontSize: FontSize.xSmall,
+                      color: Colors.grey),
+                ),
+                const SizedBox(
+                  height: GapSize.xxSmall,
+                ),
+                SizedBox(
+                  width: Get.width,
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.to(LevelSetting());
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: GapSize.small),
+                      child: Text(
+                        '나의 트로피',
+                        style: TextStyle(
+                            fontSize: FontSize.medium,
+                            fontFamily: "NotoR",
+                            color: Colors.black87),
                       ),
                     ),
-                    hintText: "암장을 검색해 보세요!",
-                    hintStyle: const TextStyle(
-                        fontSize: FontSize.large,
-                        color: Colors.grey,
-                        fontFamily: "NotoR"),
-                    enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 1.0)),
-                    focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 1.0)),
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: GapSize.small, horizontal: GapSize.small)),
-                style: const TextStyle(
-                    fontSize: FontSize.large, fontFamily: "NotoR"),
-              ),
-              SizedBox(
-                height: HeightWithRatio.xSmall,
-              ),
-            ],
+                  ),
+                ),
+                SizedBox(
+                  width: Get.width,
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.to(const MyReviewList());
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: GapSize.small),
+                      child: Text(
+                        '나의 리뷰',
+                        style: TextStyle(
+                            fontSize: FontSize.medium,
+                            fontFamily: "NotoR",
+                            color: Colors.black87),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: Get.width,
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.to(const MyBookmarkList());
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: GapSize.small),
+                      child: Text(
+                        '즐겨찾는 암장',
+                        style: TextStyle(
+                            fontSize: FontSize.medium,
+                            fontFamily: "NotoR",
+                            color: Colors.black87),
+                      ),
+                    ),
+                  ),
+                ),
+                const Divider(height: 1.0, thickness: 1.0,),
+                const SizedBox(
+                  height: GapSize.small,
+                ),
+                const Text(
+                  '환경 설정',
+                  style: TextStyle(
+                      fontFamily: "NotoM",
+                      fontSize: FontSize.xSmall,
+                      color: Colors.grey),
+                ),
+                const SizedBox(
+                  height: GapSize.xxSmall,
+                ),
+                SizedBox(
+                  width: Get.width,
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: GapSize.small),
+                      child: Text(
+                        '공지사항',
+                        style: TextStyle(
+                            fontSize: FontSize.medium,
+                            fontFamily: "NotoR",
+                            color: Colors.black87),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: Get.width,
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.to(const ChangeNickname());
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: GapSize.small),
+                      child: Text(
+                        '닉네임 변경',
+                        style: TextStyle(
+                            fontSize: FontSize.medium,
+                            fontFamily: "NotoR",
+                            color: Colors.black87),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: Get.width,
+                  child: GestureDetector(
+                    onTap: () {},
+                    child:  Padding(
+                      padding: const EdgeInsets.symmetric(vertical: GapSize.small),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            '앱 버전',
+                            style: TextStyle(
+                                fontSize: FontSize.medium,
+                                fontFamily: "NotoR",
+                                color: Colors.black87),
+                          ),
+                          Text(
+                            'v ${controller.appVersion.value}',
+                            style: const TextStyle(
+                                fontSize: FontSize.medium,
+                                fontFamily: "NotoR",
+                                color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: Get.width,
+                  child: GestureDetector(
+                    onTap: () {
+                      controller.signOut();
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: GapSize.small),
+                      child: Text(
+                        '로그아웃',
+                        style: TextStyle(
+                            fontSize: FontSize.medium,
+                            fontFamily: "NotoR",
+                            color: Colors.redAccent),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

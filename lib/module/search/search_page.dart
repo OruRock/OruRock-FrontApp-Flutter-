@@ -36,33 +36,59 @@ class Search extends GetView<AppController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildSearchTextField(),
-              SizedBox(
+              const SizedBox(
                 height: GapSize.xxSmall,
               ),
               Obx(
                 () => Expanded(
                   child: controller.isLoading.value
                       ? const Center(child: CircularProgressIndicator())
-                      : AnimationLimiter(
-                          child: ListView.builder(
-                              itemCount: controller.searchStores.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return AnimationConfiguration.staggeredList(
-                                  position: index,
-                                  duration: const Duration(milliseconds: 375),
-                                  child: SlideAnimation(
-                                    verticalOffset: 50,
-                                    child: FadeInAnimation(
-                                      child: GestureDetector(
-                                          onTap: () {
-                                            controller
-                                                .goMapToSelectedStore(index);
-                                          },
-                                          child: _buildListCard(index)),
-                                    ),
-                                  ),
-                                );
-                              }),
+                      : Stack(
+                          children: [
+                            AnimationLimiter(
+                              child: ListView.builder(
+                                  controller: controller.searchScrollController,
+                                  itemCount: controller.searchStores.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return AnimationConfiguration.staggeredList(
+                                      position: index,
+                                      duration:
+                                          const Duration(milliseconds: 375),
+                                      child: SlideAnimation(
+                                        verticalOffset: 50,
+                                        child: FadeInAnimation(
+                                          child: GestureDetector(
+                                              onTap: () {
+                                                controller.goMapToSelectedStore(
+                                                    index);
+                                              },
+                                              child: _buildListCard(index)),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            ),
+                            Visibility(
+                                visible: controller.isGetMoreData.value,
+                                child: Center(
+                                  child: Container(
+                                      width: Get.width * 0.8,
+                                        height: Get.height * 0.2,
+                                        color: Colors.black.withOpacity(0.5),
+                                        child: Center(child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: const [
+                                            CircularProgressIndicator(color: Colors.white,),
+                                            SizedBox(
+                                              height: GapSize.small,
+                                            ),
+                                            Text('데이터를 로딩 중 입니다.', style: TextStyle(fontFamily: "NotoB", fontSize: FontSize.medium, color: Colors.white),)
+                                          ],
+                                        ))),
+                                ),
+                                ),
+                          ],
                         ),
                 ),
               ),
