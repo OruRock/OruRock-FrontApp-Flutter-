@@ -46,77 +46,76 @@ class MarkerDetail extends GetView<AppController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: GapSize.xxxSmall),
-                      child: Row(
-                          children: [
-                            Expanded(
-                              flex: 7,
-                              child: Text(
-                                '${store?.storeName}',
-                                style: const TextStyle(
-                                  fontFamily: "NotoB",
-                                  overflow: TextOverflow.ellipsis,
-                                  fontSize: FontSize.large,
-                                  height: 1.3,
-                                ),
-                              ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: GapSize.xxxSmall),
+                      child: Row(children: [
+                        Expanded(
+                          flex: 7,
+                          child: Text(
+                            '${store?.storeName}',
+                            style: const TextStyle(
+                              fontFamily: "NotoB",
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: FontSize.large,
+                              height: 1.3,
                             ),
-                            Expanded(child: Container(),),
-                            Obx(
-                              () => LikeButton(
-                                circleColor: const CircleColor(
-                                    start: Color(0xff00ddff),
-                                    end: Color(0xff0099cc)),
-                                bubblesColor: const BubblesColor(
-                                  dotPrimaryColor: Color(0xff33b5e5),
-                                  dotSecondaryColor: Color(0xff0099cc),
-                                ),
-                                likeBuilder: (bool isLiked) {
-                                  return Icon(
-                                    Icons.push_pin,
-                                    color: isLiked ? Colors.redAccent : Colors.grey,
-                                    size: 23,
-                                  );
-                                },
-                                isLiked: controller.detailPinState.value,
-                                onTap: (bool isLiked) async {
-                                  if (isLiked) {
-                                    controller.removePin();
-                                  } else {
-                                    controller.setPin();
-                                  }
-                                  return controller.detailPinState.value;
-                                },
-                              ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(),
+                        ),
+                        Obx(
+                          () => LikeButton(
+                            circleColor: const CircleColor(
+                                start: Color(0xff00ddff),
+                                end: Color(0xff0099cc)),
+                            bubblesColor: const BubblesColor(
+                              dotPrimaryColor: Color(0xff33b5e5),
+                              dotSecondaryColor: Color(0xff0099cc),
                             ),
-                            Obx(
-                              () => LikeButton(
-                                circleColor: const CircleColor(
-                                    start: Color(0xff00ddff),
-                                    end: Color(0xff0099cc)),
-                                bubblesColor: const BubblesColor(
-                                  dotPrimaryColor: Color(0xff33b5e5),
-                                  dotSecondaryColor: Color(0xff0099cc),
-                                ),
-                                likeBuilder: (bool isLiked) {
-                                  return Icon(
-                                    Icons.stars,
-                                    color: isLiked
-                                        ? Colors.yellow[600]
-                                        : Colors.grey,
-                                    size: 25,
-                                  );
-                                },
-                                isLiked:
-                                    controller.detailClientStoreBookMark.value,
-                                onTap: (bool isLiked) async {
-                                  controller.updateBookMark(store);
-                                  return !isLiked;
-                                },
-                              ),
+                            likeBuilder: (bool isLiked) {
+                              return Icon(
+                                Icons.push_pin,
+                                color: isLiked ? Colors.redAccent : Colors.grey,
+                                size: 23,
+                              );
+                            },
+                            isLiked: controller.detailPinState.value,
+                            onTap: (bool isLiked) async {
+                              if (isLiked) {
+                                controller.removePin();
+                              } else {
+                                controller.setPin();
+                              }
+                              return controller.detailPinState.value;
+                            },
+                          ),
+                        ),
+                        Obx(
+                          () => LikeButton(
+                            circleColor: const CircleColor(
+                                start: Color(0xff00ddff),
+                                end: Color(0xff0099cc)),
+                            bubblesColor: const BubblesColor(
+                              dotPrimaryColor: Color(0xff33b5e5),
+                              dotSecondaryColor: Color(0xff0099cc),
                             ),
-                          ]),
+                            likeBuilder: (bool isLiked) {
+                              return Icon(
+                                Icons.stars,
+                                color:
+                                    isLiked ? Colors.yellow[600] : Colors.grey,
+                                size: 25,
+                              );
+                            },
+                            isLiked: controller.detailClientStoreBookMark.value,
+                            onTap: (bool isLiked) async {
+                              controller.updateBookMark(store);
+                              return !isLiked;
+                            },
+                          ),
+                        ),
+                      ]),
                     ),
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: GapSize.xxSmall),

@@ -24,7 +24,8 @@ class AuthFunction extends GetxService {
   }
 
   setUser(String? displayName, String? email, String uid, int userLevel) {
-    user = UserModel(displayName: displayName, email: email, uid: uid, userLevel: userLevel);
+    user = UserModel(
+        displayName: displayName, email: email, uid: uid, userLevel: userLevel);
   }
 
   signOut() {

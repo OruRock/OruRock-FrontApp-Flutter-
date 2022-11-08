@@ -18,11 +18,8 @@ class ReviewFragment extends GetView<StoreInfoController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Expanded(
-        child:
-        Stack(
-          children: [
+    return Obx(() => Expanded(
+          child: Stack(children: [
             controller.detailModel.value!.comment!.isEmpty
                 ? _buildNotExistWidget()
                 : Padding(
@@ -45,19 +42,16 @@ class ReviewFragment extends GetView<StoreInfoController> {
                   ),
             Align(
               alignment: Alignment.bottomRight,
-              child: FloatingActionButton(onPressed: () {
-                Get.bottomSheet(
-                    _buildReviewTextField(),
-                  barrierColor: Colors.black26
-                );
-              },
+              child: FloatingActionButton(
+                onPressed: () {
+                  Get.bottomSheet(_buildReviewTextField(),
+                      barrierColor: Colors.black26);
+                },
                 child: Icon(Icons.edit_outlined),
               ),
             )
-          ]
-      ),
-      )
-    );
+          ]),
+        ));
   }
 
   _buildReviewTextField() {
@@ -65,7 +59,8 @@ class ReviewFragment extends GetView<StoreInfoController> {
       child: Container(
         color: Colors.white,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: GapSize.small, vertical: GapSize.xSmall),
+          padding: const EdgeInsets.symmetric(
+              horizontal: GapSize.small, vertical: GapSize.xSmall),
           child: TextField(
             controller: controller.reviewText,
             keyboardType: TextInputType.multiline,
@@ -73,7 +68,8 @@ class ReviewFragment extends GetView<StoreInfoController> {
             decoration: InputDecoration(
                 suffixIcon: IconButton(
                   onPressed: () async {
-                    if (controller.reviewTextFieldValidator(controller.reviewText)) {
+                    if (controller
+                        .reviewTextFieldValidator(controller.reviewText)) {
                       await controller.createReview(store!.storeId!);
                       Get.back();
                     }
@@ -89,13 +85,14 @@ class ReviewFragment extends GetView<StoreInfoController> {
                     fontSize: FontSize.small,
                     color: Colors.grey,
                     fontFamily: "NotoR"),
-                enabledBorder:
-                    const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
-                focusedBorder:
-                    const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+                enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(width: 1.0)),
+                focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(width: 1.0)),
                 contentPadding: const EdgeInsets.symmetric(
                     vertical: GapSize.small, horizontal: GapSize.small)),
-            style: const TextStyle(fontSize: FontSize.small, fontFamily: "NotoR"),
+            style:
+                const TextStyle(fontSize: FontSize.small, fontFamily: "NotoR"),
           ),
         ),
       ),
@@ -128,7 +125,8 @@ class ReviewFragment extends GetView<StoreInfoController> {
         Row(
           children: [
             Text(
-              controller.detailModel.value!.comment![index].userNickname ?? '무명 클라이머',
+              controller.detailModel.value!.comment![index].userNickname ??
+                  '무명 클라이머',
               style: reviewNickNameTextStyle,
             ),
             Expanded(child: Container()),

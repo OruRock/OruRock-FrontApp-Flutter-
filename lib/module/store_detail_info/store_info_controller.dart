@@ -145,7 +145,6 @@ class StoreInfoController extends GetxController {
           await api.dio.delete('/store/comment', queryParameters: deleteData);
 
       await fetchReview(storeId);
-
     } catch (e) {
       logger.e(e.toString());
     }

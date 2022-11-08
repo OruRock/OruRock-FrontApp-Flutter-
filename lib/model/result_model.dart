@@ -3,7 +3,7 @@ class LoginResult {
 
   LoginResult({
     required this.status,
-});
+  });
 }
 
-enum LoginStatus {newUser, existUser, failed}
+enum LoginStatus { newUser, existUser, failed }

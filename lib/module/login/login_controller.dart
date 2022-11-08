@@ -54,9 +54,8 @@ class LoginController extends GetxController {
       appData.write("UID", userAuth.user!.uid);
     } else if (success.status == LoginStatus.newUser) {
       Get.to(const FirstNickname());
-      appData.write("UID", userAuth .user!.uid);
-    }
-    else {
+      appData.write("UID", userAuth.user!.uid);
+    } else {
       //로그인 실패시
       Logger().e("Login Failed");
     }
@@ -109,13 +108,16 @@ class LoginController extends GetxController {
 
       userAuth.setJwt(res.data['payload']['result']);
 
-      userAuth.setUser(res.data['payload']['user']['user_nickname'], user.kakaoAccount?.email, kakao_res.data['payload']['uid'], res.data['payload']['user']['user_level']);
+      userAuth.setUser(
+          res.data['payload']['user']['user_nickname'],
+          user.kakaoAccount?.email,
+          kakao_res.data['payload']['uid'],
+          res.data['payload']['user']['user_level']);
 
-      if(kakao_res.data['payload']['isNewUser']) {
+      if (kakao_res.data['payload']['isNewUser']) {
         return LoginResult(status: LoginStatus.newUser);
       }
       return LoginResult(status: LoginStatus.existUser);
-
     } catch (e) {
       Logger().e(e.toString());
       return LoginResult(status: LoginStatus.failed);
@@ -194,9 +196,13 @@ class LoginController extends GetxController {
       final res = await api.dio.post('/login', data: data);
 
       userAuth.setJwt(res.data['payload']['result']);
-      userAuth.setUser(res.data['payload']['user']['user_nickname'], res.data['payload']['user']['user_email'], user.uid, res.data['payload']['user']['user_level']);
+      userAuth.setUser(
+          res.data['payload']['user']['user_nickname'],
+          res.data['payload']['user']['user_email'],
+          user.uid,
+          res.data['payload']['user']['user_level']);
 
-      if(authResult.additionalUserInfo!.isNewUser) {
+      if (authResult.additionalUserInfo!.isNewUser) {
         return LoginResult(status: LoginStatus.newUser);
       }
       return LoginResult(status: LoginStatus.existUser);
@@ -226,7 +232,11 @@ class LoginController extends GetxController {
       final res = await api.dio.post('/login', data: data);
 
       userAuth.setJwt(res.data['payload']['result']);
-      userAuth.setUser(res.data['payload']['user']['user_nickname'], res.data['payload']['user']['user_email'], cachedUid, res.data['payload']['user']['user_level']);
+      userAuth.setUser(
+          res.data['payload']['user']['user_nickname'],
+          res.data['payload']['user']['user_email'],
+          cachedUid,
+          res.data['payload']['user']['user_level']);
 
       Get.offAllNamed(Routes.app);
     }
@@ -237,7 +247,7 @@ class LoginController extends GetxController {
     isLoading.value = true;
     final changeNickname = nicknameController.text.trim();
     try {
-      if(!await nickNameChecker(changeNickname)) {
+      if (!await nickNameChecker(changeNickname)) {
         Fluttertoast.showToast(msg: "닉네임이 부적절하거나 이미 사용중인 닉네임입니다.");
         isLoading.value = false;
         return;
@@ -251,11 +261,11 @@ class LoginController extends GetxController {
 
       final res = await api.dio.post('/user', data: data);
 
-      if(res.statusCode == 200 || res.statusCode == 201) {
+      if (res.statusCode == 200 || res.statusCode == 201) {
         userAuth.user!.displayName = changeNickname;
         Get.offAllNamed(Routes.app);
       }
-    } catch(e) {
+    } catch (e) {
       Logger().e(e.toString());
       isLoading.value = false;
       return;

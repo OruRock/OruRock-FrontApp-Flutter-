@@ -21,7 +21,11 @@ class Home extends GetView<AppController> {
           children: [
             SizedBox(
               height: HeightWithRatio.xLarge,
-              child: Center(child: Text('오 르 락', style: TextStyle(fontFamily: "JungMock", fontSize: 70),)),
+              child: Center(
+                  child: Text(
+                '오 르 락',
+                style: TextStyle(fontFamily: "JungMock", fontSize: 70),
+              )),
             ),
 /*            Padding(
               padding: const EdgeInsets.symmetric(horizontal: GapSize.medium),

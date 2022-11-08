@@ -128,7 +128,7 @@ class Comment {
   Comment(
       {this.storeId,
       this.userNickname,
-        this.uid,
+      this.uid,
       this.comment,
       this.recommendLevel,
       this.commentId,

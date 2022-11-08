@@ -51,7 +51,7 @@ class MapFunction extends GetxService {
           CameraUpdate.scrollWithOptions(position, zoom: zoom);
       await controller.moveCamera(cameraPosition);
       print("HI");
-    } catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }

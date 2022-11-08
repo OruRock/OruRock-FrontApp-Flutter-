@@ -32,7 +32,8 @@ class Setting extends GetView<SettingController> {
           backgroundColor: Colors.white,
           elevation: 1,
         ),
-        body: Obx(() => Padding(
+        body: Obx(
+          () => Padding(
             padding: EdgeInsets.fromLTRB(WidthWithRatio.small,
                 HeightWithRatio.xSmall, WidthWithRatio.small, 0),
             child: ListView(
@@ -40,15 +41,23 @@ class Setting extends GetView<SettingController> {
               children: [
                 Container(
                   decoration: noShadowBoxDecoration,
-                  padding: const EdgeInsets.symmetric(horizontal: GapSize.small, vertical: GapSize.small),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: GapSize.small, vertical: GapSize.small),
                   width: Get.width,
                   child: Column(
                     children: [
-                      Image.asset(controller.levelImage[controller.userLevel.value], width: WidthWithRatio.xxxLarge,),
+                      Image.asset(
+                        controller.levelImage[controller.userLevel.value],
+                        width: WidthWithRatio.xxxLarge,
+                      ),
                       const SizedBox(
                         height: GapSize.medium,
                       ),
-                      Text(controller.nickname.value, style: const TextStyle(fontFamily: "NotoB", fontSize: FontSize.large),),
+                      Text(
+                        controller.nickname.value,
+                        style: const TextStyle(
+                            fontFamily: "NotoB", fontSize: FontSize.large),
+                      ),
                     ],
                   ),
                 ),
@@ -87,7 +96,8 @@ class Setting extends GetView<SettingController> {
                   width: Get.width,
                   child: GestureDetector(
                     onTap: () async {
-                      controller.myReviewList.value = await controller.getMyReview();
+                      controller.myReviewList.value =
+                          await controller.getMyReview();
                       Get.to(const MyReviewList());
                     },
                     child: const Padding(
@@ -120,7 +130,10 @@ class Setting extends GetView<SettingController> {
                     ),
                   ),
                 ),
-                const Divider(height: 1.0, thickness: 1.0,),
+                const Divider(
+                  height: 1.0,
+                  thickness: 1.0,
+                ),
                 const SizedBox(
                   height: GapSize.small,
                 ),
@@ -172,8 +185,9 @@ class Setting extends GetView<SettingController> {
                   width: Get.width,
                   child: GestureDetector(
                     onTap: () {},
-                    child:  Padding(
-                      padding: const EdgeInsets.symmetric(vertical: GapSize.small),
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: GapSize.small),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

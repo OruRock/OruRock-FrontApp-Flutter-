@@ -41,7 +41,8 @@ class HomeFavorites extends GetView<AppController> {
                             },
                             child: ListTile(
                               leading: ClipRRect(
-                                borderRadius: BorderRadius.circular(RadiusSize.large),
+                                borderRadius:
+                                    BorderRadius.circular(RadiusSize.large),
                                 child: SizedBox(
                                   height: 50,
                                   width: 50,
@@ -52,7 +53,8 @@ class HomeFavorites extends GetView<AppController> {
                                           'asset/image/logo/splash_logo.png')
                                       : Image.network(
                                           controller.clientStoreBookMark[index]
-                                              .imageUrl!, fit: BoxFit.cover,
+                                              .imageUrl!,
+                                          fit: BoxFit.cover,
                                         ),
                                 ),
                               ),

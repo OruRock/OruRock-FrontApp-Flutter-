@@ -44,31 +44,28 @@ class StoreInfo extends GetView<StoreInfoController> {
                 children: [
                   AnimatedContainer(
                     curve: Curves.ease,
-                  height: controller.imageSliderHeight.value,
-                            duration: const Duration(milliseconds: 800),
-                            child: ImageSlideshow(
-                                width: Get.width,
-                                children:
-                                    controller.detailModel.value!.image!.isEmpty
-                                        ? [
-                                            Image.asset(
-                                                'asset/image/logo/splash_logo.png')
-                                          ]
-                                        : List.generate(
-                                            controller.detailModel.value!.image!
-                                                .length, (index) {
-                                            return Image.network(controller
-                                                .detailModel
-                                                .value!
-                                                .image![index]
-                                                .imageUrl!, scale: 0.01,);
-                                          }),
-                              ),
-                          ),
+                    height: controller.imageSliderHeight.value,
+                    duration: const Duration(milliseconds: 800),
+                    child: ImageSlideshow(
+                      width: Get.width,
+                      children: controller.detailModel.value!.image!.isEmpty
+                          ? [Image.asset('asset/image/logo/splash_logo.png')]
+                          : List.generate(
+                              controller.detailModel.value!.image!.length,
+                              (index) {
+                              return Image.network(
+                                controller
+                                    .detailModel.value!.image![index].imageUrl!,
+                                scale: 0.01,
+                              );
+                            }),
+                    ),
+                  ),
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: WidthWithRatio.small, vertical: GapSize.xSmall),
+                          horizontal: WidthWithRatio.small,
+                          vertical: GapSize.xSmall),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -88,7 +85,8 @@ class StoreInfo extends GetView<StoreInfoController> {
                                 labels: controller.toggleList,
                                 selectedLabelIndex: (index) {
                                   controller.selectedInfo.value = index;
-                                  controller.imageSliderHeight.value = controller.imageHeight[index];
+                                  controller.imageSliderHeight.value =
+                                      controller.imageHeight[index];
                                 },
                                 selectedTextStyle: selectedToggleTextStyle,
                                 unSelectedTextStyle: unSelectedToggleTextStyle,

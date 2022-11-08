@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '699813385517',
     projectId: 'orurock-fa5dd',
     storageBucket: 'orurock-fa5dd.appspot.com',
-    iosClientId: '699813385517-p61pm27c9oppgm5u0dppd28e3r9uake1.apps.googleusercontent.com',
+    iosClientId:
+        '699813385517-p61pm27c9oppgm5u0dppd28e3r9uake1.apps.googleusercontent.com',
     iosBundleId: 'com.orurock.ai.oruRock',
   );
 }

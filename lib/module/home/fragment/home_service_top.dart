@@ -51,8 +51,8 @@ class HomeServiceTop extends GetView<AppController> {
                             height: WidthWithRatio.small,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: GapSize.small),
+                            padding:
+                                const EdgeInsets.only(bottom: GapSize.small),
                             child: Align(
                               alignment: Alignment.bottomCenter,
                               child: DefaultTextStyle(
@@ -111,8 +111,8 @@ class HomeServiceTop extends GetView<AppController> {
                             height: WidthWithRatio.small,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: GapSize.small),
+                            padding:
+                                const EdgeInsets.only(bottom: GapSize.small),
                             child: Align(
                               alignment: Alignment.bottomCenter,
                               child: DefaultTextStyle(
@@ -126,7 +126,7 @@ class HomeServiceTop extends GetView<AppController> {
                                   repeatForever: true,
                                   animatedTexts: [
                                     TypewriterAnimatedText(
-                                      textAlign: TextAlign.start,
+                                        textAlign: TextAlign.start,
                                         speed:
                                             const Duration(milliseconds: 120),
                                         '내 근처에서 찾기'),

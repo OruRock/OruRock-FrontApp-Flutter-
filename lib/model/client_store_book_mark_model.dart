@@ -13,16 +13,16 @@ class ClientStoreBookMarkModel {
 
   ClientStoreBookMarkModel(
       {this.storeId,
-        this.imageUrl,
-        this.storePhone,
-        this.storeOpentime,
-        this.recommendCnt,
-        this.storeName,
-        this.storeAddr,
-        this.storeLng,
-        this.bookmarkYn,
-        this.storeLat,
-        this.storeDescription});
+      this.imageUrl,
+      this.storePhone,
+      this.storeOpentime,
+      this.recommendCnt,
+      this.storeName,
+      this.storeAddr,
+      this.storeLng,
+      this.bookmarkYn,
+      this.storeLat,
+      this.storeDescription});
 
   ClientStoreBookMarkModel.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];

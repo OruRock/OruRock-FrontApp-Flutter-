@@ -30,83 +30,81 @@ class Search extends GetView<AppController> {
           elevation: 1,
         ),
         body: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildSearchTextField(),
-              Obx(
-                () => Expanded(
-                  child: controller.isLoading.value
-                      ? const Center(child: CircularProgressIndicator())
-                      : Stack(
-                          children: [
-                            AnimationLimiter(
-                              child: ListView.builder(
-                                  controller: controller.searchScrollController,
-                                  itemCount: controller.searchStores.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return AnimationConfiguration.staggeredList(
-                                      position: index,
-                                      duration:
-                                          const Duration(milliseconds: 375),
-                                      child: SlideAnimation(
-                                        verticalOffset: 50,
-                                        child: FadeInAnimation(
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              controller
-                                                  .goMapToSelectedStore(index);
-                                            },
-                                            child: _buildListCard(index),
-                                          ),
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildSearchTextField(),
+            Obx(
+              () => Expanded(
+                child: controller.isLoading.value
+                    ? const Center(child: CircularProgressIndicator())
+                    : Stack(
+                        children: [
+                          AnimationLimiter(
+                            child: ListView.builder(
+                                controller: controller.searchScrollController,
+                                itemCount: controller.searchStores.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return AnimationConfiguration.staggeredList(
+                                    position: index,
+                                    duration: const Duration(milliseconds: 375),
+                                    child: SlideAnimation(
+                                      verticalOffset: 50,
+                                      child: FadeInAnimation(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            controller
+                                                .goMapToSelectedStore(index);
+                                          },
+                                          child: _buildListCard(index),
                                         ),
                                       ),
-                                    );
-                                  }),
+                                    ),
+                                  );
+                                }),
+                          ),
+                          Visibility(
+                            visible: controller.isGetMoreData.value,
+                            child: Center(
+                              child: Container(
+                                  width: Get.width * 0.8,
+                                  height: Get.height * 0.2,
+                                  color: Colors.black.withOpacity(0.5),
+                                  child: Center(
+                                      child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        height: GapSize.small,
+                                      ),
+                                      Text(
+                                        '데이터를 로딩 중 입니다.',
+                                        style: TextStyle(
+                                            fontFamily: "NotoB",
+                                            fontSize: FontSize.medium,
+                                            color: Colors.white),
+                                      )
+                                    ],
+                                  ))),
                             ),
-                            Visibility(
-                              visible: controller.isGetMoreData.value,
-                              child: Center(
-                                child: Container(
-                                    width: Get.width * 0.8,
-                                    height: Get.height * 0.2,
-                                    color: Colors.black.withOpacity(0.5),
-                                    child: Center(
-                                        child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        CircularProgressIndicator(
-                                          color: Colors.white,
-                                        ),
-                                        SizedBox(
-                                          height: GapSize.small,
-                                        ),
-                                        Text(
-                                          '데이터를 로딩 중 입니다.',
-                                          style: TextStyle(
-                                              fontFamily: "NotoB",
-                                              fontSize: FontSize.medium,
-                                              color: Colors.white),
-                                        )
-                                      ],
-                                    ))),
-                              ),
-                            ),
-                          ],
-                        ),
-                ),
+                          ),
+                        ],
+                      ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 
   _buildSearchTextField() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(GapSize.small,GapSize.small,GapSize.small,0),
+      padding: const EdgeInsets.fromLTRB(
+          GapSize.small, GapSize.small, GapSize.small, 0),
       child: TextField(
         controller: controller.searchText,
         decoration: InputDecoration(
@@ -138,7 +136,8 @@ class Search extends GetView<AppController> {
 
   _buildListCard(int index) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: GapSize.xxSmall, horizontal: GapSize.small),
+      padding: const EdgeInsets.symmetric(
+          vertical: GapSize.xxSmall, horizontal: GapSize.small),
       child: Container(
         height: Get.height / 5,
         decoration: shadowBoxDecoration,
@@ -155,12 +154,12 @@ class Search extends GetView<AppController> {
                     padding: const EdgeInsets.all(1),
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(RadiusSize.large)),
+                      borderRadius: const BorderRadius.all(
+                          Radius.circular(RadiusSize.large)),
                     ),
                     child: ClipRRect(
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(RadiusSize.large)),
+                      borderRadius: const BorderRadius.all(
+                          Radius.circular(RadiusSize.large)),
                       child: controller.searchStores[index].imageUrl == null
                           ? Image.asset('asset/image/logo/splash_logo.png')
                           : Image.network(
@@ -179,7 +178,6 @@ class Search extends GetView<AppController> {
                         Icon(Icons.car_crash_sharp),
                         Icon(Icons.shower),
                         Icon(Icons.wc),
-
                       ],
                     ),
                   )
@@ -189,37 +187,37 @@ class Search extends GetView<AppController> {
                 width: GapSize.small,
               ),
               Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "${controller.searchStores[index].storeName}",
-                              style: const TextStyle(
-                                  fontSize: FontSize.medium,
-                                  fontFamily: "NotoB",
-                                  overflow: TextOverflow.ellipsis),
-                            ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "${controller.searchStores[index].storeName}",
+                            style: const TextStyle(
+                                fontSize: FontSize.medium,
+                                fontFamily: "NotoB",
+                                overflow: TextOverflow.ellipsis),
                           ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: GapSize.xxSmall,
-                      ),
-                      AutoSizeText(
-                        "${controller.searchStores[index].storeDescription}",
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            fontSize: FontSize.small,
-                            fontFamily: "NotoR",
-                            color: Colors.black87),
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: GapSize.xxSmall,
+                    ),
+                    AutoSizeText(
+                      "${controller.searchStores[index].storeDescription}",
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          fontSize: FontSize.small,
+                          fontFamily: "NotoR",
+                          color: Colors.black87),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -227,95 +225,4 @@ class Search extends GetView<AppController> {
       ),
     );
   }
-
-/*GridView.builder(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: GapSize.xxSmall,
-                              horizontal: GapSize.xxSmall),
-                          itemCount: controller.searchStores.length, //item 개수
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, //1 개의 행에 보여줄 item 개수
-                            childAspectRatio:
-                                1 / 1.3, //item 의 가로 1, 세로 1.3 의 비율
-                            mainAxisSpacing: 20, //수평 Padding
-                            crossAxisSpacing: 20, //수직 Padding
-                          ),
-                          itemBuilder: (BuildContext context, int index) {
-                            //item 의 반목문 항목 형성
-                            return GestureDetector(
-                              onTap: () {
-                                controller.goMapToSelectedStore(index);
-                              },
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    flex: 3,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.2),
-                                              spreadRadius: 3,
-                                              blurRadius: 5,
-                                              offset: const Offset(0,
-                                                  0), // changes position of shadow
-                                            )
-                                          ],
-                                          color: Colors.white,
-                                          borderRadius:
-                                              const BorderRadius.vertical(
-                                                  top: Radius.circular(
-                                                      RadiusSize.large))),
-                                      alignment: Alignment.center,
-                                      child: controller
-                                              .searchStores[index].imageUrl == null
-                                          ? Image.asset(
-                                              'asset/image/logo/splash_logo.png')
-                                          : Image.network(controller
-                                              .searchStores[index]
-                                              .imageUrl!),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.2),
-                                              spreadRadius: 3,
-                                              blurRadius: 5,
-                                              offset: const Offset(0,
-                                                  5), // changes position of shadow
-                                            )
-                                          ],
-                                          color: Colors.grey[200]!,
-                                          borderRadius:
-                                              const BorderRadius.vertical(
-                                                  bottom: Radius.circular(
-                                                      RadiusSize.large))),
-                                      alignment: Alignment.center,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: GapSize.xSmall),
-                                        child: AutoSizeText(
-                                          "${controller.searchStores[index].stroreName}",
-                                          style: const TextStyle(
-                                            fontFamily: "NotoB"
-                                          ),
-                                          minFontSize: FontSize.medium,
-                                          maxFontSize: FontSize.large,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),*/
 }

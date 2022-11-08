@@ -81,7 +81,13 @@ class ChangeNickname extends GetView<SettingController> {
                       SizedBox(
                         height: GapSize.small,
                       ),
-                      Text('닉네임은 띄어쓰기 포함, 2자 이상 10자 이하여야합니다.', style: TextStyle(fontSize: FontSize.small, fontFamily: "NotoM", color: Colors.grey),)
+                      Text(
+                        '닉네임은 띄어쓰기 포함, 2자 이상 10자 이하여야합니다.',
+                        style: TextStyle(
+                            fontSize: FontSize.small,
+                            fontFamily: "NotoM",
+                            color: Colors.grey),
+                      )
                     ],
                   ),
                 ),

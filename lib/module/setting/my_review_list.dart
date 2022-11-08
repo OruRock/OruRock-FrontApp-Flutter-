@@ -15,54 +15,53 @@ class MyReviewList extends GetView<SettingController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: AppBar(
-            title: const Text(
-              'My 리뷰',
-              style: TextStyle(
-                  fontFamily: "NoteB",
-                  fontSize: FontSize.xLarge,
-                  height: 1,
-                  color: Colors.black),
-            ),
-            iconTheme: const IconThemeData(
-              color: Colors.black,
-            ),
-            backgroundColor: Colors.white,
-            elevation: 1,
+        appBar: AppBar(
+          title: const Text(
+            'My 리뷰',
+            style: TextStyle(
+                fontFamily: "NoteB",
+                fontSize: FontSize.xLarge,
+                height: 1,
+                color: Colors.black),
           ),
-          body:
-              Obx(
-                () => controller.isLoading.value
-                    ? const Center(child: CircularProgressIndicator())
-                    : ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: controller.myReviewList.value.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {},
-                                child: ListTile(
-                                  title: Text(controller
-                                      .myReviewList[index].userNickname!),
-                                  subtitle: Text(
-                                      controller.myReviewList[index].comment!),
-                                  trailing: IconButton(
-                                    icon: Icon(Icons.delete),
-                                    onPressed: () {
-                                      _buildRemoveDialog(
-                                          controller.myReviewList.value[index]);
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-              ),
-            ),
+          iconTheme: const IconThemeData(
+            color: Colors.black,
+          ),
+          backgroundColor: Colors.white,
+          elevation: 1,
+        ),
+        body: Obx(
+          () => controller.isLoading.value
+              ? const Center(child: CircularProgressIndicator())
+              : ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: controller.myReviewList.value.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {},
+                          child: ListTile(
+                            title: Text(
+                                controller.myReviewList[index].userNickname!),
+                            subtitle:
+                                Text(controller.myReviewList[index].comment!),
+                            trailing: IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                _buildRemoveDialog(
+                                    controller.myReviewList.value[index]);
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+        ),
+      ),
     );
   }
 

@@ -86,15 +86,17 @@ class AppController extends GetxController {
       isOnCloseApp = false;
     });
   }
+
   _searchScrollListener() {
     if (searchScrollController.offset >=
-        searchScrollController.position.maxScrollExtent &&
+            searchScrollController.position.maxScrollExtent &&
         !searchScrollController.position.outOfRange &&
         !isEnd.value) {
       ++searchListPage;
       addSearch();
     }
   }
+
   ///암장 리스트 정보 API 연결 함수
   Future<void> getStoreList() async {
     try {
@@ -212,7 +214,10 @@ class AppController extends GetxController {
     isLoading.value = true;
     isEnd.value = false;
     try {
-      final data = {"search_txt": searchText.text, "page": searchListPage.value};
+      final data = {
+        "search_txt": searchText.text,
+        "page": searchListPage.value
+      };
       final res = await api.dio.get('/store/list', queryParameters: data);
 
       final List<dynamic>? storeData = res.data['payload']['result'];
@@ -220,7 +225,7 @@ class AppController extends GetxController {
         searchStores.value =
             storeData.map((map) => StoreModel.fromJson(map)).toList();
       }
-      if(res.data['payload']['isEnd']) {
+      if (res.data['payload']['isEnd']) {
         isEnd.value = true;
         searchListPage.value = 1;
       }
@@ -233,11 +238,11 @@ class AppController extends GetxController {
 
   // 즐겨찾기 아이콘 상태 관리 함수
   void setBookMarkState(StoreModel? store) {
-      if (clientStoreBookMark.contains(store)) {
-        detailClientStoreBookMark.value = true;
-      } else {
-        detailClientStoreBookMark.value = false;
-      }
+    if (clientStoreBookMark.contains(store)) {
+      detailClientStoreBookMark.value = true;
+    } else {
+      detailClientStoreBookMark.value = false;
+    }
   }
 
   /// 즐겨찾기 버튼 누를 시에 추가, 삭제, 교체가 일어나는 함수
@@ -291,6 +296,7 @@ class AppController extends GetxController {
     }
     isGetMoreData.value = false;
   }
+
   ///북마크 list 정보 API
   Future<void> getClientStoreBookMark() async {
     try {

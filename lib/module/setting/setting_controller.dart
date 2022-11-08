@@ -128,12 +128,13 @@ class SettingController extends GetxController {
     return comment;
   }
 
-
-
   Future<void> removeCommentAtMyReview(Comment comment) async {
-    final data = {"comment_id": comment.commentId.toString(), "uid": auth.user!.uid};
+    final data = {
+      "comment_id": comment.commentId.toString(),
+      "uid": auth.user!.uid
+    };
     final res = await api.dio.delete('/store/comment', queryParameters: data);
-    if(res.statusCode == 200 || res.statusCode == 201) {
+    if (res.statusCode == 200 || res.statusCode == 201) {
       myReviewList.remove(comment);
       Fluttertoast.showToast(msg: "선택하신 리뷰가 삭제되었습니다.");
       return;

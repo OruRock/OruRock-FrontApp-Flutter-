@@ -26,8 +26,7 @@ class App extends GetView<AppController> {
             Fluttertoast.showToast(msg: "한 번 더 누르면 종료됩니다.");
             controller.onCloseApp();
             return false;
-          }
-          else {
+          } else {
             return true;
           }
         } else {
@@ -36,7 +35,7 @@ class App extends GetView<AppController> {
         }
       },
       child: Obx(() => SafeArea(
-        child: Scaffold(
+            child: Scaffold(
               body: IndexedStack(
                 key: ValueKey(controller.selectedTabIndex.value),
                 index: controller.selectedTabIndex.value.index,
@@ -135,7 +134,7 @@ class App extends GetView<AppController> {
                 ],
               ),
             ),
-      )),
+          )),
     );
   }
 }

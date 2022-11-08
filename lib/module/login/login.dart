@@ -43,7 +43,8 @@ class Login extends GetView<LoginController> {
                     Visibility(
                       visible: Platform.isAndroid,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: GapSize.xxSmall),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: GapSize.xxSmall),
                         child: Center(
                           child: SizedBox(
                             height: HeightWithRatio.xSmall,
@@ -61,27 +62,29 @@ class Login extends GetView<LoginController> {
                     Visibility(
                       visible: Platform.isIOS,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: GapSize.xxSmall),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: GapSize.xxSmall),
                         child: Center(
                           child: SizedBox(
                             height: HeightWithRatio.xSmall,
                             width: WidthWithRatio.xxxxLarge,
-                            child: SignInButton(
-                              Buttons.AppleDark,
-                              text: 'Apple 계정으로 로그인',
-                              onPressed: () {
-                                controller.loginButtonPressed('Apple');
-                              }
-                            ),
+                            child: SignInButton(Buttons.AppleDark,
+                                text: 'Apple 계정으로 로그인', onPressed: () {
+                              controller.loginButtonPressed('Apple');
+                            }),
                           ),
                         ),
                       ),
                     ),
                     _buildLoginButton(
-                            () => controller.loginButtonPressed('Kakao'),
+                        () => controller.loginButtonPressed('Kakao'),
                         'asset/image/logo/kakao_login.png'),
                     Expanded(child: Container()),
-                    Text('@ Developed by Team Oru_rock', style: TextStyle(color: Colors.grey[400], fontSize: FontSize.small),),
+                    Text(
+                      '@ Developed by Team Oru_rock',
+                      style: TextStyle(
+                          color: Colors.grey[400], fontSize: FontSize.small),
+                    ),
                   ],
                 ),
               ),
