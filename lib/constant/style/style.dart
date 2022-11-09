@@ -14,8 +14,22 @@ const TextStyle boldNanumTextStyle = TextStyle(
     height: 1.6,
     color: Colors.black);
 
+const TextStyle mediumNanumTextStyle = TextStyle(
+    fontSize: FontSize.medium,
+    fontFamily: "NotoM",
+    height: 1.6,
+    color: Colors.black);
+
+
 const TextStyle regularNanumTextStyle = TextStyle(
     fontSize: FontSize.small,
+    overflow: TextOverflow.ellipsis,
+    fontFamily: "NotoR",
+    height: 1.6,
+    color: Colors.black);
+
+const TextStyle regularMediumNanumTextStyle = TextStyle(
+    fontSize: FontSize.medium,
     fontFamily: "NotoR",
     height: 1.6,
     color: Colors.black);

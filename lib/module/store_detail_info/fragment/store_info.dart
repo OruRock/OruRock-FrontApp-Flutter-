@@ -25,49 +25,57 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
           SizedBox(
             height: HeightWithRatio.xxxxSmall,
           ),
-          Row(
-            children: [
-              Image.asset(
-                'asset/image/icon/address_icon.png',
-                height: WidthWithRatio.small,
-              ),
-              const SizedBox(
-                width: GapSize.xxSmall,
-              ),
-              Expanded(
-                child: Text(
-                  '${store?.storeAddr}',
-                  style: const TextStyle(
-                    fontFamily: "NotoR",
-                    fontSize: FontSize.small,
-                    overflow: TextOverflow.clip,
+          Container(
+            padding: const EdgeInsets.symmetric(
+                horizontal: GapSize.small, vertical: GapSize.medium),
+            decoration: shadowBoxDecoration,
+            child: Row(
+              children: [
+                Image.asset(
+                  'asset/image/icon/address_icon.png',
+                  height: WidthWithRatio.xSmall,
+                ),
+                const SizedBox(
+                  width: GapSize.xxSmall,
+                ),
+                Expanded(
+                  child: Text(
+                    '${store?.storeAddr}',
+                    style: const TextStyle(
+                      fontFamily: "NotoR",
+                      fontSize: FontSize.small,
+                      overflow: TextOverflow.clip,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          Divider(
-            color: Colors.grey,
-            height: HeightWithRatio.xxSmall,
+          const SizedBox(
+            height: GapSize.small,
           ),
-          Row(
-            children: [
-              Image.asset(
-                'asset/image/icon/phone_icon.png',
-                height: WidthWithRatio.small,
-              ),
-              const SizedBox(
-                width: GapSize.xxSmall,
-              ),
-              Text(
-                '${store?.storePhone}',
-                style: regularNanumDetailPageTextStyle,
-              ),
-            ],
+          Container(
+            padding: const EdgeInsets.symmetric(
+                horizontal: GapSize.small, vertical: GapSize.medium),
+            decoration: shadowBoxDecoration,
+            child: Row(
+              children: [
+                Image.asset(
+                  'asset/image/icon/phone_icon.png',
+                  height: WidthWithRatio.xSmall,
+                ),
+                const SizedBox(
+                  width: GapSize.xxSmall,
+                ),
+                Text(
+                  '${store?.storePhone}',
+                  style: regularNanumTextStyle,
+                ),
+              ],
+            ),
           ),
-          Divider(
-            color: Colors.grey,
-            height: HeightWithRatio.xxSmall,
+          const SizedBox(
+            height: GapSize.small,
           ),
           _buildInfoTile(
             imageUrl: 'asset/image/icon/timer_icon.png',
@@ -86,9 +94,8 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
               }),
             ),
           ),
-          Divider(
-            color: Colors.grey,
-            height: HeightWithRatio.xxSmall,
+          const SizedBox(
+            height: GapSize.small,
           ),
           _buildInfoTile(
             imageUrl: 'asset/image/icon/description_icon.png',
@@ -101,9 +108,8 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
               ),
             ),
           ),
-          Divider(
-            color: Colors.grey,
-            height: HeightWithRatio.xxSmall,
+          const SizedBox(
+            height: GapSize.small,
           ),
           _buildInfoTile(
             imageUrl: 'asset/image/icon/money_icon.png',
@@ -121,7 +127,10 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
                 );
               }),
             ),
-          )
+          ),
+          SizedBox(
+            height: HeightWithRatio.xxxxSmall,
+          ),
         ],
       ),
     );
@@ -131,29 +140,34 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
       {required String imageUrl,
       required String title,
       required Widget content}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Image.asset(
-              imageUrl,
-              height: WidthWithRatio.small,
-            ),
-            const SizedBox(
-              width: GapSize.xxSmall,
-            ),
-            Text(
-              title,
-              style: boldNanumTextStyle,
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: GapSize.xxSmall,
-        ),
-        content
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(
+          horizontal: GapSize.small, vertical: GapSize.medium),
+      decoration: shadowBoxDecoration,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Image.asset(
+                imageUrl,
+                height: WidthWithRatio.xSmall,
+              ),
+              const SizedBox(
+                width: GapSize.xxSmall,
+              ),
+              Text(
+                title,
+                style: mediumNanumTextStyle,
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: GapSize.xxSmall,
+          ),
+          content
+        ],
+      ),
     );
   }
 }

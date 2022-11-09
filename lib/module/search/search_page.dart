@@ -208,9 +208,23 @@ class Search extends GetView<AppController> {
                       height: GapSize.xxSmall,
                     ),
                     AutoSizeText(
-                      "${controller.searchStores[index].storeDescription}",
-                      maxLines: 3,
+                      "${controller.searchStores[index].storeAddr}",
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
+                      minFontSize: FontSize.small,
+                      style: const TextStyle(
+                          fontSize: FontSize.small,
+                          fontFamily: "NotoR",
+                          color: Colors.black87),
+                    ),
+                    const SizedBox(
+                      height: GapSize.xxSmall,
+                    ),
+                    AutoSizeText(
+                      "${controller.searchStores[index].storePhone}",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      minFontSize: FontSize.small,
                       style: const TextStyle(
                           fontSize: FontSize.small,
                           fontFamily: "NotoR",

@@ -42,12 +42,15 @@ class ReviewFragment extends GetView<StoreInfoController> {
                   ),
             Align(
               alignment: Alignment.bottomRight,
-              child: FloatingActionButton(
-                onPressed: () {
-                  Get.bottomSheet(_buildReviewTextField(),
-                      barrierColor: Colors.black26);
-                },
-                child: Icon(Icons.edit_outlined),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: GapSize.small),
+                child: FloatingActionButton(
+                  onPressed: () {
+                    Get.bottomSheet(_buildReviewTextField(),
+                        barrierColor: Colors.black26);
+                  },
+                  child: Icon(Icons.edit_outlined),
+                ),
               ),
             )
           ]),

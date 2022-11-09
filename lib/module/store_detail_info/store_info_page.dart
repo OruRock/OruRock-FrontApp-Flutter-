@@ -20,6 +20,7 @@ class StoreInfo extends GetView<StoreInfoController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.grey[100],
         appBar: AppBar(
           title: Text(
             '${store?.storeName}',
@@ -47,6 +48,8 @@ class StoreInfo extends GetView<StoreInfoController> {
                     height: controller.imageSliderHeight.value,
                     duration: const Duration(milliseconds: 800),
                     child: ImageSlideshow(
+                      indicatorColor: Colors.black,
+                      indicatorBackgroundColor: Colors.grey,
                       width: Get.width,
                       children: controller.detailModel.value!.image!.isEmpty
                           ? [Image.asset('asset/image/logo/splash_logo.png')]
@@ -56,16 +59,15 @@ class StoreInfo extends GetView<StoreInfoController> {
                               return Image.network(
                                 controller
                                     .detailModel.value!.image![index].imageUrl!,
-                                scale: 0.01,
+                                fit: BoxFit.fill,
                               );
                             }),
                     ),
                   ),
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: WidthWithRatio.small,
-                          vertical: GapSize.xSmall),
+                      padding: EdgeInsets.fromLTRB(
+                          WidthWithRatio.small, GapSize.xSmall, WidthWithRatio.small, 0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
