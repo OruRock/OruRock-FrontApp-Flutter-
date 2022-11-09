@@ -61,73 +61,57 @@ class App extends GetView<AppController> {
                 items: const [
                   BottomNavigationBarItem(
                     // icon: Icon(Icons.home),
-                    icon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
-                        Icons.home_outlined,
-                        color: Colors.black,
+                    icon: Icon(
+                        Icons.home,
+                        color: Colors.grey,
+                        size: 30,
                       ),
-                    ),
-                    activeIcon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
+                    activeIcon: Icon(
                         Icons.home,
                         color: Colors.black,
+                        size: 30,
                       ),
-                    ),
                     label: '홈',
                   ),
                   BottomNavigationBarItem(
                     // icon: Icon(Icons.home),
-                    icon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
-                        Icons.search_outlined,
-                        color: Colors.black,
-                      ),
+                    icon: Icon(
+                      Icons.search,
+                      color: Colors.grey,
+                      size: 30,
                     ),
-                    activeIcon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
-                        Icons.search,
-                        color: Colors.black,
-                      ),
+                    activeIcon: Icon(
+                      Icons.search,
+                      color: Colors.black,
+                      size: 30,
                     ),
                     label: '검색',
                   ),
                   BottomNavigationBarItem(
                     // icon: Icon(Icons.home),
-                    icon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
-                        Icons.map_outlined,
-                        color: Colors.black,
-                      ),
+                    icon: Icon(
+                      Icons.map,
+                      color: Colors.grey,
+                      size: 30,
                     ),
-                    activeIcon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
-                        Icons.map,
-                        color: Colors.black,
-                      ),
+                    activeIcon: Icon(
+                      Icons.map,
+                      color: Colors.black,
+                      size: 30,
                     ),
                     label: '지도',
                   ),
                   BottomNavigationBarItem(
                     // icon: Icon(Icons.home),
-                    icon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
-                        Icons.settings_outlined,
-                        color: Colors.black,
-                      ),
+                    icon: Icon(
+                      Icons.settings,
+                      color: Colors.grey,
+                      size: 30,
                     ),
-                    activeIcon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
-                        Icons.settings,
-                        color: Colors.black,
-                      ),
+                    activeIcon: Icon(
+                      Icons.settings,
+                      color: Colors.black,
+                      size: 30,
                     ),
                     label: '설정',
                   ),

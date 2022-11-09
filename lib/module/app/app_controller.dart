@@ -54,6 +54,20 @@ class AppController extends GetxController {
   var isLoading = false.obs;
   var selectedTabIndex = Tabs.home.obs;
 
+  List<String> levelImage = [
+    'asset/image/icon/profile/level_red.png',
+    'asset/image/icon/profile/level_orange.png',
+    'asset/image/icon/profile/level_yellow.png',
+    'asset/image/icon/profile/level_green.png',
+    'asset/image/icon/profile/level_blue.png',
+    'asset/image/icon/profile/level_navy.png',
+    'asset/image/icon/profile/level_purple.png',
+    'asset/image/icon/profile/level_white.png',
+    'asset/image/icon/profile/level_grey.png',
+    'asset/image/icon/profile/level_black.png',
+    'asset/image/icon/profile/level_master.png',
+  ];
+
   void onInit() async {
     await getStoreList();
     await getClientStoreBookMark();
@@ -138,6 +152,8 @@ class AppController extends GetxController {
 
   ///각 마커 onTap시 함수
   void showDetailInformation(Marker? marker, Map<String, int?> iconSize) async {
+    map.setCamera(marker!.position!, 18.0);
+
     final markerId = int.parse(marker!.markerId);
 
     selectedIndex = markerId; //selectedIndex 업데이트
@@ -198,7 +214,6 @@ class AppController extends GetxController {
   void goMapToSelectedStore(int index) async {
     selectedTabIndex.value = Tabs.nmap;
     map.nmapController = Completer();
-    map.setCamera(markers[index].position!, 18.0);
     showDetailInformation(markers[index], {"height": null, "width": null});
   }
 
@@ -206,7 +221,6 @@ class AppController extends GetxController {
     final storeIndex = stores.indexOf(clientStoreBookMark[index]);
     selectedTabIndex.value = Tabs.nmap;
     map.nmapController = Completer();
-    map.setCamera(markers[storeIndex].position!, 18.0);
     showDetailInformation(markers[storeIndex], {"height": null, "width": null});
   }
 

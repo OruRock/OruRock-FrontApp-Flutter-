@@ -47,7 +47,7 @@ class Setting extends GetView<SettingController> {
                   child: Column(
                     children: [
                       Image.asset(
-                        controller.levelImage[controller.userLevel.value],
+                        controller.app.levelImage[controller.userLevel.value],
                         width: WidthWithRatio.xxxLarge,
                       ),
                       const SizedBox(

@@ -19,19 +19,6 @@ class SettingController extends GetxController {
 
   var nickname = ''.obs;
   final nicknameController = TextEditingController();
-  List<String> levelImage = [
-    'asset/image/icon/profile/level_red.png',
-    'asset/image/icon/profile/level_orange.png',
-    'asset/image/icon/profile/level_yellow.png',
-    'asset/image/icon/profile/level_green.png',
-    'asset/image/icon/profile/level_blue.png',
-    'asset/image/icon/profile/level_navy.png',
-    'asset/image/icon/profile/level_purple.png',
-    'asset/image/icon/profile/level_white.png',
-    'asset/image/icon/profile/level_grey.png',
-    'asset/image/icon/profile/level_black.png',
-    'asset/image/icon/profile/level_master.png',
-  ];
   final userLevel = 0.obs;
   var isLoading = false.obs;
   var appVersion = ''.obs;

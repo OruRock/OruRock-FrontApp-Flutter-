@@ -127,8 +127,9 @@ class MarkerDetail extends GetView<AppController> {
                       height: GapSize.xSmall,
                     ),
                     SizedBox(
-                      height: 150,
+                      height: 180,
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
                             width: 150,
@@ -157,7 +158,6 @@ class MarkerDetail extends GetView<AppController> {
                               const EdgeInsets.only(left: GapSize.xSmall),
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
@@ -167,6 +167,9 @@ class MarkerDetail extends GetView<AppController> {
                                         fontFamily: "NotoB",
                                         height: 1.6,
                                         color: Colors.black),
+                                  ),
+                                  const SizedBox(
+                                    height: GapSize.xxxSmall,
                                   ),
                                   Text(
                                     '${store?.storeAddr}',
@@ -178,6 +181,9 @@ class MarkerDetail extends GetView<AppController> {
                                         overflow: TextOverflow.ellipsis
                                     ),
                                   ),
+                                  const SizedBox(
+                                    height: GapSize.xxxSmall,
+                                  ),
                                   const Text(
                                     '업체 전화번호',
                                     style: TextStyle(
@@ -185,6 +191,9 @@ class MarkerDetail extends GetView<AppController> {
                                         fontFamily: "NotoB",
                                         height: 1.6,
                                         color: Colors.black),
+                                  ),
+                                  const SizedBox(
+                                    height: GapSize.xxxSmall,
                                   ),
                                   Text(
                                     '${store?.storePhone}',
@@ -196,6 +205,9 @@ class MarkerDetail extends GetView<AppController> {
                                         overflow: TextOverflow.ellipsis
                                     ),
                                   ),
+                                  const SizedBox(
+                                    height: GapSize.xxxSmall,
+                                  ),
                                   const Text(
                                     '업체 사이트',
                                     style: TextStyle(
@@ -203,6 +215,9 @@ class MarkerDetail extends GetView<AppController> {
                                         fontFamily: "NotoB",
                                         height: 1.6,
                                         color: Colors.black),
+                                  ),
+                                  const SizedBox(
+                                    height: GapSize.xxxSmall,
                                   ),
                                   InkWell(
                                     onTap: () {
@@ -223,8 +238,8 @@ class MarkerDetail extends GetView<AppController> {
                                           fontSize: FontSize.xSmall,
                                           fontFamily: "NotoR",
                                           height: 1.6,
-                                          color: Colors.black,
-                                        overflow: TextOverflow.ellipsis
+                                          color: Colors.blue,
+                                        overflow: TextOverflow.clip
                                       ),
                                     ),
                                   ),
@@ -238,30 +253,6 @@ class MarkerDetail extends GetView<AppController> {
                   ],
                 ),
               ),
-              // Align(
-              //   alignment: Alignment.centerRight,
-              //   child: Padding(
-              //     padding: const EdgeInsets.only(right: GapSize.small),
-              //     child: Row(
-              //       mainAxisSize: MainAxisSize.min,
-              //       children: const [
-              //         AutoSizeText(
-              //           '상세 정보 보러가기 ',
-              //           style: TextStyle(color: Colors.blue),
-              //           minFontSize: FontSize.xSmall,
-              //           maxFontSize: FontSize.medium,
-              //         ),
-              //         Icon(
-              //           Icons.chevron_right,
-              //           color: Colors.blue,
-              //         )
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              const SizedBox(
-                height: GapSize.small,
-              )
             ],
           ),
         ),

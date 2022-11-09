@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
@@ -49,7 +50,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
                     Get.bottomSheet(_buildReviewTextField(),
                         barrierColor: Colors.black26);
                   },
-                  child: Icon(Icons.edit_outlined),
+                  child: const Icon(Icons.edit_outlined),
                 ),
               ),
             )
@@ -122,93 +123,204 @@ class ReviewFragment extends GetView<StoreInfoController> {
   }
 
   _buildReviewTile(int index) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: GapSize.xxSmall),
+      child: Container(
+        width: Get.width,
+        padding: const EdgeInsets.symmetric(
+            horizontal: GapSize.small, vertical: GapSize.small),
+        decoration: shadowBoxDecoration,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              controller.detailModel.value!.comment![index].userNickname ??
-                  '무명 클라이머',
-              style: reviewNickNameTextStyle,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.grey)),
+                  child: ClipOval(
+                    child: SizedBox.fromSize(
+                        size: const Size.fromRadius(20), // Image radius
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Image.asset(controller.app.levelImage[5]),
+                        )),
+                  ),
+                ),
+                const SizedBox(
+                  width: GapSize.xxSmall,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      controller.detailModel.value!.comment![index]
+                              .userNickname ??
+                          '무명 클라이머',
+                      style: reviewNickNameTextStyle,
+                    ),
+                    const SizedBox(
+                      height: GapSize.xxxSmall,
+                    ),
+                    Row(
+                      children: const [
+                        Icon(
+                          Icons.star,
+                          color: Colors.black,
+                          size: 15,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.black,
+                          size: 15,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.black,
+                          size: 15,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.black,
+                          size: 15,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.black,
+                          size: 15,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                Expanded(child: Container()),
+                Visibility(
+                  visible: controller.detailModel.value!.comment![index].uid ==
+                      controller.auth.user?.uid,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: GapSize.xxxSmall),
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.modifyButtonPressed(index);
+                      },
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.blue,
+                        size: WidthWithRatio.xSmall,
+                      ),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: controller.detailModel.value!.comment![index].uid ==
+                      controller.auth.user?.uid,
+                  child: GestureDetector(
+                    onTap: () async {
+                      controller.buildWarningDialog(
+                          store!.storeId!,
+                          controller
+                              .detailModel.value!.comment![index].commentId!);
+                    },
+                    child: Icon(
+                      Icons.delete,
+                      size: WidthWithRatio.xSmall,
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Expanded(child: Container()),
+            controller.isModifying.value &&
+                    controller.modifyingIndex.value == index
+                ? _buildModifyTextField(index)
+                : _buildCommentField(index),
             Text(
               DateFormat('yy.MM.dd').format(DateTime.parse(
                   controller.detailModel.value!.comment![index].createDate!)),
-              style: reviewContentTextStyle,
+              style: const TextStyle(
+                  fontFamily: "NotoR",
+                  fontSize: FontSize.xSmall,
+                  color: Colors.grey),
             ),
           ],
         ),
-        const SizedBox(
-          height: GapSize.xxSmall,
-        ),
-        controller.isModifying.value && controller.modifyingIndex.value == index
-            ? _buildModifyTextField(index)
-            : _buildCommentField(index),
-        const Divider(
-          height: GapSize.small,
-          thickness: 1.0,
-          color: Colors.grey,
-        )
-      ],
+      ),
     );
   }
 
   _buildModifyTextField(int index) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Expanded(
-          flex: 5,
-          child: TextField(
-            controller: controller.modifyText,
-            keyboardType: TextInputType.multiline,
-            maxLines: 3,
-            decoration: const InputDecoration(
-                filled: false,
-                hintText: "리뷰를 입력해주세요.",
-                hintStyle: TextStyle(
-                    fontSize: FontSize.small,
-                    color: Colors.grey,
-                    fontFamily: "NotoR"),
-                enabledBorder:
-                    OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
-                focusedBorder:
-                    OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
-                contentPadding: EdgeInsets.symmetric(
-                    vertical: GapSize.small, horizontal: GapSize.small)),
-            style:
-                const TextStyle(fontSize: FontSize.small, fontFamily: "NotoR"),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: GapSize.xSmall),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Expanded(
+            flex: 5,
+            child: TextField(
+              controller: controller.modifyText,
+              keyboardType: TextInputType.multiline,
+              maxLines: 3,
+              decoration: const InputDecoration(
+                  filled: false,
+                  hintText: "리뷰를 입력해주세요.",
+                  hintStyle: TextStyle(
+                      fontSize: FontSize.small,
+                      color: Colors.grey,
+                      fontFamily: "NotoR"),
+                  enabledBorder:
+                      OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+                  focusedBorder:
+                      OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+                  contentPadding: EdgeInsets.symmetric(
+                      vertical: GapSize.small, horizontal: GapSize.small)),
+              style: const TextStyle(
+                  fontSize: FontSize.small, fontFamily: "NotoR"),
+            ),
           ),
-        ),
-        const SizedBox(
-          width: GapSize.xSmall,
-        ),
-        Expanded(
-          flex: 1,
-          child: Column(
-            children: [
-              OutlinedButton(
-                  onPressed: () {
-                    if (controller
-                        .reviewTextFieldValidator(controller.modifyText)) {
-                      controller.modifyReview(
-                          store!.storeId!,
-                          controller
-                              .detailModel.value!.comment![index].commentId!);
-                    }
-                  },
-                  child: const Text("수정")),
-              OutlinedButton(
-                  onPressed: () {
-                    controller.cancelModify();
-                  },
-                  child: const Text("취소")),
-            ],
+          const SizedBox(
+            width: GapSize.xSmall,
           ),
-        ),
-      ],
+          Expanded(
+            flex: 1,
+            child: Column(
+              children: [
+                OutlinedButton(
+                    onPressed: () {
+                      if (controller
+                          .reviewTextFieldValidator(controller.modifyText)) {
+                        controller.modifyReview(
+                            store!.storeId!,
+                            controller
+                                .detailModel.value!.comment![index].commentId!);
+                      }
+                    },
+                    child: const AutoSizeText(
+                      "수정",
+                      maxLines: 1,
+                      minFontSize: 8,
+                      style:
+                          TextStyle(color: Colors.black, fontFamily: "NotoM"),
+                    )),
+                OutlinedButton(
+                    onPressed: () {
+                      controller.cancelModify();
+                    },
+                    child: const AutoSizeText(
+                      "취소",
+                      maxLines: 1,
+                      minFontSize: 8,
+                      style:
+                          TextStyle(color: Colors.black, fontFamily: "NotoM"),
+                    )),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -217,46 +329,14 @@ class ReviewFragment extends GetView<StoreInfoController> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
       children: [
-        SizedBox(
-          width: WidthWithRatio.xxxxLarge,
-          child: Text(
-            controller.detailModel.value!.comment![index].comment!,
-            style: reviewContentTextStyle,
-            overflow: TextOverflow.clip,
-          ),
-        ),
         Expanded(
-          child: Container(),
-        ),
-        Visibility(
-          visible: controller.detailModel.value!.comment![index].uid ==
-              controller.auth.user?.uid,
-          child: GestureDetector(
-            onTap: () {
-              controller.modifyButtonPressed(index);
-            },
-            child: Icon(
-              Icons.edit_outlined,
-              color: Colors.blue,
-              size: WidthWithRatio.xSmall,
-            ),
-          ),
-        ),
-        SizedBox(
-          width: WidthWithRatio.xxxSmall,
-        ),
-        Visibility(
-          visible: controller.detailModel.value!.comment![index].uid ==
-              controller.auth.user?.uid,
-          child: GestureDetector(
-            onTap: () async {
-              controller.buildWarningDialog(store!.storeId!,
-                  controller.detailModel.value!.comment![index].commentId!);
-            },
-            child: Icon(
-              Icons.delete_outline,
-              size: WidthWithRatio.xSmall,
-              color: Colors.red,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: GapSize.xSmall),
+            child: Text(
+              controller.detailModel.value!.comment![index].comment!,
+              style: reviewContentTextStyle,
+              overflow: TextOverflow.clip,
+              textAlign: TextAlign.start,
             ),
           ),
         ),

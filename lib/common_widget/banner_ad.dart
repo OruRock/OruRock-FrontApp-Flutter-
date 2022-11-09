@@ -27,7 +27,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
     // Get an AnchoredAdaptiveBannerAdSize before loading the ad.
     final AnchoredAdaptiveBannerAdSize? size =
     await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
-        (MediaQuery.of(context).size.width - GapSize.medium * 2).truncate());
+        (Get.width - GapSize.medium * 2).truncate());
 
     if (size == null) {
       print('Unable to get height of anchored banner.');
@@ -67,7 +67,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 
     if (isAdLoaded && bannerAd != null) {
       return Container(
-        width: _bannerAd!.size.width.toDouble(),
+        width: _bannerAd!.size.width.toDouble() - GapSize.medium * 2,
         height: _bannerAd!.size.height.toDouble(),
         child: AdWidget(
           ad: bannerAd,

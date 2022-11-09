@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:oru_rock/common_widget/banner_ad.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
@@ -45,6 +46,12 @@ class Search extends GetView<AppController> {
                                 controller: controller.searchScrollController,
                                 itemCount: controller.searchStores.length,
                                 itemBuilder: (BuildContext context, int index) {
+                                  if(index % 10 == 0 && index >= 10) {
+                                    return const Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: GapSize.medium),
+                                      child: BannerAdWidget(),
+                                    );
+                                  }
                                   return AnimationConfiguration.staggeredList(
                                     position: index,
                                     duration: const Duration(milliseconds: 375),

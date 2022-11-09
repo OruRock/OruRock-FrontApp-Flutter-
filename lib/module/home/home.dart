@@ -118,7 +118,10 @@ class Home extends GetView<AppController> {
               padding: EdgeInsets.all(GapSize.medium),
               child: HomeServiceTop(),
             ),
-             BannerAdWidget(),
+             Padding(
+               padding: const EdgeInsets.symmetric(horizontal: GapSize.medium),
+               child: BannerAdWidget(),
+             ),
             const HomeFavorites(),
           ],
         ),

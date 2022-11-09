@@ -85,7 +85,7 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
               children: List.generate(
                   controller.detailModel.value!.openTime!.length, (index) {
                 return Padding(
-                  padding: EdgeInsets.only(left: WidthWithRatio.small),
+                  padding: const EdgeInsets.symmetric(vertical: GapSize.xxxSmall),
                   child: Text(
                     '${controller.detailModel.value!.openTime![index].dayName} : ${controller.detailModel.value!.openTime![index].openTime}',
                     style: regularEllipsisNanumTextStyle,
@@ -100,12 +100,9 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
           _buildInfoTile(
             imageUrl: 'asset/image/icon/description_icon.png',
             title: "암장 설명",
-            content: Padding(
-              padding: EdgeInsets.only(left: WidthWithRatio.small),
-              child: Text(
-                '${store?.storeDescription}',
-                style: regularClipNanumTextStyle,
-              ),
+            content: Text(
+              '${store?.storeDescription}',
+              style: regularClipNanumTextStyle,
             ),
           ),
           const SizedBox(
@@ -119,7 +116,7 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
               children: List.generate(
                   controller.detailModel.value!.price!.length, (index) {
                 return Padding(
-                  padding: EdgeInsets.only(left: WidthWithRatio.small),
+                  padding: EdgeInsets.symmetric(vertical: GapSize.xxxSmall),
                   child: Text(
                     '${controller.detailModel.value!.price![index].priceDescription} : ${controller.detailModel.value!.price![index].price}',
                     style: regularEllipsisNanumTextStyle,

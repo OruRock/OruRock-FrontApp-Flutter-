@@ -51,7 +51,7 @@ class LevelSetting extends GetView<SettingController> {
                   child: Column(
                     children: [
                       Image.asset(
-                        controller.levelImage[controller.userLevel.value],
+                        controller.app.levelImage[controller.userLevel.value],
                         width: WidthWithRatio.xxxLarge,
                       ),
                       const SizedBox(
@@ -75,7 +75,7 @@ class LevelSetting extends GetView<SettingController> {
                   decoration: noShadowBoxDecoration,
                   padding: const EdgeInsets.all(GapSize.small),
                   child: GridView.builder(
-                    itemCount: controller.levelImage.length, //item 개수
+                    itemCount: controller.app.levelImage.length, //item 개수
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3, //1 개의 행에 보여줄 item 개수
@@ -92,7 +92,7 @@ class LevelSetting extends GetView<SettingController> {
                           padding: const EdgeInsets.fromLTRB(GapSize.xxxSmall,
                               0, GapSize.xxxSmall, GapSize.xxSmall),
                           decoration: noShadowBoxDecoration,
-                          child: Image.asset(controller.levelImage[index]),
+                          child: Image.asset(controller.app.levelImage[index]),
                         ),
                       );
                     },
