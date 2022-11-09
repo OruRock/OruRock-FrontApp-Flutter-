@@ -69,7 +69,7 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
                 ),
                 Text(
                   '${store?.storePhone}',
-                  style: regularNanumTextStyle,
+                  style: regularEllipsisNanumTextStyle,
                 ),
               ],
             ),
@@ -88,7 +88,7 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
                   padding: EdgeInsets.only(left: WidthWithRatio.small),
                   child: Text(
                     '${controller.detailModel.value!.openTime![index].dayName} : ${controller.detailModel.value!.openTime![index].openTime}',
-                    style: regularNanumTextStyle,
+                    style: regularEllipsisNanumTextStyle,
                   ),
                 );
               }),
@@ -104,7 +104,7 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
               padding: EdgeInsets.only(left: WidthWithRatio.small),
               child: Text(
                 '${store?.storeDescription}',
-                style: regularNanumTextStyle,
+                style: regularClipNanumTextStyle,
               ),
             ),
           ),
@@ -122,7 +122,7 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
                   padding: EdgeInsets.only(left: WidthWithRatio.small),
                   child: Text(
                     '${controller.detailModel.value!.price![index].priceDescription} : ${controller.detailModel.value!.price![index].price}',
-                    style: regularNanumTextStyle,
+                    style: regularEllipsisNanumTextStyle,
                   ),
                 );
               }),

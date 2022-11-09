@@ -21,9 +21,16 @@ const TextStyle mediumNanumTextStyle = TextStyle(
     color: Colors.black);
 
 
-const TextStyle regularNanumTextStyle = TextStyle(
+const TextStyle regularEllipsisNanumTextStyle = TextStyle(
     fontSize: FontSize.small,
     overflow: TextOverflow.ellipsis,
+    fontFamily: "NotoR",
+    height: 1.6,
+    color: Colors.black);
+
+const TextStyle regularClipNanumTextStyle = TextStyle(
+    fontSize: FontSize.small,
+    overflow: TextOverflow.clip,
     fontFamily: "NotoR",
     height: 1.6,
     color: Colors.black);

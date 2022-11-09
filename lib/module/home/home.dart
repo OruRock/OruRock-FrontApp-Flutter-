@@ -19,14 +19,15 @@ class Home extends GetView<AppController> {
         backgroundColor: Colors.grey[100],
         body: ListView(
           children: [
-            SizedBox(
-              height: HeightWithRatio.xLarge,
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: GapSize.small),
               child: Center(
                   child: Text(
                 '오 르 락',
                 style: TextStyle(fontFamily: "JungMock", fontSize: 70),
               )),
             ),
+
 /*            Padding(
               padding: const EdgeInsets.symmetric(horizontal: GapSize.medium),
               child: Row(
@@ -58,8 +59,8 @@ class Home extends GetView<AppController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: GapSize.medium, vertical: GapSize.small),
+                      padding: EdgeInsets.fromLTRB(
+                          GapSize.medium, 0, GapSize.medium, GapSize.small),
                       child: Text(
                         '오늘 갈 암장',
                         style: TextStyle(
@@ -117,15 +118,8 @@ class Home extends GetView<AppController> {
               padding: EdgeInsets.all(GapSize.medium),
               child: HomeServiceTop(),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: GapSize.medium),
-              child: SizedBox(
-                height: HeightWithRatio.medium,
-                width: Get.width,
-                child: const Center(child: BannerAdWidget()),
-              ),
-            ),
-            HomeFavorites(),
+             BannerAdWidget(),
+            const HomeFavorites(),
           ],
         ),
       ),

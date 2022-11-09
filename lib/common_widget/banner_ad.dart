@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:oru_rock/constant/config.dart';
+import 'package:oru_rock/constant/style/size.dart';
 
 class BannerAdWidget extends StatefulWidget {
   const BannerAdWidget({Key? key}) : super(key: key);
@@ -19,26 +20,39 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 
   @override
   void didChangeDependencies() {
-    // Create the ad objects and load ads.
-    _bannerAd = BannerAd(
-        adUnitId: Platform.isAndroid
-            ? Config.aos_banner_test_id
-            : Config.ios_banner_test_id,
-        request: AdRequest(),
-        size: AdSize.fullBanner,
-        listener: BannerAdListener(
-          onAdLoaded: (ad) {
-            setState(() {
-              isAdLoaded = true;
-            });
-          },
-          onAdFailedToLoad: (ad, err) {
-            print('Failed to load a banner ad: ${err.message}');
-            ad.dispose();
-          },
-        ))
-      ..load();
+    _loadAd();
     super.didChangeDependencies();
+  }
+  Future<void> _loadAd() async {
+    // Get an AnchoredAdaptiveBannerAdSize before loading the ad.
+    final AnchoredAdaptiveBannerAdSize? size =
+    await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+        (MediaQuery.of(context).size.width - GapSize.medium * 2).truncate());
+
+    if (size == null) {
+      print('Unable to get height of anchored banner.');
+      return;
+    }
+
+    _bannerAd = BannerAd(
+      adUnitId: Platform.isAndroid
+          ? Config.aos_banner_test_id
+          : Config.ios_banner_test_id,
+      size: size,
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (Ad ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+            isAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          ad.dispose();
+        },
+      ),
+    );
+    return _bannerAd!.load();
   }
 
   @override
@@ -52,8 +66,12 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
     final BannerAd? bannerAd = _bannerAd;
 
     if (isAdLoaded && bannerAd != null) {
-      return AdWidget(
-        ad: bannerAd,
+      return Container(
+        width: _bannerAd!.size.width.toDouble(),
+        height: _bannerAd!.size.height.toDouble(),
+        child: AdWidget(
+          ad: bannerAd,
+        ),
       );
     } else {
       return const SizedBox.shrink();
