@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:like_button/like_button.dart';
 import 'package:oru_rock/common_widget/banner_ad.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
 import 'package:oru_rock/module/home/fragment/home_favorites.dart';
 import 'package:oru_rock/module/home/fragment/home_service_top.dart';
-import 'package:flutter/material.dart';
 
 class Home extends GetView<AppController> {
   const Home({Key? key}) : super(key: key);
@@ -118,10 +116,10 @@ class Home extends GetView<AppController> {
               padding: EdgeInsets.all(GapSize.medium),
               child: HomeServiceTop(),
             ),
-             Padding(
-               padding: const EdgeInsets.symmetric(horizontal: GapSize.medium),
-               child: BannerAdWidget(),
-             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: GapSize.medium),
+              child: BannerAdWidget(),
+            ),
             const HomeFavorites(),
           ],
         ),

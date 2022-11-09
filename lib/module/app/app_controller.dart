@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:dio/src/response.dart' as Dio;
 import 'package:flutter/material.dart';
@@ -13,9 +12,7 @@ import 'package:oru_rock/common_widget/alert_dialog.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/function/map_func.dart';
-import 'package:oru_rock/model/client_store_book_mark_model.dart';
 import 'package:oru_rock/model/store_model.dart';
-import 'package:oru_rock/model/user_model.dart';
 import 'package:oru_rock/module/marker_detail/marker_detail.dart';
 import 'package:oru_rock/routes.dart';
 import 'package:permission_handler/permission_handler.dart';

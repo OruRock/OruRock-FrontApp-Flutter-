@@ -46,9 +46,10 @@ class Search extends GetView<AppController> {
                                 controller: controller.searchScrollController,
                                 itemCount: controller.searchStores.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  if(index % 10 == 0 && index >= 10) {
+                                  if (index % 10 == 0 && index >= 10) {
                                     return const Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: GapSize.medium),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: GapSize.medium),
                                       child: BannerAdWidget(),
                                     );
                                   }

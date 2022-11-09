@@ -1,11 +1,10 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
-import 'package:oru_rock/module/setting/my_bookmark_list.dart';
 import 'package:oru_rock/module/setting/change_nickname.dart';
 import 'package:oru_rock/module/setting/level_setting.dart';
+import 'package:oru_rock/module/setting/my_bookmark_list.dart';
 import 'package:oru_rock/module/setting/my_review_list.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
 

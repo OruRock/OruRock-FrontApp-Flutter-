@@ -66,8 +66,8 @@ class StoreInfo extends GetView<StoreInfoController> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(
-                          WidthWithRatio.small, GapSize.xSmall, WidthWithRatio.small, 0),
+                      padding: EdgeInsets.fromLTRB(WidthWithRatio.small,
+                          GapSize.xSmall, WidthWithRatio.small, 0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

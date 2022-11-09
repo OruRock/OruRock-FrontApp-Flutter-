@@ -62,15 +62,15 @@ class App extends GetView<AppController> {
                   BottomNavigationBarItem(
                     // icon: Icon(Icons.home),
                     icon: Icon(
-                        Icons.home,
-                        color: Colors.grey,
-                        size: 30,
-                      ),
+                      Icons.home,
+                      color: Colors.grey,
+                      size: 30,
+                    ),
                     activeIcon: Icon(
-                        Icons.home,
-                        color: Colors.black,
-                        size: 30,
-                      ),
+                      Icons.home,
+                      color: Colors.black,
+                      size: 30,
+                    ),
                     label: '홈',
                   ),
                   BottomNavigationBarItem(

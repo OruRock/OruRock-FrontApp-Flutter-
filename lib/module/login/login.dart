@@ -1,12 +1,10 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/module/login/login_controller.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:shadow/shadow.dart';
 
 class Login extends GetView<LoginController> {
   const Login({super.key});

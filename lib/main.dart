@@ -1,23 +1,23 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:oru_rock/constant/config.dart';
-import 'package:oru_rock/function/auth_func.dart';
-import 'package:oru_rock/helper/firebase_options.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:oru_rock/function/api_func.dart';
+import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/function/map_func.dart';
+import 'package:oru_rock/helper/firebase_options.dart';
 import 'package:oru_rock/module/app/app.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
+import 'package:oru_rock/module/login/login.dart';
+import 'package:oru_rock/module/login/login_controller.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
 import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
 import 'package:oru_rock/module/store_detail_info/store_info_page.dart';
 import 'package:oru_rock/routes.dart';
-import 'package:oru_rock/module/login/login.dart';
-import 'package:oru_rock/module/login/login_controller.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 void main() async {
   await GetStorage.init();

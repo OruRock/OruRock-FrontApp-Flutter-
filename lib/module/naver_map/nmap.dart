@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
-import 'package:oru_rock/routes.dart';
 
 class NMap extends GetView<AppController> {
   const NMap({Key? key}) : super(key: key);

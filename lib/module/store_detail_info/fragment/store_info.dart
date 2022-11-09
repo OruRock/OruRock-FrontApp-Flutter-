@@ -1,12 +1,11 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
-import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
 import 'package:oru_rock/model/store_model.dart' as storeModel;
+import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
 
 class StoreInfoFragment extends GetView<StoreInfoController> {
   final storeModel.StoreModel? store;
@@ -85,7 +84,8 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
               children: List.generate(
                   controller.detailModel.value!.openTime!.length, (index) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: GapSize.xxxSmall),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: GapSize.xxxSmall),
                   child: Text(
                     '${controller.detailModel.value!.openTime![index].dayName} : ${controller.detailModel.value!.openTime![index].openTime}',
                     style: regularEllipsisNanumTextStyle,

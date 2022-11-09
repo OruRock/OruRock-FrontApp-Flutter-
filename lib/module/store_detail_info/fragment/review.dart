@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
-import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
 import 'package:oru_rock/model/store_model.dart' as storeModel;
+import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
 
 class ReviewFragment extends GetView<StoreInfoController> {
   final storeModel.StoreModel? store;

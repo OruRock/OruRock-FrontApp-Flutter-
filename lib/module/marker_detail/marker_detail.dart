@@ -1,15 +1,14 @@
 import 'dart:io';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:like_button/like_button.dart';
 import 'package:oru_rock/constant/style/size.dart';
-import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/model/store_model.dart' as storeModel;
 import 'package:oru_rock/module/app/app_controller.dart';
+
 import '../../routes.dart';
 
 class MarkerDetail extends GetView<AppController> {
@@ -32,7 +31,7 @@ class MarkerDetail extends GetView<AppController> {
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius:
-            BorderRadius.vertical(top: Radius.circular(RadiusSize.large)),
+                BorderRadius.vertical(top: Radius.circular(RadiusSize.large)),
           ),
           child: Column(
             children: [
@@ -67,59 +66,55 @@ class MarkerDetail extends GetView<AppController> {
                           child: Container(),
                         ),
                         Obx(
-                              () =>
-                              LikeButton(
-                                circleColor: const CircleColor(
-                                    start: Color(0xff00ddff),
-                                    end: Color(0xff0099cc)),
-                                bubblesColor: const BubblesColor(
-                                  dotPrimaryColor: Color(0xff33b5e5),
-                                  dotSecondaryColor: Color(0xff0099cc),
-                                ),
-                                likeBuilder: (bool isLiked) {
-                                  return Icon(
-                                    Icons.push_pin,
-                                    color: isLiked ? Colors.redAccent : Colors
-                                        .grey,
-                                    size: 23,
-                                  );
-                                },
-                                isLiked: controller.detailPinState.value,
-                                onTap: (bool isLiked) async {
-                                  if (isLiked) {
-                                    controller.removePin();
-                                  } else {
-                                    controller.setPin();
-                                  }
-                                  return controller.detailPinState.value;
-                                },
-                              ),
+                          () => LikeButton(
+                            circleColor: const CircleColor(
+                                start: Color(0xff00ddff),
+                                end: Color(0xff0099cc)),
+                            bubblesColor: const BubblesColor(
+                              dotPrimaryColor: Color(0xff33b5e5),
+                              dotSecondaryColor: Color(0xff0099cc),
+                            ),
+                            likeBuilder: (bool isLiked) {
+                              return Icon(
+                                Icons.push_pin,
+                                color: isLiked ? Colors.redAccent : Colors.grey,
+                                size: 23,
+                              );
+                            },
+                            isLiked: controller.detailPinState.value,
+                            onTap: (bool isLiked) async {
+                              if (isLiked) {
+                                controller.removePin();
+                              } else {
+                                controller.setPin();
+                              }
+                              return controller.detailPinState.value;
+                            },
+                          ),
                         ),
                         Obx(
-                              () =>
-                              LikeButton(
-                                circleColor: const CircleColor(
-                                    start: Color(0xff00ddff),
-                                    end: Color(0xff0099cc)),
-                                bubblesColor: const BubblesColor(
-                                  dotPrimaryColor: Color(0xff33b5e5),
-                                  dotSecondaryColor: Color(0xff0099cc),
-                                ),
-                                likeBuilder: (bool isLiked) {
-                                  return Icon(
-                                    Icons.stars,
-                                    color:
+                          () => LikeButton(
+                            circleColor: const CircleColor(
+                                start: Color(0xff00ddff),
+                                end: Color(0xff0099cc)),
+                            bubblesColor: const BubblesColor(
+                              dotPrimaryColor: Color(0xff33b5e5),
+                              dotSecondaryColor: Color(0xff0099cc),
+                            ),
+                            likeBuilder: (bool isLiked) {
+                              return Icon(
+                                Icons.stars,
+                                color:
                                     isLiked ? Colors.yellow[600] : Colors.grey,
-                                    size: 25,
-                                  );
-                                },
-                                isLiked: controller.detailClientStoreBookMark
-                                    .value,
-                                onTap: (bool isLiked) async {
-                                  controller.updateBookMark(store);
-                                  return !isLiked;
-                                },
-                              ),
+                                size: 25,
+                              );
+                            },
+                            isLiked: controller.detailClientStoreBookMark.value,
+                            onTap: (bool isLiked) async {
+                              controller.updateBookMark(store);
+                              return !isLiked;
+                            },
+                          ),
                         ),
                       ]),
                     ),
@@ -145,17 +140,17 @@ class MarkerDetail extends GetView<AppController> {
                                   Radius.circular(RadiusSize.large)),
                               child: store!.imageUrl == null
                                   ? Image.asset(
-                                  'asset/image/logo/splash_logo.png')
+                                      'asset/image/logo/splash_logo.png')
                                   : Image.network(
-                                store!.imageUrl!,
-                                fit: BoxFit.cover,
-                              ),
+                                      store!.imageUrl!,
+                                      fit: BoxFit.cover,
+                                    ),
                             ),
                           ),
                           Expanded(
                             child: Padding(
                               padding:
-                              const EdgeInsets.only(left: GapSize.xSmall),
+                                  const EdgeInsets.only(left: GapSize.xSmall),
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,8 +173,7 @@ class MarkerDetail extends GetView<AppController> {
                                         fontFamily: "NotoR",
                                         height: 1.6,
                                         color: Colors.black,
-                                        overflow: TextOverflow.ellipsis
-                                    ),
+                                        overflow: TextOverflow.ellipsis),
                                   ),
                                   const SizedBox(
                                     height: GapSize.xxxSmall,
@@ -202,8 +196,7 @@ class MarkerDetail extends GetView<AppController> {
                                         fontFamily: "NotoR",
                                         height: 1.6,
                                         color: Colors.black,
-                                        overflow: TextOverflow.ellipsis
-                                    ),
+                                        overflow: TextOverflow.ellipsis),
                                   ),
                                   const SizedBox(
                                     height: GapSize.xxxSmall,
@@ -222,7 +215,7 @@ class MarkerDetail extends GetView<AppController> {
                                   InkWell(
                                     onTap: () {
                                       final Uri url =
-                                      Uri.parse(store!.storeUrl!);
+                                          Uri.parse(store!.storeUrl!);
                                       if (Platform.isAndroid) {
                                         InAppBrowser.openWithSystemBrowser(
                                             url: url);
@@ -239,8 +232,7 @@ class MarkerDetail extends GetView<AppController> {
                                           fontFamily: "NotoR",
                                           height: 1.6,
                                           color: Colors.blue,
-                                        overflow: TextOverflow.clip
-                                      ),
+                                          overflow: TextOverflow.clip),
                                     ),
                                   ),
                                 ],

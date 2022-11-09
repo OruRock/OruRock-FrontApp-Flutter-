@@ -23,11 +23,12 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
     _loadAd();
     super.didChangeDependencies();
   }
+
   Future<void> _loadAd() async {
     // Get an AnchoredAdaptiveBannerAdSize before loading the ad.
     final AnchoredAdaptiveBannerAdSize? size =
-    await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
-        (Get.width - GapSize.medium * 2).truncate());
+        await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+            (Get.width - GapSize.medium * 2).truncate());
 
     if (size == null) {
       print('Unable to get height of anchored banner.');
