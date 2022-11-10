@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:oru_rock/common_widget/alert_dialog.dart';
@@ -24,8 +25,8 @@ class StoreInfoController extends GetxController {
 
   var toggleList = ['암장 정보', '리뷰'];
   var selectedInfo = 0.obs; //toogle 선택 index
-  var imageSliderHeight = HeightWithRatio.xxLarge.obs; // imageSlider 높이 애니메이션용
-  final imageHeight = [HeightWithRatio.xxLarge, 0.0]; // imageSlider 높이 애니메이션용
+  var imageSliderHeight = (Get.height * 0.25).obs; // imageSlider 높이 애니메이션용
+  final imageHeight = [(Get.height * 0.25) , 0.0]; // imageSlider 높이 애니메이션용
 
   TextEditingController reviewText =
       TextEditingController(); //리뷰 작성 텍스트 필드 컨트롤러
