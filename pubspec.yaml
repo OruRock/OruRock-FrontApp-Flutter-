@@ -28,8 +28,8 @@ dependencies:
   auto_size_text: ^3.0.0
   flutter_staggered_animations: ^1.0.0
   like_button: ^2.0.5
-  circle_bottom_navigation_bar: ^1.0.0
-  
+  toggle_switch: ^2.0.1
+
   flutter_naver_map:
     git: https://github.com/note11g/flutter_naver_map.git
   google_mobile_ads: ^2.0.1

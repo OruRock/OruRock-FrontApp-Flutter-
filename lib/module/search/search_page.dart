@@ -147,7 +147,7 @@ class Search extends GetView<AppController> {
       padding: const EdgeInsets.symmetric(
           vertical: GapSize.xxSmall, horizontal: GapSize.small),
       child: Container(
-        height: Get.height / 5,
+        height: HeightWithRatio.large + WidthWithRatio.xSmall + GapSize.small * 3,
         decoration: shadowBoxDecoration,
         child: Padding(
           padding: const EdgeInsets.all(GapSize.small),
@@ -182,10 +182,10 @@ class Search extends GetView<AppController> {
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: const [
-                        Icon(Icons.car_crash_sharp),
-                        Icon(Icons.shower),
-                        Icon(Icons.wc),
+                      children: [
+                        Icon(Icons.car_crash_sharp, size: WidthWithRatio.xSmall,),
+                        Icon(Icons.shower, size: WidthWithRatio.xSmall),
+                        Icon(Icons.wc, size: WidthWithRatio.xSmall),
                       ],
                     ),
                   )

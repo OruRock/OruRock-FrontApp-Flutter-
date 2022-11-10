@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
-import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
-import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/model/store_model.dart' as storeModel;
 import 'package:oru_rock/module/store_detail_info/fragment/review.dart';
 import 'package:oru_rock/module/store_detail_info/fragment/store_info.dart';
 import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 class StoreInfo extends GetView<StoreInfoController> {
   final storeModel.StoreModel? store = Get.arguments[0];
@@ -75,27 +74,33 @@ class StoreInfo extends GetView<StoreInfoController> {
                             height: HeightWithRatio.xxxxSmall,
                           ),
                           Center(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(12)),
-                              child: FlutterToggleTab(
-                                height: Get.height / 25,
-                                width: Get.width / 6,
-                                isScroll: false,
-                                borderRadius: 10,
-                                labels: controller.toggleList,
-                                selectedLabelIndex: (index) {
-                                  controller.selectedInfo.value = index;
-                                  controller.imageSliderHeight.value =
-                                      controller.imageHeight[index];
-                                },
-                                selectedTextStyle: selectedToggleTextStyle,
-                                unSelectedTextStyle: unSelectedToggleTextStyle,
-                                unSelectedBackgroundColors: [Colors.white],
-                                selectedBackgroundColors: [Colors.black],
-                                selectedIndex: controller.selectedInfo.value,
-                              ),
+                            child: ToggleSwitch(
+                              minWidth: Get.width / 3,
+                              minHeight: 40.0,
+                              initialLabelIndex: controller.selectedInfo.value,
+                              cornerRadius: 12.0,
+                              inactiveBgColor: Colors.grey,
+                              activeBgColor: const [Colors.black],
+                              totalSwitches: 2,
+                              labels: const ['암장 정보', '리뷰'],
+                              customTextStyles: const [
+                                TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: "NotoM",
+                                    color: Colors.white),
+                                TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: "NotoM",
+                                    color: Colors.white)
+                              ],
+                              animate: true,
+                              curve: Curves.easeIn,
+                              animationDuration: 200,
+                              onToggle: (index) {
+                                controller.selectedInfo.value = index!;
+                                controller.imageSliderHeight.value =
+                                    controller.imageHeight[index];
+                              },
                             ),
                           ),
                           controller.selectedInfo.value == 0

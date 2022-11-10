@@ -22,7 +22,7 @@ class CommonDialog extends StatelessWidget {
         "$title",
         style: boldNanumTextStyle,
       ),
-      content: Text("$content", style: regularEllipsisNanumTextStyle),
+      content: Text("$content", style: regularClipNanumTextStyle),
       actions: [
         TextButton(
           child: const Text("취소"),
