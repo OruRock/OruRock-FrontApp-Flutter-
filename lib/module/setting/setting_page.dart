@@ -6,7 +6,10 @@ import 'package:oru_rock/module/setting/fragment/change_nickname.dart';
 import 'package:oru_rock/module/setting/fragment/level_setting.dart';
 import 'package:oru_rock/module/setting/fragment/my_bookmark_list.dart';
 import 'package:oru_rock/module/setting/fragment/my_review_list.dart';
+import 'package:oru_rock/module/setting/notice_list.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
+
+import 'notice_detail.dart';
 
 class Setting extends GetView<SettingController> {
   const Setting({Key? key}) : super(key: key);
@@ -148,7 +151,9 @@ class Setting extends GetView<SettingController> {
                 SizedBox(
                   width: Get.width,
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(const NoticeList());
+                    },
                     child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: GapSize.small),
                       child: Text(

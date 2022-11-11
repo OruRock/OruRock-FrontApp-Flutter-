@@ -6,6 +6,8 @@ import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/function/map_func.dart';
 import 'package:oru_rock/helper/nickname_checker.dart';
+import 'package:oru_rock/model/notice_detail_model.dart';
+import 'package:oru_rock/model/notice_model.dart';
 import 'package:oru_rock/model/store_detail_model.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
 import 'package:oru_rock/routes.dart';
@@ -17,6 +19,7 @@ class SettingController extends GetxController {
   final auth = Get.find<AuthFunction>();
   final app = Get.find<AppController>();
 
+  var noticeList = <NoticeModel>[].obs;
   var nickname = ''.obs;
   final nicknameController = TextEditingController();
   final userLevel = 0.obs;
@@ -27,16 +30,44 @@ class SettingController extends GetxController {
   @override
   void onInit() async {
     final packageInfo = await PackageInfo.fromPlatform();
+    await getNotice();
     setNicknameAtUserModel();
     userLevel.value = auth.user!.userLevel!;
     appVersion.value = packageInfo.version;
   }
 
+  ///공지사항 리스트 받아오는 함수
+  Future<void> getNotice() async {
+    try {
+      final res = await api.dio.post('/notice');
+      final List<dynamic>? data = res.data['payload']['notice'];
+
+      if (data != null) {
+        noticeList.value =
+            data.map((map) => NoticeModel.fromJson(map)).toList();
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
+  }
+
+  Future<NoticeDetailModel?> getNoticeDetail(int noticeId) async {
+    try {
+      final res = await api.dio.post('/notice/$noticeId');
+      return NoticeDetailModel.fromJson(res.data['payload']);
+    } catch (e) {
+      Logger().e(e.toString());
+      return null;
+    }
+  }
+
+  ///로그아웃
   void signOut() {
     auth.signOut();
     Get.offAllNamed(Routes.login);
   }
 
+  ///닉네임 젼경
   Future<void> changeNickname() async {
     isLoading.value = true;
     final changeNickname = nicknameController.text.trim();
