@@ -17,7 +17,7 @@ class HomePin extends GetView<AppController> {
           children: [
             const Padding(
               padding: EdgeInsets.fromLTRB(
-                  GapSize.medium, 0, GapSize.medium, GapSize.small),
+                  GapSize.medium, GapSize.small, GapSize.medium, GapSize.small),
               child: Text(
                 '오늘 갈 암장',
                 style: TextStyle(fontSize: FontSize.large, fontFamily: "NotoB"),

@@ -120,6 +120,7 @@ class Comment {
   String? userNickname;
   String? uid;
   String? comment;
+  int? userLevel;
   int? recommendLevel;
   int? commentId;
   String? createDate;
@@ -130,6 +131,7 @@ class Comment {
       this.userNickname,
       this.uid,
       this.comment,
+      this.userLevel,
       this.recommendLevel,
       this.commentId,
       this.createDate,
@@ -140,6 +142,7 @@ class Comment {
     userNickname = json['user_nickname'];
     uid = json['uid'];
     comment = json['comment'];
+    userLevel = json['user_level'];
     recommendLevel = json['recommend_level'];
     commentId = json['comment_id'];
     createDate = json['create_date'];
@@ -152,6 +155,7 @@ class Comment {
     data['user_nickname'] = userNickname;
     data['uid'] = uid;
     data['comment'] = comment;
+    data['user_level'] = userLevel;
     data['recommend_level'] = recommendLevel;
     data['comment_id'] = commentId;
     data['create_date'] = createDate;

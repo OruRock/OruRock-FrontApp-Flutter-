@@ -19,9 +19,10 @@ class ReviewFragment extends GetView<StoreInfoController> {
 
   @override
   Widget build(BuildContext context) {
+    final detailModel = controller.detailModel.value!;
     return Obx(() => Expanded(
           child: Stack(children: [
-            controller.detailModel.value!.comment!.isEmpty
+            detailModel.comment!.isEmpty
                 ? _buildNotExistWidget()
                 : Padding(
                     padding: const EdgeInsets.only(top: GapSize.medium),
@@ -31,7 +32,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
                           child: ListView(
                             shrinkWrap: true,
                             children: List.generate(
-                              controller.detailModel.value!.comment!.length,
+                              detailModel.comment!.length,
                               (index) {
                                 return _buildReviewTile(index);
                               },
@@ -123,6 +124,8 @@ class ReviewFragment extends GetView<StoreInfoController> {
   }
 
   _buildReviewTile(int index) {
+    final detailModel = controller.detailModel.value!;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: GapSize.xxSmall),
       child: Container(
@@ -146,7 +149,8 @@ class ReviewFragment extends GetView<StoreInfoController> {
                         size: const Size.fromRadius(20), // Image radius
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Image.asset(controller.app.levelImage[5]),
+                          child: Image.asset(controller.app.levelImage[
+                              detailModel.comment![index].userLevel ?? 0]),
                         )),
                   ),
                 ),
@@ -157,9 +161,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      controller.detailModel.value!.comment![index]
-                              .userNickname ??
-                          '무명 클라이머',
+                      detailModel.comment![index].userNickname ?? '무명 클라이머',
                       style: reviewNickNameTextStyle,
                     ),
                     const SizedBox(
@@ -198,7 +200,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
                 ),
                 Expanded(child: Container()),
                 Visibility(
-                  visible: controller.detailModel.value!.comment![index].uid ==
+                  visible: detailModel.comment![index].uid ==
                       controller.auth.user?.uid,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -216,7 +218,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
                   ),
                 ),
                 Visibility(
-                  visible: controller.detailModel.value!.comment![index].uid ==
+                  visible: detailModel.comment![index].uid ==
                       controller.auth.user?.uid,
                   child: GestureDetector(
                     onTap: () async {
@@ -239,8 +241,8 @@ class ReviewFragment extends GetView<StoreInfoController> {
                 ? _buildModifyTextField(index)
                 : _buildCommentField(index),
             Text(
-              DateFormat('yy.MM.dd').format(DateTime.parse(
-                  controller.detailModel.value!.comment![index].createDate!)),
+              DateFormat('yy.MM.dd').format(
+                  DateTime.parse(detailModel.comment![index].createDate!)),
               style: const TextStyle(
                   fontFamily: "NotoR",
                   fontSize: FontSize.xSmall,
@@ -325,6 +327,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
   }
 
   _buildCommentField(int index) {
+    final detailModel = controller.detailModel.value!;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
@@ -333,7 +336,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: GapSize.xSmall),
             child: Text(
-              controller.detailModel.value!.comment![index].comment!,
+              detailModel.comment![index].comment!,
               style: reviewContentTextStyle,
               overflow: TextOverflow.clip,
               textAlign: TextAlign.start,
