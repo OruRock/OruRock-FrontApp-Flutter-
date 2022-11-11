@@ -145,7 +145,8 @@ class LoginController extends GetxController {
     if(account == null){
       return LoginResult(status: LoginStatus.failed);
     }
-    final googleAuth = await account?.authentication;
+
+    final googleAuth = await account.authentication;
 
     final credential = firebase_auth.GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
