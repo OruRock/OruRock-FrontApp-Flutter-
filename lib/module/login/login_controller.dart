@@ -22,10 +22,18 @@ class LoginController extends GetxController {
   var isLoading = false.obs; //로그인중 로딩용
   final nicknameController = TextEditingController();
 
+  var opacityValue = 0.0.obs;
+  var opacityAnimateList = [0.0, 1.0];
+
   @override
   void onInit() async {
     super.onInit();
     await autoLogin();
+  }
+
+  @override
+  void onReady() {
+    opacityValue.value = opacityAnimateList[1];
   }
 
   ///로그인 버튼을 클릭했을 시 로그인 성공/실패를 따지는 함수
@@ -134,6 +142,9 @@ class LoginController extends GetxController {
   Future<LoginResult> signInWithGoogle() async {
     final account = await googleSignIn.signIn();
 
+    if(account == null){
+      return LoginResult(status: LoginStatus.failed);
+    }
     final googleAuth = await account?.authentication;
 
     final credential = firebase_auth.GoogleAuthProvider.credential(
@@ -155,9 +166,9 @@ class LoginController extends GetxController {
           AppleIDAuthorizationScopes.fullName,
         ],
         webAuthenticationOptions: WebAuthenticationOptions(
-          clientId: 'com.orurock.app',
+          clientId: 'app.orurock.com',
           redirectUri: Uri.parse(
-            'https://orurock-fa5dd.firebaseapp.com/callback.apple',
+            'https://holistic-plausible-wood.glitch.me/callbacks/sign_in_with_apple',
           ),
         ),
       );

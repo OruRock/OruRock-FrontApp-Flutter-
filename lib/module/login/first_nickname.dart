@@ -41,7 +41,7 @@ class FirstNickname extends GetView<LoginController> {
                         height: HeightWithRatio.xLarge,
                       ),
                       const Text(
-                        '변경할 닉네임을 입력해주세요.',
+                        '닉네임을 입력해주세요.',
                         style: TextStyle(
                             fontSize: FontSize.xxLarge, fontFamily: "NotoB"),
                       ),
@@ -76,10 +76,10 @@ class FirstNickname extends GetView<LoginController> {
                         style: const TextStyle(
                             fontSize: FontSize.large, fontFamily: "NotoR"),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: GapSize.small,
                       ),
-                      Text(
+                      const Text(
                         '닉네임은 띄어쓰기 포함, 2자 이상 10자 이하여야합니다.',
                         style: TextStyle(
                             fontSize: FontSize.small,

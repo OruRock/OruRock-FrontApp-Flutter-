@@ -32,10 +32,7 @@ void main() async {
   MobileAds.instance.initialize();
   MobileAds.instance.updateRequestConfiguration(RequestConfiguration(
       testDeviceIds: ['C7570CF719C5585A62E09942D0982A1A']));
-  Future.delayed(Duration(milliseconds: 3000), () {
-    FlutterNativeSplash.remove(); //로딩 끝나는 위치에 두어야 함(스플래시 제거)
-  });
-
+  FlutterNativeSplash.remove(); //로딩 끝나는 위치에 두어야 함(스플래시 제거)
   runApp(const MyApp());
 }
 
