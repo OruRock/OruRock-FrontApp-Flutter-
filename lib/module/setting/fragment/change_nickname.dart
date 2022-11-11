@@ -10,21 +10,10 @@ class ChangeNickname extends GetView<SettingController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text(
             '닉네임 변경',
-            style: TextStyle(
-                fontFamily: "NotoB",
-                fontSize: FontSize.xLarge,
-                height: 1.7,
-                color: Colors.black),
           ),
-          iconTheme: const IconThemeData(
-            color: Colors.black, //change your color here
-          ),
-          backgroundColor: Colors.white,
-          elevation: 1,
         ),
         body: Obx(
           () => controller.isLoading.value

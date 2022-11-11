@@ -101,39 +101,4 @@ class NMap extends GetView<AppController> {
     );
   }
 
-  Widget _buildDrawerListView() {
-    return Drawer(
-      child: Padding(
-        padding: const EdgeInsets.only(top: GapSize.xxLarge),
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: const [
-            CircleAvatar(
-              radius: 60,
-              backgroundColor: Colors.blue,
-            ),
-            SizedBox(
-              height: GapSize.medium,
-            ),
-            ListTile(
-              title: Text(
-                "취향 검사 다시하기",
-                style: drawerListTextStyle,
-              ),
-              leading: Icon(Icons.replay_rounded),
-            ),
-            Divider(),
-            ListTile(
-              title: Text(
-                "Setting",
-                style: drawerListTextStyle,
-              ),
-              leading: Icon(Icons.settings_rounded),
-            ),
-            Divider(),
-          ],
-        ),
-      ),
-    );
-  }
 }

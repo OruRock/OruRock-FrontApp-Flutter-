@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:oru_rock/constant/config.dart';
+import 'package:oru_rock/constant/style/theme.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/function/map_func.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      theme: mainTheme,
       builder: (context, child) {
         //텍스트 크기 고정
         return MediaQuery(

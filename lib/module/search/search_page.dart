@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:oru_rock/common_widget/ImageViewer.dart';
 import 'package:oru_rock/common_widget/banner_ad.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
@@ -14,21 +15,10 @@ class Search extends GetView<AppController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.grey[100],
-        appBar: AppBar(
+          appBar: AppBar(
           title: const Text(
             '검색',
-            style: TextStyle(
-                fontFamily: "NotoB",
-                fontSize: FontSize.xLarge,
-                height: 1.7,
-                color: Colors.black),
           ),
-          iconTheme: const IconThemeData(
-            color: Colors.black, //change your color here
-          ),
-          backgroundColor: Colors.white,
-          elevation: 1,
         ),
         body: Column(
           mainAxisSize: MainAxisSize.max,
@@ -41,64 +31,8 @@ class Search extends GetView<AppController> {
                     ? const Center(child: CircularProgressIndicator())
                     : Stack(
                         children: [
-                          AnimationLimiter(
-                            child: ListView.builder(
-                                controller: controller.searchScrollController,
-                                itemCount: controller.searchStores.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  if (index % 10 == 0 && index >= 10) {
-                                    return const Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: GapSize.medium),
-                                      child: BannerAdWidget(),
-                                    );
-                                  }
-                                  return AnimationConfiguration.staggeredList(
-                                    position: index,
-                                    duration: const Duration(milliseconds: 375),
-                                    child: SlideAnimation(
-                                      verticalOffset: 50,
-                                      child: FadeInAnimation(
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            controller
-                                                .goMapToSelectedStore(index);
-                                          },
-                                          child: _buildListCard(index),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }),
-                          ),
-                          Visibility(
-                            visible: controller.isGetMoreData.value,
-                            child: Center(
-                              child: Container(
-                                  width: Get.width * 0.8,
-                                  height: Get.height * 0.2,
-                                  color: Colors.black.withOpacity(0.5),
-                                  child: Center(
-                                      child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      CircularProgressIndicator(
-                                        color: Colors.white,
-                                      ),
-                                      SizedBox(
-                                        height: GapSize.small,
-                                      ),
-                                      Text(
-                                        '데이터를 로딩 중 입니다.',
-                                        style: TextStyle(
-                                            fontFamily: "NotoB",
-                                            fontSize: FontSize.medium,
-                                            color: Colors.white),
-                                      )
-                                    ],
-                                  ))),
-                            ),
-                          ),
+                          buildSearchList(),
+                          buildLoadingDataDialog(),
                         ],
                       ),
               ),
@@ -106,6 +40,68 @@ class Search extends GetView<AppController> {
           ],
         ),
       ),
+    );
+  }
+
+  buildLoadingDataDialog() {
+    return Visibility(
+      visible: controller.isGetMoreData.value,
+      child: Center(
+        child: Container(
+            width: Get.width * 0.8,
+            height: Get.height * 0.2,
+            color: Colors.black.withOpacity(0.5),
+            child: Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  height: GapSize.small,
+                ),
+                Text(
+                  '데이터를 로딩 중 입니다.',
+                  style: TextStyle(
+                      fontFamily: "NotoB",
+                      fontSize: FontSize.medium,
+                      color: Colors.white),
+                )
+              ],
+            ))),
+      ),
+    );
+  }
+
+  buildSearchList() {
+    return AnimationLimiter(
+      child: ListView.builder(
+          controller: controller.searchScrollController,
+          itemCount: controller.searchStores.length,
+          itemBuilder: (BuildContext context, int index) {
+            if (index % 10 == 0 && index >= 10) {
+              return const Padding(
+                padding: EdgeInsets.symmetric(horizontal: GapSize.medium),
+                child: BannerAdWidget(),
+              );
+            }
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              duration: const Duration(milliseconds: 375),
+              child: SlideAnimation(
+                verticalOffset: 50,
+                child: FadeInAnimation(
+                  child: GestureDetector(
+                    onTap: () {
+                      controller.goMapToSelectedStore(index);
+                    },
+                    child: _buildListCard(index),
+                  ),
+                ),
+              ),
+            );
+          }),
     );
   }
 
@@ -147,7 +143,8 @@ class Search extends GetView<AppController> {
       padding: const EdgeInsets.symmetric(
           vertical: GapSize.xxSmall, horizontal: GapSize.small),
       child: Container(
-        height: HeightWithRatio.large + WidthWithRatio.xSmall + GapSize.small * 3,
+        height:
+            HeightWithRatio.large + WidthWithRatio.xSmall + GapSize.small * 3,
         decoration: shadowBoxDecoration,
         child: Padding(
           padding: const EdgeInsets.all(GapSize.small),
@@ -156,25 +153,10 @@ class Search extends GetView<AppController> {
             children: [
               Column(
                 children: [
-                  Container(
+                  ImageViewer(
+                    imageUrl: controller.searchStores[index].imageUrl,
                     width: HeightWithRatio.large,
                     height: HeightWithRatio.large,
-                    padding: const EdgeInsets.all(1),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: const BorderRadius.all(
-                          Radius.circular(RadiusSize.large)),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(
-                          Radius.circular(RadiusSize.large)),
-                      child: controller.searchStores[index].imageUrl == null
-                          ? Image.asset('asset/image/logo/splash_logo.png')
-                          : Image.network(
-                              controller.searchStores[index].imageUrl!,
-                              fit: BoxFit.cover,
-                            ),
-                    ),
                   ),
                   Expanded(child: Container()),
                   SizedBox(
@@ -183,7 +165,10 @@ class Search extends GetView<AppController> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Icon(Icons.car_crash_sharp, size: WidthWithRatio.xSmall,),
+                        Icon(
+                          Icons.car_crash_sharp,
+                          size: WidthWithRatio.xSmall,
+                        ),
                         Icon(Icons.shower, size: WidthWithRatio.xSmall),
                         Icon(Icons.wc, size: WidthWithRatio.xSmall),
                       ],

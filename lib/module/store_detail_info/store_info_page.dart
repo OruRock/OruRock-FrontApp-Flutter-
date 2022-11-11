@@ -19,21 +19,10 @@ class StoreInfo extends GetView<StoreInfoController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.grey[100],
         appBar: AppBar(
           title: Text(
             '${store?.storeName}',
-            style: const TextStyle(
-                fontFamily: "NotoB",
-                fontSize: FontSize.large,
-                height: 1.7,
-                color: Colors.black),
           ),
-          iconTheme: const IconThemeData(
-            color: Colors.black, //change your color here
-          ),
-          backgroundColor: Colors.white,
-          elevation: 1,
         ),
         body: Obx(() => controller.isLoading.value == false
             ? const Center(
@@ -41,25 +30,7 @@ class StoreInfo extends GetView<StoreInfoController> {
               )
             : Stack(
                 children: [
-                  SizedBox(
-                    height: Get.height * 0.25,
-                    child: ImageSlideshow(
-                      indicatorColor: Colors.black,
-                      indicatorBackgroundColor: Colors.grey,
-                      width: Get.width,
-                      children: controller.detailModel.value!.image!.isEmpty
-                          ? [Image.asset('asset/image/logo/splash_logo.png')]
-                          : List.generate(
-                              controller.detailModel.value!.image!.length,
-                              (index) {
-                              return Image.network(
-                                controller
-                                    .detailModel.value!.image![index].imageUrl!,
-                                fit: BoxFit.fill,
-                              );
-                            }),
-                    ),
-                  ),
+                  buildImageSlider(),
                   Column(
                     children: [
                       IgnorePointer(
@@ -72,55 +43,77 @@ class StoreInfo extends GetView<StoreInfoController> {
                       ),
                       Expanded(
                         child: Container(
-                        padding: EdgeInsets.fromLTRB(WidthWithRatio.small,
-                            GapSize.xSmall, WidthWithRatio.small, 0),
-                        color: Colors.grey[100],
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: HeightWithRatio.xxxxSmall,
-                            ),
-                            Center(
-                              child: ToggleSwitch(
-                                minWidth: Get.width / 3,
-                                minHeight: 40.0,
-                                initialLabelIndex: controller.selectedInfo.value,
-                                cornerRadius: 12.0,
-                                inactiveBgColor: Colors.grey,
-                                activeBgColor: const [Colors.black],
-                                totalSwitches: 2,
-                                labels: const ['암장 정보', '리뷰'],
-                                customTextStyles: const [
-                                  TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: "NotoM",
-                                      color: Colors.white),
-                                  TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: "NotoM",
-                                      color: Colors.white)
-                                ],
-                                animate: true,
-                                curve: Curves.easeIn,
-                                animationDuration: 200,
-                                onToggle: (index) {
-                                  controller.selectedInfo.value = index!;
-                                  controller.imageSliderHeight.value =
-                                      controller.imageHeight[index];
-                                },
+                          padding: EdgeInsets.fromLTRB(WidthWithRatio.small,
+                              GapSize.xSmall, WidthWithRatio.small, 0),
+                          color: Colors.grey[100],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: HeightWithRatio.xxxxSmall,
                               ),
-                            ),
-                            controller.selectedInfo.value == 0
-                                ? StoreInfoFragment(store: store)
-                                : ReviewFragment(store: store),
-                          ],
+                              Center(
+                                child: ToggleSwitch(
+                                  minWidth: Get.width / 3,
+                                  minHeight: 40.0,
+                                  initialLabelIndex:
+                                      controller.selectedInfo.value,
+                                  cornerRadius: 12.0,
+                                  inactiveBgColor: Colors.grey,
+                                  activeBgColor: const [Colors.black],
+                                  totalSwitches: 2,
+                                  labels: const ['암장 정보', '리뷰'],
+                                  customTextStyles: const [
+                                    TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: "NotoM",
+                                        color: Colors.white),
+                                    TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: "NotoM",
+                                        color: Colors.white)
+                                  ],
+                                  animate: true,
+                                  curve: Curves.easeIn,
+                                  animationDuration: 200,
+                                  onToggle: (index) {
+                                    controller.selectedInfo.value = index!;
+                                    controller.imageSliderHeight.value =
+                                        controller.imageHeight[index];
+                                  },
+                                ),
+                              ),
+                              controller.selectedInfo.value == 0
+                                  ? StoreInfoFragment(store: store)
+                                  : ReviewFragment(store: store),
+                            ],
+                          ),
                         ),
-                    ),
-                      )],
+                      )
+                    ],
                   )
                 ],
               )),
+      ),
+    );
+  }
+
+  Widget buildImageSlider() {
+    return SizedBox(
+      height: Get.height * 0.25,
+      child: ImageSlideshow(
+        indicatorColor: Colors.black,
+        indicatorBackgroundColor: Colors.grey,
+        width: Get.width,
+        children: controller.detailModel.value!.image!.isEmpty
+            ? [Image.asset('asset/image/logo/splash_logo.png')]
+            : List.generate(controller.detailModel.value!.image!.length,
+                (index) {
+                return Image.network(
+                  controller.detailModel.value!.image![index].imageUrl!,
+                  fit: BoxFit.fill,
+                );
+              }),
       ),
     );
   }

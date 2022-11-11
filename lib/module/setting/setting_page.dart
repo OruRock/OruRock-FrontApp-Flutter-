@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
-import 'package:oru_rock/module/setting/change_nickname.dart';
-import 'package:oru_rock/module/setting/level_setting.dart';
-import 'package:oru_rock/module/setting/my_bookmark_list.dart';
-import 'package:oru_rock/module/setting/my_review_list.dart';
+import 'package:oru_rock/module/setting/fragment/change_nickname.dart';
+import 'package:oru_rock/module/setting/fragment/level_setting.dart';
+import 'package:oru_rock/module/setting/fragment/my_bookmark_list.dart';
+import 'package:oru_rock/module/setting/fragment/my_review_list.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
 
 class Setting extends GetView<SettingController> {
@@ -15,7 +15,6 @@ class Setting extends GetView<SettingController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text(
             '설정',

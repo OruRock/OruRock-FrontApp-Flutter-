@@ -14,10 +14,10 @@ class App extends GetView<AppController> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> screens = <Widget>[
-      Home(),
-      Search(),
-      NMap(),
-      Setting(),
+      const Home(),
+      const Search(),
+      const NMap(),
+      const Setting(),
     ];
     return WillPopScope(
       onWillPop: () async {
@@ -45,22 +45,9 @@ class App extends GetView<AppController> {
                 onTap: (index) {
                   controller.selectedTabIndex.value = Tabs.getTabByIndex(index);
                 },
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
                 currentIndex: controller.selectedTabIndex.value.index,
-                type: BottomNavigationBarType.fixed,
-                unselectedLabelStyle: const TextStyle(
-                    fontFamily: "NotoR",
-                    color: Colors.black,
-                    fontSize: FontSize.xSmall),
-                selectedLabelStyle: const TextStyle(
-                    fontFamily: "NotoB",
-                    color: Colors.red,
-                    fontSize: FontSize.xSmall),
-                selectedItemColor: Colors.black,
                 items: const [
                   BottomNavigationBarItem(
-                    // icon: Icon(Icons.home),
                     icon: Icon(
                       Icons.home,
                       color: Colors.grey,
@@ -74,7 +61,6 @@ class App extends GetView<AppController> {
                     label: '홈',
                   ),
                   BottomNavigationBarItem(
-                    // icon: Icon(Icons.home),
                     icon: Icon(
                       Icons.search,
                       color: Colors.grey,
@@ -88,7 +74,6 @@ class App extends GetView<AppController> {
                     label: '검색',
                   ),
                   BottomNavigationBarItem(
-                    // icon: Icon(Icons.home),
                     icon: Icon(
                       Icons.map,
                       color: Colors.grey,
@@ -102,7 +87,6 @@ class App extends GetView<AppController> {
                     label: '지도',
                   ),
                   BottomNavigationBarItem(
-                    // icon: Icon(Icons.home),
                     icon: Icon(
                       Icons.settings,
                       color: Colors.grey,

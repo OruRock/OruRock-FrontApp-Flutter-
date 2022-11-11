@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
+import 'package:oru_rock/common_widget/ImageViewer.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
@@ -39,23 +40,11 @@ class HomeFavorites extends GetView<AppController> {
                               controller.goMapToSelectedStoreAtBookMark(index);
                             },
                             child: ListTile(
-                              leading: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.circular(RadiusSize.large),
-                                child: SizedBox(
-                                  height: 50,
-                                  width: 50,
-                                  child: controller.clientStoreBookMark[index]
-                                              .imageUrl ==
-                                          null
-                                      ? Image.asset(
-                                          'asset/image/logo/splash_logo.png')
-                                      : Image.network(
-                                          controller.clientStoreBookMark[index]
-                                              .imageUrl!,
-                                          fit: BoxFit.cover,
-                                        ),
-                                ),
+                              leading: ImageViewer(
+                                imageUrl: controller
+                                    .clientStoreBookMark[index].imageUrl,
+                                width: 50,
+                                height: 50,
                               ),
                               title: Text(controller
                                   .clientStoreBookMark[index].storeName!),

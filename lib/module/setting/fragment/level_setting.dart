@@ -11,30 +11,10 @@ class LevelSetting extends GetView<SettingController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text(
             '레벨 설정',
-            style: TextStyle(
-                fontFamily: "NotoB",
-                fontSize: FontSize.xLarge,
-                height: 1.7,
-                color: Colors.black),
           ),
-          iconTheme: const IconThemeData(
-            color: Colors.black, //change your color here
-          ),
-          backgroundColor: Colors.white,
-          elevation: 1,
-          actions: [
-            TextButton(
-              onPressed: () {},
-              child: const Text(
-                '저장',
-                style: TextStyle(fontFamily: "NotoB"),
-              ),
-            )
-          ],
         ),
         body: Padding(
           padding: EdgeInsets.fromLTRB(WidthWithRatio.small,

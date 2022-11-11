@@ -5,6 +5,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:like_button/like_button.dart';
+import 'package:oru_rock/common_widget/ImageViewer.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/model/store_model.dart' as storeModel;
 import 'package:oru_rock/module/app/app_controller.dart';
@@ -126,27 +127,7 @@ class MarkerDetail extends GetView<AppController> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: 150,
-                            height: 150,
-                            padding: const EdgeInsets.all(1),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: const BorderRadius.all(
-                                  Radius.circular(RadiusSize.large)),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.all(
-                                  Radius.circular(RadiusSize.large)),
-                              child: store!.imageUrl == null
-                                  ? Image.asset(
-                                      'asset/image/logo/splash_logo.png')
-                                  : Image.network(
-                                      store!.imageUrl!,
-                                      fit: BoxFit.cover,
-                                    ),
-                            ),
-                          ),
+                          ImageViewer(imageUrl: store!.imageUrl, width: 150, height: 150,),
                           Expanded(
                             child: Padding(
                               padding:
