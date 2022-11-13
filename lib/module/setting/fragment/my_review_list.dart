@@ -4,6 +4,7 @@ import 'package:oru_rock/common_widget/alert_dialog.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/model/store_detail_model.dart';
+import 'package:oru_rock/module/app/app_controller.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
 
 class MyReviewList extends GetView<SettingController> {
@@ -36,7 +37,9 @@ class MyReviewList extends GetView<SettingController> {
                         child: Column(
                           children: [
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Get.find<AppController>().goMapToSelectedStore(index);
+                              },
                               child: ListTile(
                                 minVerticalPadding: GapSize.xSmall,
                                 title: Padding(
