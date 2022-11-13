@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:oru_rock/common_widget/alert_dialog.dart';
+import 'package:oru_rock/constant/style/size.dart';
+import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/model/store_detail_model.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
 
@@ -23,32 +22,41 @@ class MyReviewList extends GetView<SettingController> {
           () => controller.isLoading.value
               ? const Center(child: CircularProgressIndicator())
               : ListView.builder(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: GapSize.xxxSmall),
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: controller.myReviewList.value.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: ListTile(
-                            title: Text(
-                                controller.myReviewList[index].userNickname!),
-                            subtitle:
-                                Text(controller.myReviewList[index].comment!),
-                            trailing: IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () {
-                                _buildRemoveDialog(
-                                    controller.myReviewList.value[index]);
-                              },
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: GapSize.medium, vertical: GapSize.xxxSmall),
+                      child: Container(
+                        decoration: shadowBoxDecoration,
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {},
+                              child: ListTile(
+                                title: Text(controller
+                                    .myReviewList[index].userNickname!),
+                                subtitle: Text(controller
+                                    .myReviewList[index].comment!),
+                                trailing: IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () {
+                                    _buildRemoveDialog(
+                                        controller.myReviewList.value[index]);
+                                    },
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     );
                   },
-                ),
+          ),
         ),
       ),
     );
