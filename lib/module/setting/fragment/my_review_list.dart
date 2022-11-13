@@ -38,8 +38,13 @@ class MyReviewList extends GetView<SettingController> {
                             GestureDetector(
                               onTap: () {},
                               child: ListTile(
-                                title: Text(controller
-                                    .myReviewList[index].userNickname!),
+                                minVerticalPadding: GapSize.xSmall,
+                                title: Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: GapSize.xxSmall),
+                                  child: Text(controller
+                                    .myReviewList[index].storeName!),
+                                ),
                                 subtitle: Text(controller
                                     .myReviewList[index].comment!),
                                 trailing: IconButton(

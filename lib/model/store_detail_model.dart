@@ -117,6 +117,7 @@ class OpenTime {
 
 class Comment {
   int? storeId;
+  String? storeName;
   String? userNickname;
   String? uid;
   String? comment;
@@ -128,6 +129,7 @@ class Comment {
 
   Comment(
       {this.storeId,
+      this.storeName,
       this.userNickname,
       this.uid,
       this.comment,
@@ -139,6 +141,7 @@ class Comment {
 
   Comment.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
+    storeName = json['store_name'];
     userNickname = json['user_nickname'];
     uid = json['uid'];
     comment = json['comment'];
@@ -152,6 +155,7 @@ class Comment {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['store_id'] = storeId;
+    data['store_name'] = storeName;
     data['user_nickname'] = userNickname;
     data['uid'] = uid;
     data['comment'] = comment;
