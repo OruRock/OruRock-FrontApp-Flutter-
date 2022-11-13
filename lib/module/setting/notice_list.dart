@@ -4,6 +4,7 @@ import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/setting/notice_detail.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
+import 'package:intl/intl.dart';
 
 class NoticeList extends GetView<SettingController> {
   const NoticeList({Key? key}) : super(key: key);
@@ -47,8 +48,14 @@ class NoticeList extends GetView<SettingController> {
                                   child: Text(controller
                                       .noticeList[index].title!),
                                 ),
-                                subtitle: Text(controller
-                                    .noticeList[index].createDate!),
+                                subtitle: Container(
+                                  alignment: Alignment.bottomRight,
+                                  child: Text(
+                                    DateFormat("yyyy-MM-dd HH:mm:ss")
+                                        .format(DateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                                        .parse(controller
+                                    .noticeList[index].createDate!))),
+                                ),
                               ),
                             ),
                           ],
