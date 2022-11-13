@@ -55,8 +55,12 @@ class MyBookmarkList extends GetView<SettingController> {
                   width: 50,
                   height: 50,
                 ),
-                title: Text(controller
-                    .app.clientStoreBookMark[index].storeName!),
+                title: Padding(
+                  padding: const EdgeInsets.only(
+                      bottom: GapSize.xxSmall),
+                  child: Text(controller
+                      .app.clientStoreBookMark[index].storeName!),
+                ),
                 subtitle: Text(controller
                     .app.clientStoreBookMark[index].storePhone!),
                 trailing: SizedBox(

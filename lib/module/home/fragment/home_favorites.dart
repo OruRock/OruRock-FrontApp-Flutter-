@@ -24,6 +24,8 @@ class HomeFavorites extends GetView<AppController> {
         () => controller.isLoading.value
             ? const Center(child: CircularProgressIndicator())
             : ListView.builder(
+                padding: const EdgeInsets.symmetric(
+                    vertical: GapSize.xxxSmall),
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: controller.clientStoreBookMark.value.length,
@@ -46,8 +48,12 @@ class HomeFavorites extends GetView<AppController> {
                                 width: 50,
                                 height: 50,
                               ),
-                              title: Text(controller
-                                  .clientStoreBookMark[index].storeName!),
+                              title: Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: GapSize.xxSmall),
+                                child: Text(controller
+                                    .clientStoreBookMark[index].storeName!),
+                              ),
                               subtitle: Text(controller
                                   .clientStoreBookMark[index].storePhone!),
                               trailing: SizedBox(

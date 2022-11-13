@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:oru_rock/constant/style/size.dart';
+import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/setting/notice_detail.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
 
@@ -19,26 +21,39 @@ class NoticeList extends GetView<SettingController> {
           () => controller.isLoading.value
               ? const Center(child: CircularProgressIndicator())
               : ListView.builder(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: GapSize.xxxSmall),
                   shrinkWrap: true,
                   itemCount: controller.noticeList.value.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () async {
-                            Get.to(NoticeDetail(
-                              noticeDetailModel:
-                                  await controller.getNoticeDetail(
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: GapSize.medium, vertical: GapSize.xxxSmall),
+                      child: Container(
+                        decoration: shadowBoxDecoration,
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                Get.to(NoticeDetail(
+                                  noticeDetailModel: await controller.getNoticeDetail(
                                       controller.noticeList[index].noticeId!),
-                            ));
-                          },
-                          child: ListTile(
-                            title: Text(controller.noticeList[index].title!),
-                            subtitle:
-                                Text(controller.noticeList[index].createDate!),
-                          ),
+                                ));
+                              },
+                              child: ListTile(
+                                title: Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: GapSize.xxSmall),
+                                  child: Text(controller
+                                      .noticeList[index].title!),
+                                ),
+                                subtitle: Text(controller
+                                    .noticeList[index].createDate!),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     );
                   },
                 ),
