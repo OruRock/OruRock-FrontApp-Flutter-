@@ -45,6 +45,8 @@ class AppController extends GetxController {
   var detailClientStoreBookMark = false.obs;
   var clientStoreBookMark = <StoreModel>[].obs;
 
+  var setLikedStore = false.obs;
+
   BannerAd? bannerAd;
   TextEditingController searchText = TextEditingController();
 
@@ -276,6 +278,29 @@ class AppController extends GetxController {
       }
     } catch (e) {
       Fluttertoast.showToast(msg: "즐겨찾기 업데이트가 실패하였습니다.");
+      Logger().e(e.toString());
+      isLoading.value = false;
+    }
+    isLoading.value = false;
+  }
+
+  void updateLikedStore(StoreModel? store) async {
+    isLoading.value = true;
+    try {
+      final data = {"store_id": store!.storeId, "uid": auth.user?.uid};
+      Dio.Response res;
+
+      if (setLikedStore.value) {
+        res = await api.dio.delete('/store/recommend', data: data);
+      } else {
+        res = await api.dio.post('/store/recommend', data: data);
+      }
+      // 성공 시
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        setLikedStore.value = !setLikedStore.value;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: "좋아요 업데이트가 실패하였습니다.");
       Logger().e(e.toString());
       isLoading.value = false;
     }

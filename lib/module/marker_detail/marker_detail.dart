@@ -117,6 +117,30 @@ class MarkerDetail extends GetView<AppController> {
                             },
                           ),
                         ),
+                        Obx(
+                              () => LikeButton(
+                            circleColor: const CircleColor(
+                                start: Color(0xff00ddff),
+                                end: Color(0xff0099cc)),
+                            bubblesColor: const BubblesColor(
+                              dotPrimaryColor: Color(0xff33b5e5),
+                              dotSecondaryColor: Color(0xff0099cc),
+                            ),
+                            likeBuilder: (bool isLiked) {
+                              return Icon(
+                                Icons.thumb_up,
+                                color:
+                                isLiked ? Colors.blue[600] : Colors.grey,
+                                size: 25,
+                              );
+                            },
+                            isLiked: controller.setLikedStore.value,
+                            onTap: (bool isLiked) async {
+                              controller.updateLikedStore(store);
+                              return !isLiked;
+                            },
+                          ),
+                        ),
                       ]),
                     ),
                     const SizedBox(
