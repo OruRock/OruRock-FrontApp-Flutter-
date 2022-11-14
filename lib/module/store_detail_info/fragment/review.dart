@@ -20,7 +20,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
   @override
   Widget build(BuildContext context) {
     final detailModel = controller.detailModel.value!;
-    return Obx(() => Expanded(
+    return  Expanded(
           child: Stack(children: [
             detailModel.comment!.isEmpty
                 ? _buildNotExistWidget()
@@ -56,7 +56,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
               ),
             )
           ]),
-        ));
+        );
   }
 
   _buildReviewTextField() {
@@ -126,129 +126,130 @@ class ReviewFragment extends GetView<StoreInfoController> {
   _buildReviewTile(int index) {
     final detailModel = controller.detailModel.value!;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: GapSize.xxSmall),
-      child: Container(
-        width: Get.width,
-        padding: const EdgeInsets.symmetric(
-            horizontal: GapSize.small, vertical: GapSize.small),
-        decoration: shadowBoxDecoration,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.grey)),
-                  child: ClipOval(
-                    child: SizedBox.fromSize(
-                        size: const Size.fromRadius(20), // Image radius
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Image.asset(controller.app.levelImage[
-                              detailModel.comment![index].userLevel ?? 0]),
-                        )),
+    return Obx(() => Padding(
+        padding: const EdgeInsets.symmetric(vertical: GapSize.xxSmall),
+        child: Container(
+          width: Get.width,
+          padding: const EdgeInsets.symmetric(
+              horizontal: GapSize.small, vertical: GapSize.small),
+          decoration: shadowBoxDecoration,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.grey)),
+                    child: ClipOval(
+                      child: SizedBox.fromSize(
+                          size: const Size.fromRadius(20), // Image radius
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Image.asset(controller.app.levelImage[
+                                detailModel.comment![index].userLevel ?? 0]),
+                          )),
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  width: GapSize.xxSmall,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      detailModel.comment![index].userNickname ?? '무명 클라이머',
-                      style: reviewNickNameTextStyle,
-                    ),
-                    const SizedBox(
-                      height: GapSize.xxxSmall,
-                    ),
-                    Row(
-                      children: const [
-                        Icon(
-                          Icons.star,
-                          color: Colors.black,
-                          size: 15,
+                  const SizedBox(
+                    width: GapSize.xxSmall,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        detailModel.comment![index].userNickname ?? '무명 클라이머',
+                        style: reviewNickNameTextStyle,
+                      ),
+                      const SizedBox(
+                        height: GapSize.xxxSmall,
+                      ),
+                      Row(
+                        children: const [
+                          Icon(
+                            Icons.star,
+                            color: Colors.black,
+                            size: 15,
+                          ),
+                          Icon(
+                            Icons.star,
+                            color: Colors.black,
+                            size: 15,
+                          ),
+                          Icon(
+                            Icons.star,
+                            color: Colors.black,
+                            size: 15,
+                          ),
+                          Icon(
+                            Icons.star,
+                            color: Colors.black,
+                            size: 15,
+                          ),
+                          Icon(
+                            Icons.star,
+                            color: Colors.black,
+                            size: 15,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  Expanded(child: Container()),
+                  Visibility(
+                    visible: detailModel.comment![index].uid ==
+                        controller.auth.user?.uid,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: GapSize.xxxSmall),
+                      child: GestureDetector(
+                        onTap: () {
+                          controller.modifyButtonPressed(index);
+                        },
+                        child: Icon(
+                          Icons.edit,
+                          color: Colors.blue,
+                          size: WidthWithRatio.xSmall,
                         ),
-                        Icon(
-                          Icons.star,
-                          color: Colors.black,
-                          size: 15,
-                        ),
-                        Icon(
-                          Icons.star,
-                          color: Colors.black,
-                          size: 15,
-                        ),
-                        Icon(
-                          Icons.star,
-                          color: Colors.black,
-                          size: 15,
-                        ),
-                        Icon(
-                          Icons.star,
-                          color: Colors.black,
-                          size: 15,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                Expanded(child: Container()),
-                Visibility(
-                  visible: detailModel.comment![index].uid ==
-                      controller.auth.user?.uid,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: GapSize.xxxSmall),
-                    child: GestureDetector(
-                      onTap: () {
-                        controller.modifyButtonPressed(index);
-                      },
-                      child: Icon(
-                        Icons.edit,
-                        color: Colors.blue,
-                        size: WidthWithRatio.xSmall,
                       ),
                     ),
                   ),
-                ),
-                Visibility(
-                  visible: detailModel.comment![index].uid ==
-                      controller.auth.user?.uid,
-                  child: GestureDetector(
-                    onTap: () async {
-                      controller.buildWarningDialog(
-                          store!.storeId!,
-                          controller
-                              .detailModel.value!.comment![index].commentId!);
-                    },
-                    child: Icon(
-                      Icons.delete,
-                      size: WidthWithRatio.xSmall,
-                      color: Colors.red,
+                  Visibility(
+                    visible: detailModel.comment![index].uid ==
+                        controller.auth.user?.uid,
+                    child: GestureDetector(
+                      onTap: () async {
+                        controller.buildWarningDialog(
+                            store!.storeId!,
+                            controller
+                                .detailModel.value!.comment![index].commentId!);
+                      },
+                      child: Icon(
+                        Icons.delete,
+                        size: WidthWithRatio.xSmall,
+                        color: Colors.red,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            controller.isModifying.value &&
-                    controller.modifyingIndex.value == index
-                ? _buildModifyTextField(index)
-                : _buildCommentField(index),
-            Text(
-              DateFormat('yy.MM.dd').format(
-                  DateTime.parse(detailModel.comment![index].createDate!)),
-              style: const TextStyle(
-                  fontFamily: "NotoR",
-                  fontSize: FontSize.xSmall,
-                  color: Colors.grey),
-            ),
-          ],
+                ],
+              ),
+              controller.isModifying.value &&
+                      controller.modifyingIndex.value == index
+                  ? _buildModifyTextField(index)
+                  : _buildCommentField(index),
+              Text(
+                DateFormat('yy.MM.dd').format(
+                    DateTime.parse(detailModel.comment![index].createDate!)),
+                style: const TextStyle(
+                    fontFamily: "NotoR",
+                    fontSize: FontSize.xSmall,
+                    color: Colors.grey),
+              ),
+            ],
+          ),
         ),
       ),
     );
