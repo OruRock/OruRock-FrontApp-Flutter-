@@ -78,7 +78,7 @@ class HomeFavorites extends GetView<AppController> {
                                   },
                                   isLiked: true,
                                   onTap: (bool isLiked) async {
-                                    controller.detailClientStoreBookMark.value =
+                                    controller.detailButtonState[1].value =
                                         true;
                                     controller.updateBookMark(controller
                                         .clientStoreBookMark.value[index]);

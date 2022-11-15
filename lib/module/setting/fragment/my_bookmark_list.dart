@@ -85,7 +85,7 @@ class MyBookmarkList extends GetView<SettingController> {
                     },
                     isLiked: true,
                     onTap: (bool isLiked) async {
-                      controller.app.detailClientStoreBookMark.value =
+                      controller.app.detailButtonState[1].value =
                           true;
                       controller.app.updateBookMark(controller
                           .app.clientStoreBookMark.value[index]);

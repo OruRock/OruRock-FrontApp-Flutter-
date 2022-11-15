@@ -20,9 +20,7 @@ class MapFunction extends GetxService {
     return this;
   }
 
-  onMapTap(LatLng position) async {
-
-  }
+  onMapTap(LatLng position) async {}
 
   //지도가 만들어지고 나서 일어나는 함수
   void onMapCreated(NaverMapController controller) async {
@@ -44,7 +42,6 @@ class MapFunction extends GetxService {
       final cameraPosition =
           CameraUpdate.scrollWithOptions(position, zoom: zoom);
       await controller.moveCamera(cameraPosition);
-      print("HI");
     } catch (e) {
       print(e.toString());
     }

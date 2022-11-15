@@ -7,6 +7,7 @@ class StoreModel {
   String? storeAddr;
   double? storeLng;
   int? bookmarkYn;
+  int? isRecommendYn;
   double? storeLat;
   String? storeUrl;
   String? storeNote;
@@ -22,6 +23,7 @@ class StoreModel {
       this.storeAddr,
       this.storeLng,
       this.bookmarkYn,
+        this.isRecommendYn,
       this.storeLat,
       this.storeNote,
       this.storePayType,
@@ -37,6 +39,7 @@ class StoreModel {
     storeAddr = json['store_addr'];
     storeLng = json['store_lng'];
     bookmarkYn = json['bookmark_yn'];
+    isRecommendYn = json['is_recommend_yn'];
     storeLat = json['store_lat'];
     storeNote = json['store_note'];
     storePayType = json['store_pay_type'];
@@ -54,6 +57,7 @@ class StoreModel {
     data['store_addr'] = storeAddr;
     data['store_lng'] = storeLng;
     data['bookmark_yn'] = bookmarkYn;
+    data['is_recommend_yn'] = isRecommendYn;
     data['store_lat'] = storeLat;
     data['store_note'] = storeNote;
     data['store_pay_type'] = storePayType;

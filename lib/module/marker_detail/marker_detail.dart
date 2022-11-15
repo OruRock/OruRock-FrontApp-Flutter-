@@ -82,14 +82,14 @@ class MarkerDetail extends GetView<AppController> {
                                 size: 23,
                               );
                             },
-                            isLiked: controller.detailPinState.value,
+                            isLiked: controller.detailButtonState[0].value,
                             onTap: (bool isLiked) async {
                               if (isLiked) {
                                 controller.removePin();
                               } else {
                                 controller.setPin();
                               }
-                              return controller.detailPinState.value;
+                              return controller.detailButtonState[0].value;
                             },
                           ),
                         ),
@@ -110,7 +110,7 @@ class MarkerDetail extends GetView<AppController> {
                                 size: 25,
                               );
                             },
-                            isLiked: controller.detailClientStoreBookMark.value,
+                            isLiked: controller.detailButtonState[1].value,
                             onTap: (bool isLiked) async {
                               controller.updateBookMark(store);
                               return !isLiked;
@@ -118,7 +118,7 @@ class MarkerDetail extends GetView<AppController> {
                           ),
                         ),
                         Obx(
-                              () => LikeButton(
+                          () => LikeButton(
                             circleColor: const CircleColor(
                                 start: Color(0xff00ddff),
                                 end: Color(0xff0099cc)),
@@ -129,15 +129,38 @@ class MarkerDetail extends GetView<AppController> {
                             likeBuilder: (bool isLiked) {
                               return Icon(
                                 Icons.thumb_up,
-                                color:
-                                isLiked ? Colors.blue[600] : Colors.grey,
+                                color: isLiked ? Colors.blue[600] : Colors.grey,
                                 size: 25,
                               );
                             },
-                            isLiked: controller.setLikedStore.value,
+                            isLiked: controller.detailButtonState[2].value,
                             onTap: (bool isLiked) async {
                               controller.updateLikedStore(store);
                               return !isLiked;
+                            },
+                            likeCount: controller.likeStoreCount.value,
+                            countBuilder:
+                                (int? count, bool isLiked, String text) {
+                              var color = isLiked ? Colors.black : Colors.black;
+                              Widget result;
+                              if (count == 0) {
+                                result = Text(
+                                  "0",
+                                  style: TextStyle(
+                                      color: color,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
+                                );
+                              } else {
+                                result = Text(
+                                  text,
+                                  style: TextStyle(
+                                      color: color,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
+                                );
+                              }
+                              return result;
                             },
                           ),
                         ),
@@ -151,7 +174,11 @@ class MarkerDetail extends GetView<AppController> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ImageViewer(imageUrl: store!.imageUrl, width: 150, height: 150,),
+                          ImageViewer(
+                            imageUrl: store!.imageUrl,
+                            width: 150,
+                            height: 150,
+                          ),
                           Expanded(
                             child: Padding(
                               padding:

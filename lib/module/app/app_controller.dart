@@ -37,15 +37,19 @@ class AppController extends GetxController {
   var selectedIndex = 0; //선택된 storeIndex
   RxList<Marker> markers = <Marker>[].obs;
 
+  var detailButtonState = [false.obs, false.obs, false.obs];
   var isPinned = GetStorage().read("PIN") != null ? true.obs : false.obs;
   int? pinnedStoreId = GetStorage().read("PIN");
   var pinnedStoreName = ''.obs;
-  var detailPinState = false.obs;
 
-  var detailClientStoreBookMark = false.obs;
+  //var detailPinState = false.obs;
+
+  //var detailClientStoreBookMark = false.obs;
   var clientStoreBookMark = <StoreModel>[].obs;
+  var clientLikedStore = <StoreModel>[].obs;
 
-  var setLikedStore = false.obs;
+  //var setLikedStore = false.obs;
+  var likeStoreCount = 0.obs;
 
   BannerAd? bannerAd;
   TextEditingController searchText = TextEditingController();
@@ -67,7 +71,9 @@ class AppController extends GetxController {
     'asset/image/icon/profile/level_master.png',
   ];
 
+  @override
   void onInit() async {
+    super.onInit();
     await getStoreList();
     await getClientStoreBookMark();
     setMarker();
@@ -157,11 +163,11 @@ class AppController extends GetxController {
 
     selectedIndex = markerId; //selectedIndex 업데이트
 
-    setDetailPinState();
-    setBookMarkState(stores[markerId]);
+    setDetailButtonState(stores[markerId]);
+
+    likeStoreCount.value = stores[markerId].recommendCnt!;
 
     Get.bottomSheet(MarkerDetail(store: stores[markerId]));
-
     //Get.to(() => MarkerDetail(store: stores[int.parse(marker!.markerId) - 1]));
   }
 
@@ -172,7 +178,7 @@ class AppController extends GetxController {
     if (pin == null) {
       appData.write("PIN", selectedIndex);
       isPinned.value = true;
-      detailPinState.value = true;
+      detailButtonState[0].value = true;
       pinnedStoreId = selectedIndex;
       pinnedStoreName.value = stores[pinnedStoreId!].storeName!;
       Fluttertoast.showToast(msg: "선택하신 암장이 고정되었습니다.");
@@ -189,24 +195,36 @@ class AppController extends GetxController {
   void updatePin() {
     appData.write("PIN", selectedIndex);
     pinnedStoreId = selectedIndex;
-    detailPinState.value = true;
+    detailButtonState[0].value = true;
     pinnedStoreName.value = stores[pinnedStoreId!].storeName!;
   }
 
   void removePin() {
     appData.remove("PIN");
     isPinned.value = false;
-    detailPinState.value = false;
+    detailButtonState[0].value = false;
     pinnedStoreId = null;
     pinnedStoreName.value = '';
     Fluttertoast.showToast(msg: "핀이 해제되었습니다.");
   }
 
-  void setDetailPinState() {
+  void setDetailButtonState(StoreModel? store) {
     if (selectedIndex == appData.read("PIN")) {
-      detailPinState.value = true;
+      detailButtonState[0].value = true;
     } else {
-      detailPinState.value = false;
+      detailButtonState[0].value = false;
+    }
+
+    if (clientStoreBookMark.contains(store)) {
+      detailButtonState[1].value = true;
+    } else {
+      detailButtonState[1].value = false;
+    }
+
+    if (clientLikedStore.contains(store)) {
+      detailButtonState[2].value = true;
+    } else {
+      detailButtonState[2].value = false;
     }
   }
 
@@ -249,15 +267,6 @@ class AppController extends GetxController {
     isLoading.value = false;
   }
 
-  // 즐겨찾기 아이콘 상태 관리 함수
-  void setBookMarkState(StoreModel? store) {
-    if (clientStoreBookMark.contains(store)) {
-      detailClientStoreBookMark.value = true;
-    } else {
-      detailClientStoreBookMark.value = false;
-    }
-  }
-
   /// 즐겨찾기 버튼 누를 시에 추가, 삭제, 교체가 일어나는 함수
   void updateBookMark(StoreModel? store) async {
     isLoading.value = true;
@@ -265,7 +274,7 @@ class AppController extends GetxController {
       final data = {"store_id": store!.storeId, "uid": auth.user?.uid};
       Dio.Response res;
 
-      if (detailClientStoreBookMark.value) {
+      if (detailButtonState[1].value) {
         res = await api.dio.delete('/store/bookMark', data: data);
         clientStoreBookMark.remove(store);
       } else {
@@ -274,7 +283,7 @@ class AppController extends GetxController {
       }
       //성공 시
       if (res.statusCode == 200 || res.statusCode == 201) {
-        detailClientStoreBookMark.value = !detailClientStoreBookMark.value;
+        detailButtonState[1].value = !detailButtonState[1].value;
       }
     } catch (e) {
       Fluttertoast.showToast(msg: "즐겨찾기 업데이트가 실패하였습니다.");
@@ -290,14 +299,18 @@ class AppController extends GetxController {
       final data = {"store_id": store!.storeId, "uid": auth.user?.uid};
       Dio.Response res;
 
-      if (setLikedStore.value) {
+      if (detailButtonState[2].value) {
         res = await api.dio.delete('/store/recommend', data: data);
+        likeStoreCount.value = res.data['payload']['totalRecommend'];
+        clientLikedStore.remove(store);
       } else {
         res = await api.dio.post('/store/recommend', data: data);
+        likeStoreCount.value = res.data['payload']['totalRecommend'];
+        clientLikedStore.add(store);
       }
       // 성공 시
       if (res.statusCode == 200 || res.statusCode == 201) {
-        setLikedStore.value = !setLikedStore.value;
+        detailButtonState[2].value = !detailButtonState[2].value;
       }
     } catch (e) {
       Fluttertoast.showToast(msg: "좋아요 업데이트가 실패하였습니다.");
@@ -339,6 +352,9 @@ class AppController extends GetxController {
       for (var elem in stores) {
         if (elem.bookmarkYn == 1) {
           clientStoreBookMark.add(elem);
+        }
+        if (elem.isRecommendYn == 1) {
+          clientLikedStore.add(elem);
         }
       }
     } catch (e) {

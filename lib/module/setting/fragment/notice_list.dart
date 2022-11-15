@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
-import 'package:oru_rock/module/setting/notice_detail.dart';
+import 'package:oru_rock/module/setting/fragment/notice_detail.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
 import 'package:intl/intl.dart';
 
