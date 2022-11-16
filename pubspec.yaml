@@ -1,7 +1,7 @@
 name: oru_rock
 description: FrontApp With Flutter
 
-version: 1.0.0+10004
+version: 1.0.0+10005
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
@@ -16,6 +16,8 @@ dependencies:
   get_storage: ^2.0.3
   intl: ^0.17.0
   permission_handler: ^10.2.0
+  package_info_plus: ^1.0.4
+  flutter_inappwebview: ^5.7.1
   #UI
   shadow: ^1.5.0
   animated_text_kit: ^4.2.2
@@ -25,13 +27,16 @@ dependencies:
   animations: ^2.0.7
   auto_size_text: ^3.0.0
   flutter_staggered_animations: ^1.0.0
+  like_button: ^2.0.5
+  toggle_switch: ^2.0.1
+  animate_gradient: ^0.0.2
 
   flutter_naver_map:
     git: https://github.com/note11g/flutter_naver_map.git
   google_mobile_ads: ^2.0.1
   # Login
   kakao_flutter_sdk: ^1.3.0-beta.4 # 카카오 로그인
-  firebase_auth: ^3.7.0
+  firebase_auth: ^4.1.0
   google_sign_in: ^5.4.1
   flutter_signin_button: ^2.0.0
   sign_in_with_apple: ^4.1.0
@@ -57,6 +62,7 @@ flutter:
     - asset/image/
     - asset/image/logo/
     - asset/image/icon/
+    - asset/image/icon/profile/
 
   fonts:
       # NotoSans-KR
@@ -100,3 +106,6 @@ flutter:
     - family: NanumACR
       fonts:
         - asset: asset/font/nanum-square/NanumSquareOTF_acR.otf
+    - family: JungMock
+      fonts:
+        - asset: asset/font/SSRockRegular_otf.otf

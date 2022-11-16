@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
-import 'package:oru_rock/routes.dart';
 
 class NMap extends GetView<AppController> {
   const NMap({Key? key}) : super(key: key);
@@ -102,39 +101,4 @@ class NMap extends GetView<AppController> {
     );
   }
 
-  Widget _buildDrawerListView() {
-    return Drawer(
-      child: Padding(
-        padding: const EdgeInsets.only(top: GapSize.xxLarge),
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: const [
-            CircleAvatar(
-              radius: 60,
-              backgroundColor: Colors.blue,
-            ),
-            SizedBox(
-              height: GapSize.medium,
-            ),
-            ListTile(
-              title: Text(
-                "취향 검사 다시하기",
-                style: drawerListTextStyle,
-              ),
-              leading: Icon(Icons.replay_rounded),
-            ),
-            Divider(),
-            ListTile(
-              title: Text(
-                "Setting",
-                style: drawerListTextStyle,
-              ),
-              leading: Icon(Icons.settings_rounded),
-            ),
-            Divider(),
-          ],
-        ),
-      ),
-    );
-  }
 }

@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -8,7 +8,10 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:logger/logger.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
+import 'package:oru_rock/helper/nickname_checker.dart';
+import 'package:oru_rock/model/result_model.dart';
 import 'package:oru_rock/model/user_model.dart';
+import 'package:oru_rock/module/login/first_nickname.dart';
 import 'package:oru_rock/routes.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -17,6 +20,10 @@ class LoginController extends GetxController {
   final userAuth = Get.find<AuthFunction>();
   final appData = GetStorage();
   var isLoading = false.obs; //로그인중 로딩용
+  final nicknameController = TextEditingController();
+
+  var opacityValue = 0.0.obs;
+  var opacityAnimateList = [0.0, 1.0];
 
   @override
   void onInit() async {
@@ -24,10 +31,15 @@ class LoginController extends GetxController {
     await autoLogin();
   }
 
+  @override
+  void onReady() {
+    opacityValue.value = opacityAnimateList[1];
+  }
+
   ///로그인 버튼을 클릭했을 시 로그인 성공/실패를 따지는 함수
   void loginButtonPressed(String provider) async {
     isLoading.value = true;
-    var success = false;
+    LoginResult success;
 
     switch (provider) {
       case 'Google':
@@ -40,12 +52,15 @@ class LoginController extends GetxController {
         success = await signInWithKakao();
         break;
       default:
-        success = false;
+        success = LoginResult(status: LoginStatus.failed);
     }
 
-    if (success) {
+    if (success.status == LoginStatus.existUser) {
       //로그인 성공시
       Get.offAllNamed(Routes.app);
+      appData.write("UID", userAuth.user!.uid);
+    } else if (success.status == LoginStatus.newUser) {
+      Get.to(const FirstNickname());
       appData.write("UID", userAuth.user!.uid);
     } else {
       //로그인 실패시
@@ -55,7 +70,7 @@ class LoginController extends GetxController {
   }
 
   //Kakao
-  Future<bool> signInWithKakao() async {
+  Future<LoginResult> signInWithKakao() async {
     OAuthToken? authCode;
     // 앱으로 로그인
     if (await isKakaoTalkInstalled()) {
@@ -87,27 +102,32 @@ class LoginController extends GetxController {
       final kakao_data = {
         "kakao_id": user.id.toString(),
         "email": user.kakaoAccount?.email,
-        "displayName": user.kakaoAccount?.profile?.nickname
       };
 
       final kakao_res = await api.dio.post('/login/kakao', data: kakao_data);
 
       final data = {
-        "uid": kakao_res.data['payload'][0],
+        "uid": kakao_res.data['payload']['uid'],
         "user_email": user.kakaoAccount?.email,
-        "user_nickname": user.kakaoAccount?.profile?.nickname,
       };
 
       final res = await api.dio.post('/login', data: data);
 
       userAuth.setJwt(res.data['payload']['result']);
-      userAuth.setUser(user.kakaoAccount?.profile?.nickname,
-          user.kakaoAccount?.email, kakao_res.data['payload'][0]);
 
-      return true;
+      userAuth.setUser(
+          res.data['payload']['user']['user_nickname'],
+          user.kakaoAccount?.email,
+          kakao_res.data['payload']['uid'],
+          res.data['payload']['user']['user_level']);
+
+      if (kakao_res.data['payload']['isNewUser']) {
+        return LoginResult(status: LoginStatus.newUser);
+      }
+      return LoginResult(status: LoginStatus.existUser);
     } catch (e) {
       Logger().e(e.toString());
-      return false;
+      return LoginResult(status: LoginStatus.failed);
     }
   }
 
@@ -119,10 +139,14 @@ class LoginController extends GetxController {
   /// 구글 로그인을 처리하는 함수 유저 [uid]로 [jwt]을 API로 가져온다.
   /// [AuthFunction]에 [jwt]와 유저 정보[UserModel]를 저장한다.
   /// 성공한다면 [true] , 실패하면 [false]
-  Future<bool> signInWithGoogle() async {
+  Future<LoginResult> signInWithGoogle() async {
     final account = await googleSignIn.signIn();
 
-    final googleAuth = await account?.authentication;
+    if(account == null){
+      return LoginResult(status: LoginStatus.failed);
+    }
+
+    final googleAuth = await account.authentication;
 
     final credential = firebase_auth.GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
@@ -135,7 +159,7 @@ class LoginController extends GetxController {
   }
 
   //Apple
-  Future<bool> signInWithApple() async {
+  Future<LoginResult> signInWithApple() async {
     try {
       final appleCredential = await SignInWithApple.getAppleIDCredential(
         scopes: [
@@ -143,9 +167,9 @@ class LoginController extends GetxController {
           AppleIDAuthorizationScopes.fullName,
         ],
         webAuthenticationOptions: WebAuthenticationOptions(
-          clientId: 'com.orurock.app',
+          clientId: 'app.orurock.com',
           redirectUri: Uri.parse(
-            'https://orurock-fa5dd.firebaseapp.com/callback.apple',
+            'https://holistic-plausible-wood.glitch.me/callbacks/sign_in_with_apple',
           ),
         ),
       );
@@ -161,35 +185,41 @@ class LoginController extends GetxController {
       return await setUserAtUserModel(authResult);
     } catch (e) {
       Logger().e(e.toString());
-      return false;
+      return LoginResult(status: LoginStatus.failed);
     }
   }
 
-  Future<bool> setUserAtUserModel(
+  Future<LoginResult> setUserAtUserModel(
       firebase_auth.UserCredential authResult) async {
     try {
       final user = authResult.user;
       currentUser = _auth.currentUser;
 
       if (user == null || user.uid != currentUser?.uid) {
-        return false;
+        return LoginResult(status: LoginStatus.failed);
       }
 
       final data = {
         "uid": user.uid,
         "user_email": user.email,
-        "user_nickname": user.displayName,
       };
 
       final res = await api.dio.post('/login', data: data);
 
       userAuth.setJwt(res.data['payload']['result']);
-      userAuth.setUser(res.data['payload']['nick_name'], res.data['payload']['email'], user.uid);
+      userAuth.setUser(
+          res.data['payload']['user']['user_nickname'],
+          res.data['payload']['user']['user_email'],
+          user.uid,
+          res.data['payload']['user']['user_level']);
 
-      return true;
+      if (authResult.additionalUserInfo!.isNewUser) {
+        return LoginResult(status: LoginStatus.newUser);
+      }
+      return LoginResult(status: LoginStatus.existUser);
     } catch (e) {
       Logger().e(e.toString());
-      return false;
+      return LoginResult(status: LoginStatus.failed);
     }
   }
 
@@ -213,10 +243,47 @@ class LoginController extends GetxController {
       final res = await api.dio.post('/login', data: data);
 
       userAuth.setJwt(res.data['payload']['result']);
-      userAuth.setUser(res.data['payload']['nick_name'], res.data['payload']['email'], cachedUid);
+      userAuth.setUser(
+          res.data['payload']['user']['user_nickname'],
+          res.data['payload']['user']['user_email'],
+          cachedUid,
+          res.data['payload']['user']['user_level']);
 
       Get.offAllNamed(Routes.app);
     }
     isLoading.value = false;
+  }
+
+  Future<void> changeNickname() async {
+    isLoading.value = true;
+    final changeNickname = nicknameController.text.trim();
+    try {
+      if (!await nickNameChecker(changeNickname)) {
+        Fluttertoast.showToast(msg: "닉네임이 부적절하거나 이미 사용중인 닉네임입니다.");
+        isLoading.value = false;
+        return;
+      }
+
+      final data = {
+        "uid": userAuth.user!.uid,
+        "user_email": userAuth.user!.email,
+        "user_nickname": changeNickname
+      };
+
+      final res = await api.dio.post('/user', data: data);
+
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        userAuth.user!.displayName = changeNickname;
+        Get.offAllNamed(Routes.app);
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      isLoading.value = false;
+      return;
+    }
+    isLoading.value = false;
+    nicknameController.text = '';
+    Get.back();
+    Fluttertoast.showToast(msg: "닉네임 변경이 완료되었습니다.");
   }
 }

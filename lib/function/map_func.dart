@@ -20,15 +20,7 @@ class MapFunction extends GetxService {
     return this;
   }
 
-  onMapTap(LatLng position) async {
-    Get.showSnackbar(GetBar(
-      duration: const Duration(milliseconds: 1500),
-      snackPosition: SnackPosition.BOTTOM,
-      snackStyle: SnackStyle.GROUNDED,
-      title: '터치한 위치',
-      message: '[onTap] lat: ${position.latitude}, lon: ${position.longitude}',
-    ));
-  }
+  onMapTap(LatLng position) async {}
 
   //지도가 만들어지고 나서 일어나는 함수
   void onMapCreated(NaverMapController controller) async {
@@ -50,8 +42,7 @@ class MapFunction extends GetxService {
       final cameraPosition =
           CameraUpdate.scrollWithOptions(position, zoom: zoom);
       await controller.moveCamera(cameraPosition);
-      print("HI");
-    } catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }

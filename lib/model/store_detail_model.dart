@@ -2,6 +2,7 @@ class StoreDetailModel {
   List<Image>? image;
   int? total;
   List<Price>? price;
+  List<OpenTime>? openTime;
   List<Comment>? comment;
 
   StoreDetailModel({this.image, this.total, this.comment});
@@ -18,6 +19,12 @@ class StoreDetailModel {
       price = <Price>[];
       json['price'].forEach((v) {
         price!.add(Price.fromJson(v));
+      });
+    }
+    if (json['open_time'] != null) {
+      openTime = <OpenTime>[];
+      json['open_time'].forEach((v) {
+        openTime!.add(OpenTime.fromJson(v));
       });
     }
     if (json['comment'] != null) {
@@ -61,7 +68,7 @@ class Image {
 }
 
 class Price {
-  int? price;
+  String? price;
   String? priceDescription;
 
   Price({
@@ -82,11 +89,39 @@ class Price {
   }
 }
 
+class OpenTime {
+  int? dayType;
+  String? dayName;
+  String? openTime;
+
+  OpenTime({
+    this.dayType,
+    this.dayName,
+    this.openTime,
+  });
+
+  OpenTime.fromJson(Map<String, dynamic> json) {
+    dayType = json['day_type'];
+    dayName = json['day_name'];
+    openTime = json['open_time'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['day_type'] = dayType;
+    data['day_name'] = dayName;
+    data['open_time'] = openTime;
+    return data;
+  }
+}
+
 class Comment {
   int? storeId;
+  String? storeName;
   String? userNickname;
   String? uid;
   String? comment;
+  int? userLevel;
   int? recommendLevel;
   int? commentId;
   String? createDate;
@@ -94,9 +129,11 @@ class Comment {
 
   Comment(
       {this.storeId,
+      this.storeName,
       this.userNickname,
-        this.uid,
+      this.uid,
       this.comment,
+      this.userLevel,
       this.recommendLevel,
       this.commentId,
       this.createDate,
@@ -104,9 +141,11 @@ class Comment {
 
   Comment.fromJson(Map<String, dynamic> json) {
     storeId = json['store_id'];
+    storeName = json['store_name'];
     userNickname = json['user_nickname'];
     uid = json['uid'];
     comment = json['comment'];
+    userLevel = json['user_level'];
     recommendLevel = json['recommend_level'];
     commentId = json['comment_id'];
     createDate = json['create_date'];
@@ -116,9 +155,11 @@ class Comment {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['store_id'] = storeId;
+    data['store_name'] = storeName;
     data['user_nickname'] = userNickname;
     data['uid'] = uid;
     data['comment'] = comment;
+    data['user_level'] = userLevel;
     data['recommend_level'] = recommendLevel;
     data['comment_id'] = commentId;
     data['create_date'] = createDate;

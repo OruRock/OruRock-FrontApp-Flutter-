@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "699813385517-fg4p3v66jdssc19d0tui942v8488g230.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orurock.ai.oru_rock",
+            "certificate_hash": "df11635c25f13f8076cc1e8db6855159eecd2d8d"
+          }
+        },
+        {
           "client_id": "699813385517-jnl9i6oe9cia1l7bpnihevisum2n29k9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -35,6 +43,14 @@
           "android_info": {
             "package_name": "com.orurock.ai.oru_rock",
             "certificate_hash": "ced3cc1e167b2f8a3ad90453bf8e49a8f50f1f5e"
+          }
+        },
+        {
+          "client_id": "699813385517-qv2a4pmckjjujsqkqig2kk6ml0k7ckac.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orurock.ai.oru_rock",
+            "certificate_hash": "3b8690a895b723f95fe4e74b2e10ca0acaad9b0d"
           }
         },
         {
@@ -55,10 +71,10 @@
               "client_type": 3
             },
             {
-              "client_id": "699813385517-p61pm27c9oppgm5u0dppd28e3r9uake1.apps.googleusercontent.com",
+              "client_id": "699813385517-6s9n6kiqkjge5ll67rd4jrit3lh5nkce.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.orurock.ai.oruRock"
+                "bundle_id": "com.orurock.app"
               }
             }
           ]

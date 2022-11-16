@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 
+import 'package:dio/src/response.dart' as Dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -30,13 +30,26 @@ class AppController extends GetxController {
 
   var stores = <StoreModel>[].obs; //store 관리
   var searchStores = <StoreModel>[].obs;
+  ScrollController searchScrollController = ScrollController();
+  var searchListPage = 1.obs;
+  var isEnd = false.obs;
+  var isGetMoreData = false.obs;
   var selectedIndex = 0; //선택된 storeIndex
   RxList<Marker> markers = <Marker>[].obs;
 
+  var detailButtonState = [false.obs, false.obs, false.obs];
   var isPinned = GetStorage().read("PIN") != null ? true.obs : false.obs;
   int? pinnedStoreId = GetStorage().read("PIN");
   var pinnedStoreName = ''.obs;
-  var detailPinState = false.obs;
+
+  //var detailPinState = false.obs;
+
+  //var detailClientStoreBookMark = false.obs;
+  var clientStoreBookMark = <StoreModel>[].obs;
+  var clientLikedStore = <StoreModel>[].obs;
+
+  //var setLikedStore = false.obs;
+  var likeStoreCount = 0.obs;
 
   BannerAd? bannerAd;
   TextEditingController searchText = TextEditingController();
@@ -44,10 +57,27 @@ class AppController extends GetxController {
   var isLoading = false.obs;
   var selectedTabIndex = Tabs.home.obs;
 
-  void onInit() async {
-    await getStoreList();
-    setMarker();
+  List<String> levelImage = [
+    'asset/image/icon/profile/level_red.png',
+    'asset/image/icon/profile/level_orange.png',
+    'asset/image/icon/profile/level_yellow.png',
+    'asset/image/icon/profile/level_green.png',
+    'asset/image/icon/profile/level_blue.png',
+    'asset/image/icon/profile/level_navy.png',
+    'asset/image/icon/profile/level_purple.png',
+    'asset/image/icon/profile/level_white.png',
+    'asset/image/icon/profile/level_grey.png',
+    'asset/image/icon/profile/level_black.png',
+    'asset/image/icon/profile/level_master.png',
+  ];
 
+  @override
+  void onInit() async {
+    super.onInit();
+    await getStoreList();
+    await getClientStoreBookMark();
+    setMarker();
+    searchScrollController.addListener(_searchScrollListener);
     pinnedStoreName.value =
         pinnedStoreId != null ? stores[pinnedStoreId!].storeName! : '';
 
@@ -58,6 +88,7 @@ class AppController extends GetxController {
         case Tabs.search:
           searchText.text = '';
           searchStores.value = stores.value; //검색 초기화
+          isEnd.value = true;
           break;
         case Tabs.nmap:
           getLocationPermission();
@@ -75,12 +106,25 @@ class AppController extends GetxController {
     });
   }
 
+  _searchScrollListener() {
+    if (searchScrollController.offset >=
+            searchScrollController.position.maxScrollExtent &&
+        !searchScrollController.position.outOfRange &&
+        !isEnd.value) {
+      ++searchListPage;
+      addSearch();
+    }
+  }
+
   ///암장 리스트 정보 API 연결 함수
   Future<void> getStoreList() async {
     try {
-      final res = await api.dio.get('/store/list');
+      final bookMarkData = {"uid": auth.user?.uid};
+      final res =
+          await api.dio.get('/store/list', queryParameters: bookMarkData);
 
       final List<dynamic>? data = res.data['payload']['result'];
+
       if (data != null) {
         stores.value = data.map((map) => StoreModel.fromJson(map)).toList();
       }
@@ -113,14 +157,17 @@ class AppController extends GetxController {
 
   ///각 마커 onTap시 함수
   void showDetailInformation(Marker? marker, Map<String, int?> iconSize) async {
+    map.setCamera(marker!.position!, 18.0);
+
     final markerId = int.parse(marker!.markerId);
 
     selectedIndex = markerId; //selectedIndex 업데이트
 
-    setDetailPinState();
+    setDetailButtonState(stores[markerId]);
+
+    likeStoreCount.value = stores[markerId].recommendCnt!;
 
     Get.bottomSheet(MarkerDetail(store: stores[markerId]));
-
     //Get.to(() => MarkerDetail(store: stores[int.parse(marker!.markerId) - 1]));
   }
 
@@ -131,7 +178,7 @@ class AppController extends GetxController {
     if (pin == null) {
       appData.write("PIN", selectedIndex);
       isPinned.value = true;
-      detailPinState.value = true;
+      detailButtonState[0].value = true;
       pinnedStoreId = selectedIndex;
       pinnedStoreName.value = stores[pinnedStoreId!].storeName!;
       Fluttertoast.showToast(msg: "선택하신 암장이 고정되었습니다.");
@@ -148,38 +195,63 @@ class AppController extends GetxController {
   void updatePin() {
     appData.write("PIN", selectedIndex);
     pinnedStoreId = selectedIndex;
-    detailPinState.value = true;
+    detailButtonState[0].value = true;
     pinnedStoreName.value = stores[pinnedStoreId!].storeName!;
   }
 
   void removePin() {
     appData.remove("PIN");
     isPinned.value = false;
-    detailPinState.value = false;
+    detailButtonState[0].value = false;
     pinnedStoreId = null;
     pinnedStoreName.value = '';
     Fluttertoast.showToast(msg: "핀이 해제되었습니다.");
   }
 
-  void setDetailPinState() {
+  void setDetailButtonState(StoreModel? store) {
     if (selectedIndex == appData.read("PIN")) {
-      detailPinState.value = true;
+      detailButtonState[0].value = true;
     } else {
-      detailPinState.value = false;
+      detailButtonState[0].value = false;
+    }
+
+    if (clientStoreBookMark.contains(store)) {
+      detailButtonState[1].value = true;
+    } else {
+      detailButtonState[1].value = false;
+    }
+
+    if (clientLikedStore.contains(store)) {
+      detailButtonState[2].value = true;
+    } else {
+      detailButtonState[2].value = false;
     }
   }
 
   void goMapToSelectedStore(int index) async {
+    final storeIndex = searchStores[index].storeId! - 1;
     selectedTabIndex.value = Tabs.nmap;
     map.nmapController = Completer();
-    map.setCamera(markers[index].position!, 18.0);
-    showDetailInformation(markers[index], {"height": null, "width": null});
+    showDetailInformation(markers[storeIndex], {"height": null, "width": null});
+  }
+
+  void goMapToSelectedStoreAtBookMark(int index) async {
+    final storeIndex = stores.indexOf(clientStoreBookMark[index]);
+
+    selectedTabIndex.value = Tabs.nmap;
+    map.nmapController = Completer();
+    showDetailInformation(markers[storeIndex], {"height": null, "width": null});
   }
 
   Future<void> search() async {
     isLoading.value = true;
+    isEnd.value = false;
     try {
-      final data = {"search_txt": searchText.text};
+      final data = {
+        "uid": auth.user!.uid,
+        "search_txt": searchText.text,
+        "page": searchListPage.value
+      };
       final res = await api.dio.get('/store/list', queryParameters: data);
 
       final List<dynamic>? storeData = res.data['payload']['result'];
@@ -187,11 +259,110 @@ class AppController extends GetxController {
         searchStores.value =
             storeData.map((map) => StoreModel.fromJson(map)).toList();
       }
-      print(searchStores.value.length);
+      if (res.data['payload']['isEnd']) {
+        isEnd.value = true;
+        searchListPage.value = 1;
+      }
     } catch (e) {
       Logger().e(e.toString());
     }
     isLoading.value = false;
+  }
+
+  /// 즐겨찾기 버튼 누를 시에 추가, 삭제, 교체가 일어나는 함수
+  void updateBookMark(StoreModel? store) async {
+    isLoading.value = true;
+    try {
+      final data = {"store_id": store!.storeId, "uid": auth.user?.uid};
+      Dio.Response res;
+
+      if (detailButtonState[1].value) {
+        res = await api.dio.delete('/store/bookMark', data: data);
+        clientStoreBookMark.remove(store);
+      } else {
+        res = await api.dio.post('/store/bookMark', data: data);
+        clientStoreBookMark.add(store);
+      }
+      //성공 시
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        detailButtonState[1].value = !detailButtonState[1].value;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: "즐겨찾기 업데이트가 실패하였습니다.");
+      Logger().e(e.toString());
+      isLoading.value = false;
+    }
+    isLoading.value = false;
+  }
+
+  void updateLikedStore(StoreModel? store) async {
+    isLoading.value = true;
+    try {
+      final data = {"store_id": store!.storeId, "uid": auth.user?.uid};
+      Dio.Response res;
+
+      if (detailButtonState[2].value) {
+        res = await api.dio.delete('/store/recommend', data: data);
+        likeStoreCount.value = res.data['payload']['totalRecommend'];
+        clientLikedStore.remove(store);
+      } else {
+        res = await api.dio.post('/store/recommend', data: data);
+        likeStoreCount.value = res.data['payload']['totalRecommend'];
+        clientLikedStore.add(store);
+      }
+      // 성공 시
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        detailButtonState[2].value = !detailButtonState[2].value;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: "좋아요 업데이트가 실패하였습니다.");
+      Logger().e(e.toString());
+      isLoading.value = false;
+    }
+    isLoading.value = false;
+  }
+
+  Future<void> addSearch() async {
+    isGetMoreData.value = true;
+    try {
+      final data = {
+        "uid": auth.user!.uid,
+        "search_txt": searchText.text,
+        "page": searchListPage.value
+      };
+      final res = await api.dio.get('/store/list', queryParameters: data);
+
+      final List<dynamic>? storeData = res.data['payload']['result'];
+      if (storeData != null) {
+        searchStores +=
+            storeData.map((map) => StoreModel.fromJson(map)).toList();
+      }
+      if (res.data['payload']['isEnd']) {
+        isEnd.value = true;
+        searchListPage.value = 1;
+      }
+      print(searchStores.value.length);
+    } catch (e) {
+      Logger().e(e.toString());
+      isGetMoreData.value = false;
+    }
+    isGetMoreData.value = false;
+  }
+
+  ///북마크 list 정보 API
+  Future<void> getClientStoreBookMark() async {
+    try {
+      for (var elem in stores) {
+        if (elem.bookmarkYn == 1) {
+          clientStoreBookMark.add(elem);
+        }
+        if (elem.isRecommendYn == 1) {
+          clientLikedStore.add(elem);
+        }
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 
   void signOut() {

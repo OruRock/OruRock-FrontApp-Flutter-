@@ -14,10 +14,10 @@ class App extends GetView<AppController> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> screens = <Widget>[
-      Home(),
-      Search(),
-      NMap(),
-      Setting(),
+      const Home(),
+      const Search(),
+      const NMap(),
+      const Setting(),
     ];
     return WillPopScope(
       onWillPop: () async {
@@ -25,15 +25,17 @@ class App extends GetView<AppController> {
           if (controller.isOnCloseApp == false) {
             Fluttertoast.showToast(msg: "한 번 더 누르면 종료됩니다.");
             controller.onCloseApp();
+            return false;
+          } else {
+            return true;
           }
-          return false;
         } else {
           controller.selectedTabIndex.value = Tabs.home;
           return false;
         }
       },
       child: Obx(() => SafeArea(
-        child: Scaffold(
+            child: Scaffold(
               body: IndexedStack(
                 key: ValueKey(controller.selectedTabIndex.value),
                 index: controller.selectedTabIndex.value.index,
@@ -44,93 +46,63 @@ class App extends GetView<AppController> {
                   controller.selectedTabIndex.value = Tabs.getTabByIndex(index);
                 },
                 currentIndex: controller.selectedTabIndex.value.index,
-                type: BottomNavigationBarType.fixed,
-                unselectedLabelStyle: const TextStyle(
-                    fontFamily: "NotoR",
-                    color: Colors.black,
-                    fontSize: FontSize.xSmall),
-                selectedLabelStyle: const TextStyle(
-                    fontFamily: "NotoB",
-                    color: Colors.red,
-                    fontSize: FontSize.xSmall),
-                selectedItemColor: Colors.black,
                 items: const [
                   BottomNavigationBarItem(
-                    // icon: Icon(Icons.home),
-                    icon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
-                        Icons.home_outlined,
-                        color: Colors.black,
-                      ),
+                    icon: Icon(
+                      Icons.home,
+                      color: Colors.grey,
+                      size: 30,
                     ),
-                    activeIcon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
-                        Icons.home,
-                        color: Colors.black,
-                      ),
+                    activeIcon: Icon(
+                      Icons.home,
+                      color: Colors.black,
+                      size: 30,
                     ),
                     label: '홈',
                   ),
                   BottomNavigationBarItem(
-                    // icon: Icon(Icons.home),
-                    icon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
-                        Icons.search_outlined,
-                        color: Colors.black,
-                      ),
+                    icon: Icon(
+                      Icons.search,
+                      color: Colors.grey,
+                      size: 30,
                     ),
-                    activeIcon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
-                        Icons.search,
-                        color: Colors.black,
-                      ),
+                    activeIcon: Icon(
+                      Icons.search,
+                      color: Colors.black,
+                      size: 30,
                     ),
                     label: '검색',
                   ),
                   BottomNavigationBarItem(
-                    // icon: Icon(Icons.home),
-                    icon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
-                        Icons.map_outlined,
-                        color: Colors.black,
-                      ),
+                    icon: Icon(
+                      Icons.map,
+                      color: Colors.grey,
+                      size: 30,
                     ),
-                    activeIcon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
-                        Icons.map,
-                        color: Colors.black,
-                      ),
+                    activeIcon: Icon(
+                      Icons.map,
+                      color: Colors.black,
+                      size: 30,
                     ),
                     label: '지도',
                   ),
                   BottomNavigationBarItem(
-                    // icon: Icon(Icons.home),
-                    icon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
-                        Icons.settings_outlined,
-                        color: Colors.black,
-                      ),
+                    icon: Icon(
+                      Icons.settings,
+                      color: Colors.grey,
+                      size: 30,
                     ),
-                    activeIcon: Padding(
-                      padding: EdgeInsets.only(top: 6, bottom: 6),
-                      child: Icon(
-                        Icons.settings,
-                        color: Colors.black,
-                      ),
+                    activeIcon: Icon(
+                      Icons.settings,
+                      color: Colors.black,
+                      size: 30,
                     ),
                     label: '설정',
                   ),
                 ],
               ),
             ),
-      )),
+          )),
     );
   }
 }
