@@ -9,9 +9,11 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 import 'package:oru_rock/common_widget/alert_dialog.dart';
+import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/function/map_func.dart';
+import 'package:oru_rock/model/popup_model.dart';
 import 'package:oru_rock/model/store_model.dart';
 import 'package:oru_rock/module/marker_detail/marker_detail.dart';
 import 'package:oru_rock/routes.dart';
@@ -362,6 +364,55 @@ class AppController extends GetxController {
       }
     } catch (e) {
       Logger().e(e.toString());
+    }
+  }
+
+  Future<void> getPopups() async {
+    final res = await api.dio.post('/popup');
+
+    final List<dynamic> payload = res.data['payload']['popup'];
+    final List<PopupModel> popups =
+        payload.map((e) => PopupModel.fromJson(e)).toList();
+    //appData.remove(StorageKeys.noShowPopupIdList);
+
+
+    for (final popup in popups) {
+      await precacheImage(
+        Image.network('${popup.fileUrl}').image,
+        Get.context!,
+      );
+      Get.bottomSheet(
+          Stack(
+            alignment: AlignmentDirectional.bottomCenter,
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Align(
+                    alignment: Alignment.centerRight,
+                    child: SizedBox(
+                      width: 45,
+                      height: 45,
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    constraints: BoxConstraints(maxHeight: Get.height - 45),
+                    child: Image.network(
+                      '${popup.fileUrl}',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          isScrollControlled: true);
     }
   }
 

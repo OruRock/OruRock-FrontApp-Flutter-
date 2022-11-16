@@ -1,19 +1,21 @@
-class popupModel {
+import 'dart:ui';
+
+class PopupModel {
   String? endDate;
   String? fileUrl;
   String? subject;
   bool? useYn;
   String? content;
-  String? bgColor;
+  Color? bgColor;
   int? androidYn;
   int? popupId;
-  String? fontColor;
+  Color? fontColor;
   int? iosYn;
   String? createDate;
   bool? pushYn;
   String? startDate;
 
-  popupModel(
+  PopupModel(
       {this.endDate,
         this.fileUrl,
         this.subject,
@@ -28,7 +30,7 @@ class popupModel {
         this.pushYn,
         this.startDate});
 
-  popupModel.fromJson(Map<String, dynamic> json) {
+  PopupModel.fromJson(Map<String, dynamic> json) {
     endDate = json['end_date'];
     fileUrl = json['file_url'];
     subject = json['subject'];
