@@ -9,6 +9,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 import 'package:oru_rock/common_widget/alert_dialog.dart';
+import 'package:oru_rock/constant/storagekey.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
@@ -40,8 +41,8 @@ class AppController extends GetxController {
   RxList<Marker> markers = <Marker>[].obs;
 
   var detailButtonState = [false.obs, false.obs, false.obs];
-  var isPinned = GetStorage().read("PIN") != null ? true.obs : false.obs;
-  int? pinnedStoreId = GetStorage().read("PIN");
+  var isPinned = GetStorage().read(StorageKeys.pin) != null ? true.obs : false.obs;
+  int? pinnedStoreId = GetStorage().read(StorageKeys.pin);
   var pinnedStoreName = ''.obs;
 
   //var detailPinState = false.obs;
@@ -175,10 +176,10 @@ class AppController extends GetxController {
 
   ///핀버튼 누를 시에 추가, 삭제, 교체가 일어나는 함수
   void setPin() {
-    int? pin = appData.read("PIN");
+    int? pin = appData.read(StorageKeys.pin);
     //핀이 없는 경우
     if (pin == null) {
-      appData.write("PIN", selectedIndex);
+      appData.write(StorageKeys.pin, selectedIndex);
       isPinned.value = true;
       detailButtonState[0].value = true;
       pinnedStoreId = selectedIndex;
@@ -195,14 +196,14 @@ class AppController extends GetxController {
   }
 
   void updatePin() {
-    appData.write("PIN", selectedIndex);
+    appData.write(StorageKeys.pin, selectedIndex);
     pinnedStoreId = selectedIndex;
     detailButtonState[0].value = true;
     pinnedStoreName.value = stores[pinnedStoreId!].storeName!;
   }
 
   void removePin() {
-    appData.remove("PIN");
+    appData.remove(StorageKeys.pin);
     isPinned.value = false;
     detailButtonState[0].value = false;
     pinnedStoreId = null;
@@ -211,7 +212,7 @@ class AppController extends GetxController {
   }
 
   void setDetailButtonState(StoreModel? store) {
-    if (selectedIndex == appData.read("PIN")) {
+    if (selectedIndex == appData.read(StorageKeys.pin)) {
       detailButtonState[0].value = true;
     } else {
       detailButtonState[0].value = false;

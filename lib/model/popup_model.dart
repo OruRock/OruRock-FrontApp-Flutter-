@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 class PopupModel {
   String? endDate;
   String? fileUrl;
@@ -36,10 +38,10 @@ class PopupModel {
     subject = json['subject'];
     useYn = json['use_yn'];
     content = json['content'];
-    bgColor = json['bg_color'];
+    bgColor = _getColorByCss(json['bg_color'], defaultColor: Colors.grey);
     androidYn = json['android_yn'];
     popupId = json['popup_id'];
-    fontColor = json['font_color'];
+    fontColor = _getColorByCss(json['font_color'], defaultColor: Colors.black);
     iosYn = json['ios_yn'];
     createDate = json['create_date'];
     pushYn = json['push_yn'];
@@ -62,5 +64,26 @@ class PopupModel {
     data['push_yn'] = pushYn;
     data['start_date'] = startDate;
     return data;
+  }
+
+  static Color _getColorByCss(String? css, {required Color defaultColor}) {
+    if (css == null) return defaultColor;
+    final rgbIndex = css.indexOf('(');
+    final sharpIndex = css.indexOf('#');
+    if (rgbIndex > -1) {
+      var str = css.substring(rgbIndex + 1, css.length - 1);
+      str.split(',')[0].trim();
+      return Color.fromRGBO(
+          int.parse(str.split(',')[0].trim()),
+          int.parse(str.split(',')[1].trim()),
+          int.parse(str.split(',')[2].trim()),
+          1);
+    } else if (sharpIndex > -1) {
+      var colorHex = css.replaceFirst('#', '0xFF');
+
+      return Color(int.parse(colorHex));
+    }
+
+    return defaultColor;
   }
 }
