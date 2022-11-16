@@ -229,13 +229,15 @@ class AppController extends GetxController {
   }
 
   void goMapToSelectedStore(int index) async {
+    final storeIndex = searchStores[index].storeId! - 1;
     selectedTabIndex.value = Tabs.nmap;
     map.nmapController = Completer();
-    showDetailInformation(markers[index], {"height": null, "width": null});
+    showDetailInformation(markers[storeIndex], {"height": null, "width": null});
   }
 
   void goMapToSelectedStoreAtBookMark(int index) async {
     final storeIndex = stores.indexOf(clientStoreBookMark[index]);
+
     selectedTabIndex.value = Tabs.nmap;
     map.nmapController = Completer();
     showDetailInformation(markers[storeIndex], {"height": null, "width": null});
@@ -246,6 +248,7 @@ class AppController extends GetxController {
     isEnd.value = false;
     try {
       final data = {
+        "uid": auth.user!.uid,
         "search_txt": searchText.text,
         "page": searchListPage.value
       };
@@ -260,7 +263,6 @@ class AppController extends GetxController {
         isEnd.value = true;
         searchListPage.value = 1;
       }
-      print(searchStores.value.length);
     } catch (e) {
       Logger().e(e.toString());
     }
@@ -324,6 +326,7 @@ class AppController extends GetxController {
     isGetMoreData.value = true;
     try {
       final data = {
+        "uid": auth.user!.uid,
         "search_txt": searchText.text,
         "page": searchListPage.value
       };
