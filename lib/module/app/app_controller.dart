@@ -4,6 +4,7 @@ import 'package:dio/src/response.dart' as Dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -14,11 +15,11 @@ import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/function/map_func.dart';
+import 'package:oru_rock/helper/location_permission.dart';
 import 'package:oru_rock/model/popup_model.dart';
 import 'package:oru_rock/model/store_model.dart';
 import 'package:oru_rock/module/marker_detail/marker_detail.dart';
 import 'package:oru_rock/routes.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class AppController extends GetxController {
   var logger = Logger(
@@ -77,6 +78,7 @@ class AppController extends GetxController {
 
   @override
   void onInit() async {
+    await hasLocationPermission();
     await getStoreList();
     await getClientStoreBookMark();
     await setMarker();
@@ -94,7 +96,6 @@ class AppController extends GetxController {
           isEnd.value = true;
           break;
         case Tabs.nmap:
-          getLocationPermission();
           break;
         case Tabs.setting:
           break;
@@ -129,7 +130,17 @@ class AppController extends GetxController {
   ///암장 리스트 정보 API 연결 함수
   Future<void> getStoreList() async {
     try {
-      final bookMarkData = {"uid": auth.user?.uid};
+      final location = await Geolocator.getCurrentPosition();
+      Map<String, Object?> bookMarkData;
+      if (await hasLocationPermission()) {
+        bookMarkData = {
+          "uid": auth.user?.uid,
+          "user_lat": location.latitude,
+          "user_lng": location.longitude,
+        };
+      } else {
+        bookMarkData = {"uid": auth.user?.uid};
+      }
       final res =
           await api.dio.get('/store/list', queryParameters: bookMarkData);
 
@@ -141,10 +152,6 @@ class AppController extends GetxController {
     } catch (e) {
       logger.e(e.toString());
     }
-  }
-
-  void getLocationPermission() async {
-    final locationPermissionStatus = await Permission.location.request();
   }
 
   ///뽑아온 Store 리스트[stores]에 따라 마커를 추가해준다.
@@ -384,7 +391,7 @@ class AppController extends GetxController {
 
     List<dynamic> cachedNoShowPopupList =
         appData.read(StorageKeys.noShowPopupIdList) ?? [];
-    print(cachedNoShowPopupList);
+
     final noShowPopupIdList = cachedNoShowPopupList.cast<int>().toList();
 
     for (final popup in popups) {
