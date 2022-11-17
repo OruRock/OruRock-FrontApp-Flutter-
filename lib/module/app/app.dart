@@ -9,7 +9,7 @@ import 'package:oru_rock/module/search/search_page.dart';
 import 'package:oru_rock/module/setting/setting_page.dart';
 
 class App extends GetView<AppController> {
-  App({Key? key}) : super(key: key);
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

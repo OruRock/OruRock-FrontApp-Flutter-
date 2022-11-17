@@ -28,7 +28,7 @@ void main() async {
   await Get.putAsync(() => ApiFunction().init());
   await Get.putAsync(() => MapFunction().init());
   await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform); // firebase chrlghk
+      options: DefaultFirebaseOptions.currentPlatform); // firebase 초기화
   KakaoSdk.init(nativeAppKey: Config.kakao_native_key);
   MobileAds.instance.initialize();
   MobileAds.instance.updateRequestConfiguration(RequestConfiguration(

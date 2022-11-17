@@ -10,6 +10,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 import 'package:oru_rock/common_widget/alert_dialog.dart';
 import 'package:oru_rock/constant/storagekey.dart';
+import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/function/map_func.dart';
@@ -40,7 +41,8 @@ class AppController extends GetxController {
   RxList<Marker> markers = <Marker>[].obs;
 
   var detailButtonState = [false.obs, false.obs, false.obs];
-  var isPinned = GetStorage().read(StorageKeys.pin) != null ? true.obs : false.obs;
+  var isPinned =
+      GetStorage().read(StorageKeys.pin) != null ? true.obs : false.obs;
   int? pinnedStoreId = GetStorage().read(StorageKeys.pin);
   var pinnedStoreName = ''.obs;
 
@@ -75,10 +77,9 @@ class AppController extends GetxController {
 
   @override
   void onInit() async {
-    super.onInit();
     await getStoreList();
     await getClientStoreBookMark();
-    setMarker();
+    await setMarker();
     searchScrollController.addListener(_searchScrollListener);
     pinnedStoreName.value =
         pinnedStoreId != null ? stores[pinnedStoreId!].storeName! : '';
@@ -99,6 +100,13 @@ class AppController extends GetxController {
           break;
       }
     });
+    await getPopups();
+    super.onInit();
+  }
+
+  @override
+  void onReady() async {
+    super.onReady();
   }
 
   void onCloseApp() {
@@ -141,7 +149,7 @@ class AppController extends GetxController {
 
   ///뽑아온 Store 리스트[stores]에 따라 마커를 추가해준다.
   ///각 마커마다 onTap했을시, 해당하는 마커에 대한 데이터가 들어간다.
-  void setMarker() async {
+  Future<void> setMarker() async {
     int index = 0;
     OverlayImage overlayImage = await OverlayImage.fromAssetImage(
         assetName: 'asset/image/icon/pin_icon.png'); //마커 이미지
@@ -370,17 +378,22 @@ class AppController extends GetxController {
   Future<void> getPopups() async {
     final res = await api.dio.post('/popup');
 
-    final List<dynamic> payload = res.data['payload']['popup'];
+    final List<dynamic> data = res.data['payload']['popup'];
     final List<PopupModel> popups =
-        payload.map((e) => PopupModel.fromJson(e)).toList();
-    //appData.remove(StorageKeys.noShowPopupIdList);
+        data.map((e) => PopupModel.fromJson(e)).toList();
 
+    List<dynamic> cachedNoShowPopupList =
+        appData.read(StorageKeys.noShowPopupIdList) ?? [];
+    print(cachedNoShowPopupList);
+    final noShowPopupIdList = cachedNoShowPopupList.cast<int>().toList();
 
     for (final popup in popups) {
-      await precacheImage(
-        Image.network('${popup.fileUrl}').image,
-        Get.context!,
-      );
+      final index = noShowPopupIdList.indexOf(popup.popupId!);
+
+      if (index != -1) {
+        continue; //for in 문 종료
+      }
+
       Get.bottomSheet(
           Stack(
             alignment: AlignmentDirectional.bottomCenter,
@@ -408,11 +421,56 @@ class AppController extends GetxController {
                       fit: BoxFit.cover,
                     ),
                   ),
+                  Container(
+                    margin: const EdgeInsets.all(GapSize.xSmall),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                              onPressed: () {
+                                noShowPopupIdList.add(popup.popupId!);
+                                appData.write(
+                                  StorageKeys.noShowPopupIdList,
+                                  noShowPopupIdList,
+                                );
+                                Get.back();
+                              },
+                              style: OutlinedButton.styleFrom(
+                                  backgroundColor: popup.bgColor),
+                              child: Text(
+                                '다시보지 않기',
+                                style: TextStyle(
+                                    color: popup.fontColor,
+                                    fontFamily: "NotoB"),
+                              )),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: GapSize.xSmall),
+                            child: OutlinedButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: popup.bgColor),
+                                child: Text(
+                                  '닫기',
+                                  style: TextStyle(
+                                      color: popup.fontColor,
+                                      fontFamily: "NotoB"),
+                                )),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ],
           ),
-          isScrollControlled: true);
+          isScrollControlled: true,
+          barrierColor: Colors.transparent);
     }
   }
 
