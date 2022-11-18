@@ -13,8 +13,10 @@ import '../app/app_controller.dart';
 
 class BoardList extends GetView<BoardController> {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  GlobalKey<ScaffoldState> _tabKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _tabKey = GlobalKey<ScaffoldState>();
+
+  BoardList({super.key});
   @override
   Widget build(BuildContext context) {
     controller.context = context;

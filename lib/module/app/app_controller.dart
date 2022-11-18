@@ -246,7 +246,8 @@ class AppController extends GetxController {
   }
 
   void goMapToSelectedStore(int index) async {
-    final storeIndex = searchStores[index].storeId! - 1;
+    final storeIndex = stores
+        .indexWhere((store) => store.storeId == searchStores[index].storeId);
     selectedTabIndex.value = Tabs.nmap;
     map.nmapController = Completer();
     showDetailInformation(markers[storeIndex], {"height": null, "width": null});
@@ -254,7 +255,6 @@ class AppController extends GetxController {
 
   void goMapToSelectedStoreAtBookMark(int index) async {
     final storeIndex = stores.indexOf(clientStoreBookMark[index]);
-
     selectedTabIndex.value = Tabs.nmap;
     map.nmapController = Completer();
     showDetailInformation(markers[storeIndex], {"height": null, "width": null});
@@ -264,11 +264,23 @@ class AppController extends GetxController {
     isLoading.value = true;
     isEnd.value = false;
     try {
-      final data = {
-        "uid": auth.user!.uid,
-        "search_txt": searchText.text,
-        "page": searchListPage.value
-      };
+      final location = await Geolocator.getCurrentPosition();
+      Map<String, Object?> data;
+      if (await hasLocationPermission()) {
+        data = {
+          "uid": auth.user!.uid,
+          "search_txt": searchText.text,
+          "user_lat": location.latitude,
+          "user_lng": location.longitude,
+          "page": searchListPage.value
+        };
+      } else {
+        data = {
+          "uid": auth.user!.uid,
+          "search_txt": searchText.text,
+          "page": searchListPage.value
+        };
+      }
       final res = await api.dio.get('/store/list', queryParameters: data);
 
       final List<dynamic>? storeData = res.data['payload']['result'];
@@ -342,11 +354,23 @@ class AppController extends GetxController {
   Future<void> addSearch() async {
     isGetMoreData.value = true;
     try {
-      final data = {
-        "uid": auth.user!.uid,
-        "search_txt": searchText.text,
-        "page": searchListPage.value
-      };
+      final location = await Geolocator.getCurrentPosition();
+      Map<String, Object?> data;
+      if (await hasLocationPermission()) {
+        data = {
+          "uid": auth.user!.uid,
+          "search_txt": searchText.text,
+          "user_lat": location.latitude,
+          "user_lng": location.longitude,
+          "page": searchListPage.value
+        };
+      } else {
+        data = {
+          "uid": auth.user!.uid,
+          "search_txt": searchText.text,
+          "page": searchListPage.value
+        };
+      }
       final res = await api.dio.get('/store/list', queryParameters: data);
 
       final List<dynamic>? storeData = res.data['payload']['result'];
@@ -358,7 +382,6 @@ class AppController extends GetxController {
         isEnd.value = true;
         searchListPage.value = 1;
       }
-      print(searchStores.value.length);
     } catch (e) {
       Logger().e(e.toString());
       isGetMoreData.value = false;
@@ -491,6 +514,7 @@ enum Tabs {
   home,
   search,
   nmap,
+  board,
   setting;
 
   String get routeString {
@@ -501,6 +525,8 @@ enum Tabs {
         return Routes.search;
       case Tabs.nmap:
         return Routes.nmap;
+      case Tabs.board:
+        return Routes.board;
       case Tabs.setting:
         return Routes.setting;
     }
@@ -515,6 +541,8 @@ enum Tabs {
       case 2:
         return Tabs.nmap;
       case 3:
+        return Tabs.board;
+      case 4:
         return Tabs.setting;
       default:
         return Tabs.home;

@@ -204,11 +204,11 @@ class BoardController extends GetxController {
   }
 
 //좋아요 저장
-  Future<bool> saveBoardLike(int board_id, bool? islike) async {
+  Future<bool> saveBoardLike(int boardId, bool? islike) async {
     var data = {
       "board_category_id": selectedBoardCategory.value,
       "uid": auth.user!.uid,
-      "board_id": board_id
+      "board_id": boardId
     };
     await api.dio.post("/board/like", data: data);
     //getBoardDetail(board.value!.board_id!, selectedBoardCategory.value);
@@ -217,12 +217,12 @@ class BoardController extends GetxController {
 
   //좋아요 저장
   Future<bool> saveCommentLike(
-      int board_id, int board_category_id, int comment_id, bool? islike) async {
+      int boardId, int boardCategoryId, int commentId, bool? islike) async {
     var data = {
       "uid": auth.user!.uid,
-      "board_id": board_id,
-      "comment_id": comment_id,
-      "board_category_id": board_category_id
+      "board_id": boardId,
+      "comment_id": commentId,
+      "board_category_id": boardCategoryId
     };
     await api.dio.post("/board/comment/like", data: data);
     //getBoardDetail(board.value!.board_id!, selectedBoardCategory.value);
@@ -299,7 +299,7 @@ class BoardController extends GetxController {
     );
   }
 
-  Future<void> commentErase(int board_id, int comment_id) async {
+  Future<void> commentErase(int boardId, int commentId) async {
     // Update the UI - wait for the user to enter the SMS code
     await showDialog<String>(
       context: Get.context!,
@@ -312,7 +312,7 @@ class BoardController extends GetxController {
           actions: [
             ElevatedButton(
               onPressed: () async {
-                await deleteBoardByComment(board_id, comment_id);
+                await deleteBoardByComment(boardId, commentId);
                 Get.back();
               },
               child: const Text('네'),
