@@ -6,6 +6,7 @@ import 'package:oru_rock/common_widget/ImageViewer.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyBookmarkList extends GetView<SettingController> {
   const MyBookmarkList({Key? key}) : super(key: key);
@@ -61,8 +62,18 @@ class MyBookmarkList extends GetView<SettingController> {
                   child: Text(controller
                       .app.clientStoreBookMark[index].storeName!),
                 ),
-                subtitle: Text(controller
-                    .app.clientStoreBookMark[index].storePhone!),
+                subtitle: InkWell(
+                  onTap: () => launchUrl(
+                      Uri.parse('tel:${controller
+                          .app.clientStoreBookMark[index].storePhone!}')
+                  ),
+                  child: Text(
+                    controller
+                      .app.clientStoreBookMark[index].storePhone!,
+                    style: regularEllipsisNanumTextStyle.apply(color: Colors.blue),
+
+                  ),
+                ),
                 trailing: SizedBox(
                   width: 50,
                   height: 50,

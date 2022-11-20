@@ -9,6 +9,7 @@ import 'package:oru_rock/common_widget/ImageViewer.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/model/store_model.dart' as storeModel;
 import 'package:oru_rock/module/app/app_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../routes.dart';
 
@@ -221,14 +222,19 @@ class MarkerDetail extends GetView<AppController> {
                                   const SizedBox(
                                     height: GapSize.xxxSmall,
                                   ),
-                                  Text(
-                                    '${store?.storePhone}',
-                                    style: const TextStyle(
-                                        fontSize: FontSize.xSmall,
-                                        fontFamily: "NotoR",
-                                        height: 1.6,
-                                        color: Colors.black,
-                                        overflow: TextOverflow.ellipsis),
+                                  InkWell(
+                                    onTap: () => launchUrl(
+                                        Uri.parse('tel:${store?.storePhone}')
+                                    ),
+                                    child: Text(
+                                      '${store?.storePhone}',
+                                      style: const TextStyle(
+                                          fontSize: FontSize.xSmall,
+                                          fontFamily: "NotoR",
+                                          height: 1.6,
+                                          color: Colors.blue,
+                                          overflow: TextOverflow.ellipsis),
+                                    ),
                                   ),
                                   const SizedBox(
                                     height: GapSize.xxxSmall,
