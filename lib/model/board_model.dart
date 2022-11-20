@@ -64,10 +64,10 @@ class BoardModel {
       content: json['content'] ?? '',
       noticeYn: json['notice_yn'] ?? 0,
       createDate: Jiffy(json['create_date'])
-          .from(DateTime.now().add(Duration(hours: 9))),
+          .from(DateTime.now().add(const Duration(hours: 9))),
       oriCreateDate: json['create_date'],
       updateDate: Jiffy(json['update_date'])
-          .from(DateTime.now().add(Duration(hours: 9))),
+          .from(DateTime.now().add(const Duration(hours: 9))),
       oriUpdateDate: json['update_date'],
       author: json['user_nickname'],
       uid: json['uid'],

@@ -88,8 +88,7 @@ class BoardListNew extends GetView<BoardController> {
                                   controller.getBoardDetail(
                                       controller.boardList[index].boardId!,
                                       controller.selectedBoardCategory.value);
-                                  Get.to(() => BoardDetailLoading(
-                                      controller.boardList[index].boardId));
+                                  Get.to(() => const BoardDetailLoading());
                                 },
                                 child: ListTile(
                                   title: Row(
@@ -138,6 +137,7 @@ class BoardListNew extends GetView<BoardController> {
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           _buildBottomIcon(
                                               icon: const Icon(
@@ -153,7 +153,7 @@ class BoardListNew extends GetView<BoardController> {
                                               count:
                                                   '${controller.boardList[index].commentCnt ?? 0}'),
                                           _buildBottomIcon(
-                                              icon: const Icon(Icons.comment,
+                                              icon: const Icon(Icons.remove_red_eye,
                                                   size: 18),
                                               count:
                                                   "${controller.boardList[index].views}"),
@@ -194,6 +194,7 @@ class BoardListNew extends GetView<BoardController> {
 
   _buildBottomIcon({required Widget icon, required String count}) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         icon,
         const SizedBox(

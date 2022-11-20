@@ -32,14 +32,14 @@ class BoardListBest extends GetView<BoardController> {
                             children: [
                               SizedBox(height: Get.height / 4),
 
-                              Icon(
+                              const Icon(
                                 EvaIcons.fileTextOutline,
                                 size: 50,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: GapSize.medium,
                               ),
-                              Text('게시물이 없습니다.'),
+                              const Text('게시물이 없습니다.'),
                             ],
                           ),
                         ),
@@ -52,7 +52,7 @@ class BoardListBest extends GetView<BoardController> {
                                 Get.to(() => BoardUpdatePage());
                                 controller.board.value = BoardModel();
                               },
-                              child: Icon(Icons.add),
+                              child: const Icon(Icons.add),
                               backgroundColor: Colors.indigoAccent,
                             ),
                           ),
@@ -84,8 +84,7 @@ class BoardListBest extends GetView<BoardController> {
                             controller.getBoardDetail(
                                 controller.bestBoardList[index].boardId!,
                                 controller.selectedBoardCategory.value);
-                            Get.to(() => BoardDetailLoading(
-                                controller.bestBoardList[index].boardId));
+                            Get.to(() => BoardDetailLoading());
                           },
                           child: ListTile(
                             title: Row(
@@ -100,7 +99,7 @@ class BoardListBest extends GetView<BoardController> {
                                       children: [
                                         Row(
                                           children: [
-                                            SizedBox(
+                                            const SizedBox(
                                               width: GapSize.xxxSmall,
                                             ),
                                             Row(
@@ -115,7 +114,7 @@ class BoardListBest extends GetView<BoardController> {
                                                       fontFamily:
                                                           'Malgun Gothic'),
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   width: GapSize.xxxSmall,
                                                 ),
                                                 Text(
@@ -141,31 +140,31 @@ class BoardListBest extends GetView<BoardController> {
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SizedBox(
+                                const SizedBox(
                                   height: GapSize.small,
                                 ),
                                 Text(
                                   "${controller.bestBoardList[index].subject}",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 18,
                                       color: Colors.black,
                                       fontFamily: 'Malgun Gothic'),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: GapSize.xxxSmall,
                                 ),
                                 Text(
                                   controller.bestBoardList[index].content ?? '',
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.w300,
                                       fontSize: 12,
                                       color: Colors.black54,
                                       fontFamily: 'Malgun Gothic'),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: GapSize.small,
                                 ),
                                 Row(
@@ -174,12 +173,12 @@ class BoardListBest extends GetView<BoardController> {
                                   children: [
                                     Row(
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           EvaIcons.heart,
                                           size: 20,
                                           color: Colors.redAccent,
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: GapSize.xxxSmall,
                                         ),
                                         Text(
@@ -195,13 +194,13 @@ class BoardListBest extends GetView<BoardController> {
                                     ),
                                     Row(
                                       children: [
-                                        Icon(Icons.comment, size: 18),
-                                        SizedBox(
+                                        const Icon(Icons.comment, size: 18),
+                                        const SizedBox(
                                           width: GapSize.xxxSmall,
                                         ),
                                         Text(
                                           '${controller.bestBoardList[index].commentCnt ?? 0}',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 10,
                                               color: Colors.grey,
                                               fontFamily: 'Malgun Gothic'),
@@ -210,7 +209,7 @@ class BoardListBest extends GetView<BoardController> {
                                     ),
                                     Row(
                                       children: [
-                                        SizedBox(
+                                        const SizedBox(
                                           width: GapSize.xxxSmall,
                                         ),
                                         Text(

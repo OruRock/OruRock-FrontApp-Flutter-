@@ -11,7 +11,6 @@ import '../board_update.dart';
 class BoardListLoading extends GetView<BoardController> {
   @override
   Widget build(BuildContext context) {
-    controller.context = context;
     var refreshKey = GlobalKey<RefreshIndicatorState>();
     return Obx(
           () => Column(
@@ -36,8 +35,7 @@ class BoardListLoading extends GetView<BoardController> {
                           controller.getBoardDetail(
                               controller.boardList[index].boardId!,
                               controller.selectedBoardCategory.value);
-                          Get.to(() => BoardDetailLoading(
-                              controller.boardList[index].boardId));
+                          Get.to(() => const BoardDetailLoading());
                         },
                         child: ListTile(
                           title: Row(
