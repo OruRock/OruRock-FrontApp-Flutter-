@@ -77,9 +77,9 @@ class MarkerDetail extends GetView<AppController> {
                             ),
                             likeBuilder: (bool isLiked) {
                               return Icon(
-                                Icons.push_pin,
+                                isLiked ? Icons.push_pin_rounded : Icons.push_pin_outlined,
                                 color: isLiked ? Colors.redAccent : Colors.grey,
-                                size: 23,
+                                size: 20,
                               );
                             },
                             isLiked: controller.detailButtonState[0].value,
@@ -104,10 +104,10 @@ class MarkerDetail extends GetView<AppController> {
                             ),
                             likeBuilder: (bool isLiked) {
                               return Icon(
-                                Icons.stars,
+                                isLiked ? Icons.stars : Icons.star_border_outlined,
                                 color:
                                     isLiked ? Colors.yellow[600] : Colors.grey,
-                                size: 25,
+                                size: 20,
                               );
                             },
                             isLiked: controller.detailButtonState[1].value,
@@ -128,9 +128,9 @@ class MarkerDetail extends GetView<AppController> {
                             ),
                             likeBuilder: (bool isLiked) {
                               return Icon(
-                                Icons.thumb_up,
+                                isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
                                 color: isLiked ? Colors.blue[600] : Colors.grey,
-                                size: 25,
+                                size: 20,
                               );
                             },
                             isLiked: controller.detailButtonState[2].value,
