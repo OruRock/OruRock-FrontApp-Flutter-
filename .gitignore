@@ -46,3 +46,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 /android/key.properties
+/android/app/src/main/AndroidManifest.xml
+/ios/Runner/Info.plist
+/lib/constant/config.dart

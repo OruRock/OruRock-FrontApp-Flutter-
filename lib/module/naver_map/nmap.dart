@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
-import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
 
 class NMap extends GetView<AppController> {
