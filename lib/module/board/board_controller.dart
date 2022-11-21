@@ -86,10 +86,9 @@ class BoardController extends GetxController {
   Future<void> getBoardList() async {
     try {
       final data = {
-        "board_category_id": selectedBoardCategory.value,
         "search_txt": searchTxtController.text,
-        "uid": auth.user!.uid,
-        "curPage": boardPage
+        "page": boardPage,
+        "is_best": 0
       };
       final res = await api.dio.get('/board/list', queryParameters: data);
       BoardResult boardResult = BoardResult.fromJson(res.data["payload"]);
@@ -110,12 +109,9 @@ class BoardController extends GetxController {
 //게시판 목록 조회
   Future<void> getBestBoardList() async {
     try {
-      if (selectedBoardCategory.value == 3) return;
       final data = {
-        "board_category_id": selectedBoardCategory.value,
         "search_txt": searchTxtController.text,
-        "curPage": bestBoardPage,
-        "uid": auth.user!.uid,
+        "page": bestBoardPage,
         "is_best": 1
       };
       final res = await api.dio.get('/board/list', queryParameters: data);
@@ -143,8 +139,6 @@ class BoardController extends GetxController {
       enabled.value = true;
       final data = {
         "board_id": id,
-        "board_category_id": categoryId,
-        "uid": auth.user!.uid
       };
       final res = await api.dio.get('/board/detail', queryParameters: data);
       board.value = BoardModel.fromJson(res.data["payload"]["Board"]);
@@ -181,7 +175,6 @@ class BoardController extends GetxController {
 //게시판 삭제
   Future<void> deleteBoardById(int id) async {
     var data = {
-      "board_category_id": selectedBoardCategory.value,
       "uid": auth.user!.uid,
       "board_id": id
     };
@@ -206,7 +199,6 @@ class BoardController extends GetxController {
 //좋아요 저장
   Future<bool> saveBoardLike(int boardId, bool? islike) async {
     var data = {
-      "board_category_id": selectedBoardCategory.value,
       "uid": auth.user!.uid,
       "board_id": boardId
     };
@@ -222,7 +214,6 @@ class BoardController extends GetxController {
       "uid": auth.user!.uid,
       "board_id": boardId,
       "comment_id": commentId,
-      "board_category_id": boardCategoryId
     };
     await api.dio.post("/board/comment/like", data: data);
     //getBoardDetail(board.value!.board_id!, selectedBoardCategory.value);
@@ -232,7 +223,6 @@ class BoardController extends GetxController {
 //댓글 작성
   Future<void> writeComment(int id, String comment) async {
     var data = {
-      "board_category_id": board.value?.boardCategoryId,
       "board_id": board.value?.boardId,
       "comment_id": id,
       "uid": auth.user!.uid,

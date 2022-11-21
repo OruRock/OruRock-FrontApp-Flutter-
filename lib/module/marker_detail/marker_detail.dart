@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:like_button/like_button.dart';
@@ -29,7 +30,7 @@ class MarkerDetail extends GetView<AppController> {
           Get.toNamed(Routes.storeInfo, arguments: [store]);
         },
         child: Container(
-          height: 275,
+          height: 290,
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius:
@@ -280,6 +281,16 @@ class MarkerDetail extends GetView<AppController> {
                         ],
                       ),
                     ),
+                    SizedBox(
+                      height: 30,
+                      child: OutlinedButton(
+                          onPressed: () {
+                        controller.map.linkNaverMapNavigate(LatLng(store!.storeLat!, store!.storeLng!), store!.storeName!);
+                      }, child: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: GapSize.xxxSmall),
+                        child: Text('길찾기', style: TextStyle(color: Colors.green, fontFamily: "NotoM"),),
+                      )),
+                    )
                   ],
                 ),
               ),
