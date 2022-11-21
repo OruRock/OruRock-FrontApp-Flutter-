@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/get.dart';
@@ -25,7 +26,22 @@ class MapFunction extends GetxService {
 
   ///목적지 좌표 넣어주면 현 위치에서 목적지 좌표로 가는 네이버 지도 길찾기 기능으로 연결
   linkNaverMapNavigate(LatLng position, String storeName) async {
-    await launchUrl(Uri.parse('nmap://route/public?dlat=${position.latitude}&dlng=${position.longitude}&dname=${Uri.encodeComponent(storeName)}&appname=com.orurock.ai.oru_rock'));
+    try {
+      if (Platform.isAndroid) {
+        await launchUrl(Uri.parse(
+            'nmap://route/public?dlat=${position.latitude}&dlng=${position.longitude}&dname=${Uri.encodeComponent(storeName)}&appname=com.orurock.ai.oru_rock'));
+      } else {
+        await launchUrl(
+            Uri.parse('nmap://route/public?dlat=${position.latitude}&dlng=${position.longitude}&dname=${Uri.encodeComponent(storeName)}&appname=com.orurock.app'));
+      }
+    } catch (e) {
+      if (Platform.isAndroid) {
+        await launchUrl(Uri.parse("market://details?id=com.nhn.android.nmap"));
+      } else {
+        await launchUrl(
+            Uri.parse("http://itunes.apple.com/app/id311867728?mt=8"));
+      }
+    }
   }
 
   //지도가 만들어지고 나서 일어나는 함수
