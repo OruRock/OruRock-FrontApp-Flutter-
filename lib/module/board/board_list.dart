@@ -29,16 +29,6 @@ class BoardList extends GetView<BoardController> {
               title: Obx(() => Text(
                     controller.boardTitle.value,
                   )),
-              leading: IconButton(
-                  onPressed: () {
-                    _scaffoldKey.currentState?.openDrawer();
-                    controller.searchInputBoxNode.unfocus();
-                  },
-                  color: Colors.black,
-                  icon: const Icon(
-                    EvaIcons.menu,
-                    size: 30,
-                  )),
               actions: [
                 IconButton(
                     onPressed: () {
@@ -51,42 +41,36 @@ class BoardList extends GetView<BoardController> {
                     )),
               ],
               bottom: PreferredSize(
-                preferredSize: const Size(24, 24),
+                preferredSize: Size(HeightWithRatio.xSmall, HeightWithRatio.xSmall),
                 child: TabBar(
                   indicatorSize: TabBarIndicatorSize.label,
                   indicatorWeight: 1,
-                  indicatorColor: Colors.black12,
+                  indicatorColor: Colors.black,
                   tabs: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text(
-                            '홈',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontFamily: 'Malgun Gothic'),
-                          ),
-                        ],
+                    SizedBox(
+                      width: Get.width / 2,
+                      height: Get.height * 0.05,
+                      child: const Center(
+                        child: Text(
+                          '홈',
+                          style: TextStyle(
+                              fontSize: FontSize.medium,
+                              color: Colors.black,
+                              fontFamily: 'NotoB'),
+                        ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text(
-                            '인기',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontFamily: 'Malgun Gothic'),
-                          ),
-                        ],
+                    SizedBox(
+                      width: Get.width / 2,
+                      height: Get.height * 0.05,
+                      child: const Center(
+                        child: Text(
+                          '인기',
+                          style: TextStyle(
+                              fontSize: FontSize.medium,
+                              color: Colors.black,
+                              fontFamily: 'NotoB'),
+                        ),
                       ),
                     ),
                   ],
@@ -96,13 +80,10 @@ class BoardList extends GetView<BoardController> {
             body: Scaffold(
               body: Column(
                 children: [
-                  const SizedBox(
-                    height: GapSize.small,
-                  ),
                   controller.search.value == true
                       ? Padding(
-                          padding: const EdgeInsets.only(
-                              left: GapSize.medium, right: GapSize.medium),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: GapSize.medium, vertical: GapSize.xSmall),
                           child: TextFormField(
                             style: const TextStyle(fontSize: 12),
                             controller: controller.searchTxtController,
@@ -175,7 +156,7 @@ class BoardList extends GetView<BoardController> {
                             ),
                           )
                         : TabBarView(
-                            children: [BoardListNew(), BoardListBest()],
+                            children: [const BoardListNew(), BoardListBest()],
                           ),
                   ),
                 ],

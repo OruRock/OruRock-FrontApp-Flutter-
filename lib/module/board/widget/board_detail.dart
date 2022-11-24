@@ -1,6 +1,7 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:oru_rock/common_widget/banner_ad.dart';
@@ -12,18 +13,16 @@ class BoardDetail extends GetView<BoardController> {
   @override
   Widget build(BuildContext context) {
     final comment = TextEditingController();
-    BoardController boardController = Get.put(BoardController());
-    final FirebaseAuth fire = FirebaseAuth.instance;
 
     return Obx(
       () => Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text('커뮤니티',),
+          title: const Text('커뮤니티',),
           actions: [
             Visibility(
-              visible: fire.currentUser!.uid ==
-                  boardController.board.value?.uid,
+              visible: controller.auth.user!.uid! ==
+                  controller.board.value?.uid,
               child: PopupMenuButton(
                 onSelected: (value) {
                   controller.onMenuItemSelected(value as int, context);
@@ -50,75 +49,64 @@ class BoardDetail extends GetView<BoardController> {
                       ScrollViewKeyboardDismissBehavior.onDrag,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            boardController.board.value?.subject ?? '',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                          ),
+                        Text(
+                          controller.board.value?.subject ?? '',
+                          style: const TextStyle(
+                              fontFamily: "NotoB", fontSize: FontSize.xxLarge),
                         ),
                         const SizedBox(
-                          height: 10,
+                          height: GapSize.xSmall,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: GapSize.xxSmall,
-                                ),
-                                Text(
-                                  controller.board.value?.author ?? '',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10),
-                                ),
-                                SizedBox(
-                                  width: 2,
-                                ),
-                                Text(
-                                  '${controller.board.value?.createDate}' ??
-                                      '',
-                                  style: const TextStyle(fontSize: 10),
-                                ),
-                              ],
+                            Text(
+                              controller.board.value?.author ?? ' ',
+                              style: const TextStyle(
+                                  fontFamily: "NotoR",
+                                  fontSize: FontSize.small),
                             ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: GapSize.xxxSmall,
-                                ),
-                                Text(
-                                  '${controller.board.value?.views ?? 0}',
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
+                            const SizedBox(
+                              width: GapSize.xxSmall,
+                            ),
+                            Text(
+                              '${controller.board.value?.createDate}' ??
+                                  '',
+                              style: const TextStyle(fontSize: FontSize.xxSmall, fontFamily: "NotoR", color: Colors.grey),
+                            ),
+                            Expanded(child: Container()),
+                            const Icon(Icons.remove_red_eye,
+                                size: 12, color: Colors.grey,),
+                            Text(
+                              ' ${controller.board.value?.views ?? 0}',
+                              style: const TextStyle(
+                                  fontSize: FontSize.xxSmall,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
                         const SizedBox(
-                          height: 4,
-                        ),
+                          height: GapSize.xxxSmall,
+                        )
                       ],
                     ),
                     const Divider(),
-                    Padding(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: GapSize.medium),
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: GapSize.xSmall),
                       child: Text(controller.board.value?.content ?? ''),
                     ),
-                    SizedBox(height: 50),
+                    const SizedBox(
+                      height: GapSize.xxLarge,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         LikeButton(
-                          size: 30,
                           circleColor: const CircleColor(
                               start: Color(0xfff0ddff), end: Color(0xffffb5e5)),
                           bubblesColor: const BubblesColor(
@@ -135,7 +123,7 @@ class BoardDetail extends GetView<BoardController> {
                             return Icon(
                               isLiked ? EvaIcons.heart : EvaIcons.heartOutline,
                               color: isLiked ? Colors.red : Colors.grey,
-                              size: 30,
+                              size: 25,
                             );
                           },
                           likeCount: controller.board.value?.recommendCnt,
@@ -163,22 +151,22 @@ class BoardDetail extends GetView<BoardController> {
                             return result;
                           },
                         ),
-                        SizedBox(
-                          width: GapSize.xxxSmall,
+                        const SizedBox(
+                          width: GapSize.xSmall,
                         ),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.comment_outlined,
-                              size: 26,
+                              size: 20,
                               color: Colors.grey,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: GapSize.xxxSmall,
                             ),
                             Text(
                               '${controller.board.value?.commentCnt ?? 0}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 10,
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold),
@@ -211,47 +199,37 @@ class BoardDetail extends GetView<BoardController> {
                         // ),
                       ],
                     ),
-                    SizedBox(
-                      height:Get.height / 10,
-                      width: Get.width,
-                      child: const Center(child: BannerAdWidget()),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: GapSize.small),
+                      child: BannerAdWidget(),
                     ),
-                    const Divider(),
-                    SizedBox(
-                      height: GapSize.xxxSmall,
-                    ),
-                    ...boardController.comment.map((board) => Column(
+                    const Divider(height: 1,),
+                    ...controller.comment.map((board) => Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              height: GapSize.xxxSmall,
+                            const SizedBox(
+                              height: GapSize.medium,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: GapSize.xxxSmall,
-                                    ),
-                                    Text(
-                                      board.nickName ?? 'Anonymous',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 10),
-                                    ),
-                                    const SizedBox(
-                                      width: GapSize.xxSmall,
-                                    ),
-                                    Text(
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: null,
-                                      board.comment.toString(),
-                                      style: const TextStyle(fontSize: 12),
-                                    ),
-                                  ],
+                                Text(
+                                  board.nickName ?? 'Anonymous',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: FontSize.xSmall),
                                 ),
+                                const SizedBox(
+                                  width: GapSize.xxSmall,
+                                ),
+                                Text(
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: null,
+                                  board.createDate!,
+                                  style: const TextStyle(fontSize: FontSize.xxSmall, fontFamily: "NotoM", color: Colors.grey),
+                                ),
+                                Expanded(child: Container()),
                                 Visibility(
                                   visible:
                                       controller.auth.user!.uid == board.uid &&
@@ -275,23 +253,22 @@ class BoardDetail extends GetView<BoardController> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: GapSize.xxSmall,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  board.createDate.toString(),
+                                  board.comment!,
                                   style: const TextStyle(
-                                      fontSize: 8, color: Colors.grey),
+                                      fontSize: FontSize.small, color: Colors.black, fontFamily: "NotoR"),
                                 ),
                                 LikeButton(
-                                  size: 20,
-                                  circleColor: CircleColor(
+                                  circleColor: const CircleColor(
                                       start: Colors.blueAccent,
                                       end: Color(0xff0099cc)),
-                                  bubblesColor: BubblesColor(
+                                  bubblesColor: const BubblesColor(
                                     dotPrimaryColor: Color(0xff33b5e5),
                                     dotSecondaryColor: Color(0xff0099cc),
                                   ),
@@ -318,76 +295,70 @@ class BoardDetail extends GetView<BoardController> {
                                   likeCount: board.commentLikeCnt,
                                   countBuilder:
                                       (int? count, bool isLiked, String text) {
-                                    var color =
-                                        isLiked ? Colors.black : Colors.black;
                                     Widget result;
                                     if (count == 0) {
-                                      result = Text(
+                                      result = const Text(
                                         "0",
                                         style: TextStyle(
-                                            color: color,
-                                            fontSize: 10,
+                                            color: Colors.black,
+                                            fontSize: FontSize.xSmall,
                                             fontWeight: FontWeight.bold),
                                       );
-                                    } else
+                                    } else {
                                       result = Text(
                                         text,
-                                        style: TextStyle(
-                                            color: color,
-                                            fontSize: 10,
+                                        style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: FontSize.xSmall,
                                             fontWeight: FontWeight.bold),
                                       );
+                                    }
                                     return result;
                                   },
                                 ),
                               ],
                             ),
-                            const Divider(),
+                            const SizedBox(
+                              height: GapSize.small,
+                            ),
+                            const Divider(height: 1,),
                           ],
                         )),
-                    SizedBox(
-                      height: GapSize.xSmall,
-                    ),
                   ],
                 ),
               ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: SizedBox(
-                      child: TextFormField(
-                        style: TextStyle(fontSize: 12),
-                        controller: comment,
-                        maxLength: 28,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          hintText: "댓글을 입력해주세요.",
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black12),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black12),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
+                    child: TextFormField(
+                      style: const TextStyle(fontSize: 12),
+                      controller: comment,
+                      decoration: InputDecoration(
+                        hintText: "댓글을 입력해주세요.",
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.black12),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.black12),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
                         ),
                       ),
                     ),
                   ),
                   IconButton(
                       onPressed: () {
-                        //Get.to(() => BoardUpdatePage());
                         controller.writeComment(-1, comment.text);
                         comment.text = '';
                       },
                       icon: const Icon(
-                        // EvaIcons.arrowRightOutline,
                         Icons.comment,
                         color: Colors.blueAccent,
                         size: 30,

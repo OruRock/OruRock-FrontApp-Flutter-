@@ -2,6 +2,7 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
+import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/model/board_model.dart';
 import 'package:oru_rock/module/board/board_controller.dart';
 
@@ -75,22 +76,95 @@ class BoardListNew extends GetView<BoardController> {
                     },
                     child: Stack(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: GapSize.small),
-                          child: ListView.separated(
-                            controller: controller.boardScrollController,
-                            keyboardDismissBehavior:
-                                ScrollViewKeyboardDismissBehavior.onDrag,
-                            itemCount: controller.boardList.length,
-                            itemBuilder: (context, index) {
-                              return InkWell(
+                        ListView.builder(
+                          controller: controller.boardScrollController,
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          itemCount: controller.boardList.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: GapSize.small, vertical: GapSize.xxSmall),
+                              child: InkWell(
                                 onTap: () {
                                   controller.getBoardDetail(
                                       controller.boardList[index].boardId!,
                                       controller.selectedBoardCategory.value);
                                   Get.to(() => const BoardDetailLoading());
                                 },
-                                child: ListTile(
+                                child: Container(
+                                  padding: const EdgeInsets.all(GapSize.medium),
+                                  width: Get.width * 0.8,
+                                  height: Get.height * 0.18,
+                                  decoration: shadowBoxDecoration,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "${controller.boardList[index].author}",
+                                            style: const TextStyle(
+                                                fontSize: FontSize.xSmall,
+                                                color: Colors.black,
+                                                fontFamily: 'NotoM'),
+                                          ),
+                                          const SizedBox(
+                                            width: GapSize.xxSmall,
+                                          ),
+                                          Text(
+                                            "${controller.boardList[index].createDate}",
+                                            style: const TextStyle(
+                                                fontSize: FontSize.xxSmall,
+                                                color: Colors.grey,
+                                                fontFamily: 'NotoM'
+                                              // fontStyle: FontStyle.italic,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        "${controller.boardList[index].subject}",
+                                        style: const TextStyle(
+                                            fontSize: FontSize.large,
+                                            color: Colors.black,
+                                            fontFamily: 'NotoB'),
+                                      ),
+                                      const SizedBox(
+                                        height: GapSize.small,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          _buildBottomIcon(
+                                              icon: const Icon(
+                                                EvaIcons.heart,
+                                                size: 20,
+                                                color: Colors.redAccent,
+                                              ),
+                                              count:
+                                              "${controller.boardList[index].recommendCnt}"),
+                                          _buildBottomIcon(
+                                              icon: const Icon(Icons.comment,
+                                                  size: 18),
+                                              count:
+                                              '${controller.boardList[index].commentCnt ?? 0}'),
+                                          _buildBottomIcon(
+                                              icon: const Icon(Icons.remove_red_eye,
+                                                  size: 18),
+                                              count:
+                                              "${controller.boardList[index].views}"),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+
+                                /*ListTile(
                                   title: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -161,13 +235,10 @@ class BoardListNew extends GetView<BoardController> {
                                       ),
                                     ],
                                   ),
-                                ),
-                              );
-                            },
-                            separatorBuilder:
-                                (BuildContext context, int index) =>
-                                    const Divider(),
-                          ),
+                                ),*/
+                              ),
+                            );
+                          },
                         ),
                         Align(
                           alignment: Alignment.bottomRight,

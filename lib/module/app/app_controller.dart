@@ -174,7 +174,7 @@ class AppController extends GetxController {
 
   ///각 마커 onTap시 함수
   void showDetailInformation(Marker? marker, Map<String, int?> iconSize) async {
-    map.setCamera(marker!.position!, 18.0);
+    map.setCamera(marker!.position!);
 
     final markerId = int.parse(marker!.markerId);
 
