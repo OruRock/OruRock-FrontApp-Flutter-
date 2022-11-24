@@ -57,7 +57,7 @@ class MapFunction extends GetxService {
   }*/
 
   ///[position]으로 카메라 위치 이동 후 [zoom]만큼 확대
-  void setCamera(LatLng position, double zoom) async {
+  void setCamera(LatLng position, {double? zoom}) async {
     try {
       final controller = await nmapController.future;
 
