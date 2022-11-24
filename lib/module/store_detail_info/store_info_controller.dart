@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:oru_rock/common_widget/alert_dialog.dart';
@@ -39,6 +41,24 @@ class StoreInfoController extends GetxController {
   void onInit() async {
     detailModel.value = await getReview();
     super.onInit();
+  }
+
+  GestureDetector setStoreAddrHandler(String? text) {
+    return GestureDetector(
+      child: SelectableText(
+        '$text',
+        style: const TextStyle(
+          fontFamily: "NotoR",
+          fontSize: FontSize.small,
+          overflow: TextOverflow.clip,
+        ),
+      ),
+      onDoubleTap: () {
+        Clipboard.setData(
+          ClipboardData(text: text));
+        Fluttertoast.showToast(msg: "복사 완료");
+      },
+    );
   }
 
   ///리뷰 새로 고침

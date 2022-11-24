@@ -39,14 +39,7 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
                   width: GapSize.xxSmall,
                 ),
                 Expanded(
-                  child: Text(
-                    '${store?.storeAddr}',
-                    style: const TextStyle(
-                      fontFamily: "NotoR",
-                      fontSize: FontSize.small,
-                      overflow: TextOverflow.clip,
-                    ),
-                  ),
+                  child: controller.setStoreAddrHandler(store?.storeAddr),
                 ),
               ],
             ),
