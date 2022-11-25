@@ -67,7 +67,6 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
                   child: Text(
                     '${store?.storePhone}',
                     style: regularEllipsisNanumTextStyle.apply(color: Colors.blue),
-
                   ),
                 ),
               ],

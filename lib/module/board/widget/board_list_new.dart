@@ -83,7 +83,7 @@ class BoardListNew extends GetView<BoardController> {
                           itemCount: controller.boardList.length,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: GapSize.small, vertical: GapSize.xxSmall),
+                              padding: const EdgeInsets.symmetric(horizontal: GapSize.small, vertical: GapSize.xxxSmall),
                               child: InkWell(
                                 onTap: () {
                                   controller.getBoardDetail(
@@ -92,150 +92,152 @@ class BoardListNew extends GetView<BoardController> {
                                   Get.to(() => const BoardDetailLoading());
                                 },
                                 child: Container(
-                                  padding: const EdgeInsets.all(GapSize.medium),
+                                  padding: const EdgeInsets.symmetric(horizontal: GapSize.medium, vertical: GapSize.xxxSmall),
                                   width: Get.width * 0.8,
-                                  height: Get.height * 0.18,
+                                  height: Get.height * 0.075,
                                   decoration: shadowBoxDecoration,
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "${controller.boardList[index].author}",
-                                            style: const TextStyle(
-                                                fontSize: FontSize.xSmall,
-                                                color: Colors.black,
-                                                fontFamily: 'NotoM'),
-                                          ),
-                                          const SizedBox(
-                                            width: GapSize.xxSmall,
-                                          ),
-                                          Text(
-                                            "${controller.boardList[index].createDate}",
-                                            style: const TextStyle(
-                                                fontSize: FontSize.xxSmall,
-                                                color: Colors.grey,
-                                                fontFamily: 'NotoM'
-                                              // fontStyle: FontStyle.italic,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
                                       Text(
                                         "${controller.boardList[index].subject}",
                                         style: const TextStyle(
-                                            fontSize: FontSize.large,
+                                            fontSize: FontSize.medium,
                                             color: Colors.black,
                                             fontFamily: 'NotoB'),
                                       ),
-                                      const SizedBox(
-                                        height: GapSize.small,
-                                      ),
                                       Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
-                                          _buildBottomIcon(
-                                              icon: const Icon(
-                                                EvaIcons.heart,
-                                                size: 20,
-                                                color: Colors.redAccent,
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${controller.boardList[index].createDate}",
+                                                style: const TextStyle(
+                                                    fontSize: FontSize.xxSmall,
+                                                    color: Colors.grey,
+                                                    fontFamily: 'NotoM' // fontStyle: FontStyle.italic,
+                                                ),
                                               ),
-                                              count:
-                                              "${controller.boardList[index].recommendCnt}"),
-                                          _buildBottomIcon(
-                                              icon: const Icon(Icons.comment,
-                                                  size: 18),
-                                              count:
-                                              '${controller.boardList[index].commentCnt ?? 0}'),
-                                          _buildBottomIcon(
-                                              icon: const Icon(Icons.remove_red_eye,
-                                                  size: 18),
-                                              count:
-                                              "${controller.boardList[index].views}"),
+                                              Text(
+                                                " | ${controller.boardList[index].author}",
+                                                style: const TextStyle(
+                                                    fontSize: FontSize.xxSmall,
+                                                    color: Colors.grey,
+                                                    fontFamily: 'NotoM'
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            children: [
+                                              _buildBottomIcon(
+                                                  icon: const Icon(Icons.remove_red_eye,
+                                                      size: 12),
+                                                  count:
+                                                  "${controller.boardList[index].views}"
+                                              ),
+                                              _buildBottomIcon(
+                                                  icon: const Icon(Icons.comment,
+                                                      size: 12),
+                                                  count:
+                                                  '${controller.boardList[index].commentCnt ?? 0}'
+                                              ),
+                                              _buildBottomIcon(
+                                                  icon: const Icon(
+                                                    EvaIcons.heart,
+                                                    size: 14,
+                                                    color: Colors.redAccent,
+                                                  ),
+                                                  count:
+                                                  "${controller.boardList[index].recommendCnt}"
+                                              ),
+                                            ],
+                                          ),
                                         ],
                                       ),
                                     ],
                                   ),
-                                )
 
-                                /*ListTile(
-                                  title: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        "${controller.boardList[index].author}",
-                                        style: const TextStyle(
-                                            fontSize: FontSize.xSmall,
-                                            color: Colors.black,
-                                            fontFamily: 'NotoB'),
-                                      ),
-                                      const SizedBox(
-                                        width: GapSize.xxSmall,
-                                      ),
-                                      Text(
-                                        "${controller.boardList[index].createDate}",
-                                        style: const TextStyle(
-                                            fontSize: FontSize.xxSmall,
-                                            color: Colors.grey,
-                                            fontFamily: 'NotoB'
-                                            // fontStyle: FontStyle.italic,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: GapSize.small),
-                                        child: Text(
-                                          "${controller.boardList[index].subject}",
+                                  /*ListTile(
+                                    title: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          "${controller.boardList[index].author}",
                                           style: const TextStyle(
-                                              fontSize: FontSize.large,
+                                              fontSize: FontSize.xSmall,
                                               color: Colors.black,
-                                              fontFamily: 'NotoR'),
+                                              fontFamily: 'NotoB'),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: GapSize.small,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          _buildBottomIcon(
-                                              icon: const Icon(
-                                                EvaIcons.heart,
-                                                size: 20,
-                                                color: Colors.redAccent,
+                                        const SizedBox(
+                                          width: GapSize.xxSmall,
+                                        ),
+                                        Text(
+                                          "${controller.boardList[index].createDate}",
+                                          style: const TextStyle(
+                                              fontSize: FontSize.xxSmall,
+                                              color: Colors.grey,
+                                              fontFamily: 'NotoB'
+                                              // fontStyle: FontStyle.italic,
                                               ),
-                                              count:
-                                                  "${controller.boardList[index].recommendCnt}"),
-                                          _buildBottomIcon(
-                                              icon: const Icon(Icons.comment,
-                                                  size: 18),
-                                              count:
-                                                  '${controller.boardList[index].commentCnt ?? 0}'),
-                                          _buildBottomIcon(
-                                              icon: const Icon(Icons.remove_red_eye,
-                                                  size: 18),
-                                              count:
-                                                  "${controller.boardList[index].views}"),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),*/
+                                        ),
+                                      ],
+                                    ),
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: GapSize.small),
+                                          child: Text(
+                                            "${controller.boardList[index].subject}",
+                                            style: const TextStyle(
+                                                fontSize: FontSize.large,
+                                                color: Colors.black,
+                                                fontFamily: 'NotoR'),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: GapSize.small,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            _buildBottomIcon(
+                                                icon: const Icon(
+                                                  EvaIcons.heart,
+                                                  size: 20,
+                                                  color: Colors.redAccent,
+                                                ),
+                                                count:
+                                                    "${controller.boardList[index].recommendCnt}"),
+                                            _buildBottomIcon(
+                                                icon: const Icon(Icons.comment,
+                                                    size: 18),
+                                                count:
+                                                    '${controller.boardList[index].commentCnt ?? 0}'),
+                                            _buildBottomIcon(
+                                                icon: const Icon(Icons.remove_red_eye,
+                                                    size: 18),
+                                                count:
+                                                    "${controller.boardList[index].views}"),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),*/
+                                ),
                               ),
                             );
                           },
@@ -267,14 +269,17 @@ class BoardListNew extends GetView<BoardController> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        const SizedBox(
+          width: GapSize.xxSmall,
+        ),
         icon,
         const SizedBox(
-          width: GapSize.xxxSmall,
+          width: GapSize.xxSmall,
         ),
         Text(
           count,
           style: const TextStyle(
-              fontSize: FontSize.xSmall, color: Colors.grey, fontFamily: 'NotoR'
+              fontSize: FontSize.xxSmall, color: Colors.grey, fontFamily: 'NotoR'
               // fontStyle: FontStyle.italic,
               ),
         ),
