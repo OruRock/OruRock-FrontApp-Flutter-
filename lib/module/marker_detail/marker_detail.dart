@@ -71,11 +71,11 @@ class MarkerDetail extends GetView<AppController> {
                         Obx(
                           () => LikeButton(
                             circleColor: const CircleColor(
-                                start: Color(0xff00ddff),
-                                end: Color(0xff0099cc)),
+                                start: Color(0xfff0ddff),
+                                end: Color(0xffffb5e5)),
                             bubblesColor: const BubblesColor(
-                              dotPrimaryColor: Color(0xff33b5e5),
-                              dotSecondaryColor: Color(0xff0099cc),
+                              dotPrimaryColor: Color(0xffffb5e5),
+                              dotSecondaryColor: Color(0xffff99cc),
                             ),
                             likeBuilder: (bool isLiked) {
                               return Icon(
