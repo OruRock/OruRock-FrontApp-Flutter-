@@ -83,7 +83,7 @@ class BoardListNew extends GetView<BoardController> {
                           itemCount: controller.boardList.length,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: GapSize.small, vertical: GapSize.xxxSmall),
+                              padding: const EdgeInsets.symmetric(horizontal: GapSize.small, vertical: GapSize.xxxSmall * 0.75),
                               child: InkWell(
                                 onTap: () {
                                   controller.getBoardDetail(

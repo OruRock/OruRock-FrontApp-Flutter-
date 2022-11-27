@@ -11,6 +11,7 @@ class BoardUpdatePage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _title = TextEditingController();
   final _content = TextEditingController();
+  final _warning = TextEditingController(text: "** 주의 **\n남을 비하, 비방하는 글을 올리는 경우, 욕설 및 엄마를 찾는 행위, 도배 및 광고 등을 하는 행위는 법정에서 알몸 에이프런 트월킹 형에 처할 수 있으니 주의하세요.");
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +31,8 @@ class BoardUpdatePage extends StatelessWidget {
                       _title.text,
                       _content.text);
                   boardController.board.value?.boardId != null
-                      ? Fluttertoast.showToast(msg: '편집완료우.')
-                      : Fluttertoast.showToast(msg: '등록완료우.');
+                      ? Fluttertoast.showToast(msg: '편집완료.')
+                      : Fluttertoast.showToast(msg: '등록완료.');
                   Get.back();
                 }
               },
@@ -76,6 +77,17 @@ class BoardUpdatePage extends StatelessWidget {
               //     }
               //   },
               // ),
+              const SizedBox(
+                height: GapSize.xxSmall,
+              ),
+              const Divider(color:Colors.black12, thickness: 1),
+              TextField(
+                maxLines: 4,
+                controller: _warning,
+                readOnly: true,
+                style: const TextStyle(color: Colors.grey, fontSize: FontSize.small),
+                decoration: const InputDecoration(border: InputBorder.none,)
+              ),
             ],
           ),
         ),

@@ -123,7 +123,7 @@ class BoardDetail extends GetView<BoardController> {
                             return Icon(
                               isLiked ? EvaIcons.heart : EvaIcons.heartOutline,
                               color: isLiked ? Colors.red : Colors.grey,
-                              size: 25,
+                              size: 20,
                             );
                           },
                           likeCount: controller.board.value?.recommendCnt,
@@ -158,7 +158,7 @@ class BoardDetail extends GetView<BoardController> {
                           children: [
                             const Icon(
                               Icons.comment_outlined,
-                              size: 20,
+                              size: 18,
                               color: Colors.grey,
                             ),
                             const SizedBox(
@@ -289,7 +289,7 @@ class BoardDetail extends GetView<BoardController> {
                                       color: isLiked
                                           ? Colors.blueAccent
                                           : Colors.grey,
-                                      size: 20,
+                                      size: 18,
                                     );
                                   },
                                   likeCount: board.commentLikeCnt,
