@@ -8,6 +8,7 @@ import 'package:oru_rock/module/setting/fragment/my_bookmark_list.dart';
 import 'package:oru_rock/module/setting/fragment/my_review_list.dart';
 import 'package:oru_rock/module/setting/fragment/notice_list.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'fragment/notice_detail.dart';
 
@@ -58,6 +59,16 @@ class Setting extends GetView<SettingController> {
                         controller.nickname.value,
                         style: const TextStyle(
                             fontFamily: "NotoB", fontSize: FontSize.large),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          controller.launchInstagram();
+                        },
+                        child: Text(
+                          "instagram",
+                          style: const TextStyle(
+                              fontFamily: "NotoB", fontSize: FontSize.large),
+                        ),
                       ),
                     ],
                   ),

@@ -12,6 +12,7 @@ import 'package:oru_rock/model/store_detail_model.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
 import 'package:oru_rock/routes.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingController extends GetxController {
   final api = Get.find<ApiFunction>();
@@ -158,5 +159,18 @@ class SettingController extends GetxController {
       return;
     }
     Fluttertoast.showToast(msg: "리뷰 삭제에 실패하였습니다.");
+  }
+
+  launchInstagram() async {
+    var nativeUrl = "instagram://user?username=climb_developer";
+    var webUrl = "https://www.instagram.com/climb_developer";
+    try {
+      if (!await launchUrl(Uri.parse(nativeUrl),
+          mode: LaunchMode.externalApplication)) {
+        await launchUrl(Uri.parse(webUrl), mode: LaunchMode.platformDefault);
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+    }
   }
 }
