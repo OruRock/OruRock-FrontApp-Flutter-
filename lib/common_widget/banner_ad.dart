@@ -67,7 +67,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
     final BannerAd? bannerAd = _bannerAd;
 
     if (isAdLoaded && bannerAd != null) {
-      return Container(
+      return SizedBox(
         width: _bannerAd!.size.width.toDouble() - GapSize.medium * 2,
         height: _bannerAd!.size.height.toDouble(),
         child: AdWidget(
@@ -75,7 +75,9 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
         ),
       );
     } else {
-      return const SizedBox.shrink();
+      return SizedBox(
+        height: Get.height * 0.075,
+      );
     }
   }
 }
