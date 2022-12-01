@@ -193,11 +193,13 @@ class AppController extends GetxController {
     int? pin = appData.read(StorageKeys.pin);
     //핀이 없는 경우
     if (pin == null) {
-      appData.write(StorageKeys.pin, selectedIndex);
+      appData.write(StorageKeys.pin, stores[selectedIndex].storeId);
       isPinned.value = true;
       detailButtonState[0].value = true;
-      pinnedStoreId = selectedIndex;
-      pinnedStoreName.value = stores[pinnedStoreId!].storeName!;
+      pinnedStoreId = stores[selectedIndex].storeId;
+      pinnedStoreName.value = stores[
+              stores.indexWhere((element) => element.storeId == pinnedStoreId!)]
+          .storeName!;
       Fluttertoast.showToast(msg: "선택하신 암장이 고정되었습니다.");
       return;
     }
@@ -211,9 +213,11 @@ class AppController extends GetxController {
 
   void updatePin() {
     appData.write(StorageKeys.pin, selectedIndex);
-    pinnedStoreId = selectedIndex;
+    pinnedStoreId = stores[selectedIndex].storeId;
     detailButtonState[0].value = true;
-    pinnedStoreName.value = stores[pinnedStoreId!].storeName!;
+    pinnedStoreName.value = stores[
+    stores.indexWhere((element) => element.storeId == pinnedStoreId!)]
+        .storeName!;
   }
 
   void removePin() {
