@@ -160,17 +160,4 @@ class SettingController extends GetxController {
     }
     Fluttertoast.showToast(msg: "리뷰 삭제에 실패하였습니다.");
   }
-
-  launchInstagram() async {
-    var nativeUrl = "instagram://user?username=climb_developer";
-    var webUrl = "https://www.instagram.com/climb_developer";
-    try {
-      if (!await launchUrl(Uri.parse(nativeUrl),
-          mode: LaunchMode.externalApplication)) {
-        await launchUrl(Uri.parse(webUrl), mode: LaunchMode.platformDefault);
-      }
-    } catch (e) {
-      Logger().e(e.toString());
-    }
-  }
 }

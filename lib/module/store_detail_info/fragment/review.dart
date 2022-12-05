@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
@@ -47,6 +48,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
           child: Padding(
             padding: const EdgeInsets.only(bottom: GapSize.small),
             child: FloatingActionButton(
+              backgroundColor: Colors.black,
               onPressed: () {
                 Get.bottomSheet(_buildReviewTextField(),
                     barrierColor: Colors.black26);
@@ -105,21 +107,21 @@ class ReviewFragment extends GetView<StoreInfoController> {
   }
 
   _buildNotExistWidget() {
-    return Column(
-      children: [
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(Icons.cancel_presentation),
-              SizedBox(
-                width: GapSize.small,
-              ),
-              Text("리뷰가 없습니다."),
-            ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
+          Icon(
+            EvaIcons.fileTextOutline,
+            size: 50,
           ),
-        ),
-      ],
+          SizedBox(
+            height: GapSize.small,
+          ),
+          Text("리뷰가 없습니다."),
+        ],
+      ),
     );
   }
 
