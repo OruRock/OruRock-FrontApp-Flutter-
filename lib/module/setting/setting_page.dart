@@ -54,7 +54,7 @@ class Setting extends GetView<SettingController> {
                                 const EdgeInsets.only(bottom: GapSize.xxxSmall),
                             child: Image.asset(
                               controller.app
-                                  .levelImage[controller.userLevel.value ?? 0],
+                                  .levelImage[controller.auth.user.value!.userLevel!.value ?? 0],
                               width: WidthWithRatio.xxLarge,
                             ),
                           ),
@@ -75,28 +75,29 @@ class Setting extends GetView<SettingController> {
                                   const SizedBox(
                                     width: GapSize.xSmall,
                                   ),
-                                  Text(
-                                    controller.nickname.value,
-                                    style: const TextStyle(
-                                        fontFamily: "NotoM",
-                                        fontSize: FontSize.small),
+                                  Obx(()=> Text(
+                                      controller.auth.user.value!.userNickname!.value,
+                                      style: const TextStyle(
+                                          fontFamily: "NotoM",
+                                          fontSize: FontSize.small),
+                                    ),
                                   ),
                                 ],
                               ),
                               const SizedBox(
                                 height: GapSize.xxSmall,
                               ),
-                              const InstagramButton(
-                                nickName: 'climb_developer',
+                              InstagramButton(
+                                nickName: controller.auth.user.value!.instaNickname!.value,
                               ),
                               const SizedBox(
                                 height: GapSize.xxSmall,
                               ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
+                                children: [
                                   Text(
-                                    '↕ 162',
+                                    '↕ ${controller.auth.user.value!.userHeight!.value}',
                                     style: TextStyle(
                                         fontFamily: "NotoB",
                                         fontSize: FontSize.medium),
@@ -107,7 +108,7 @@ class Setting extends GetView<SettingController> {
                                     child: Text('|'),
                                   ),
                                   Text(
-                                    '↔ 162',
+                                    '↔ ${controller.auth.user.value!.userReach!.value}',
                                     style: TextStyle(
                                         fontFamily: "NotoB",
                                         fontSize: FontSize.medium),

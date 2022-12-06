@@ -285,12 +285,12 @@ class ReviewFragment extends GetView<StoreInfoController> {
                                     Visibility(
                                         visible:
                                             detailModel.comment![index].uid ==
-                                                controller.auth.user?.uid,
+                                                controller.auth.user.value!.uid,
                                         child: const Divider()),
                                     Visibility(
                                       visible:
                                           detailModel.comment![index].uid ==
-                                              controller.auth.user?.uid,
+                                              controller.auth.user.value!.uid,
                                       child: GestureDetector(
                                         onTap: () async {
                                           controller.buildWarningDialog(

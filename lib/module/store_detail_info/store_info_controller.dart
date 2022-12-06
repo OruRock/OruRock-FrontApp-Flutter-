@@ -96,7 +96,7 @@ class StoreInfoController extends GetxController {
 
       final reviewData = {
         "store_id": storeId,
-        "uid": auth.user!.uid, //TODO 가져오는 UID로 수정
+        "uid": auth.user.value!.uid, //TODO 가져오는 UID로 수정
         "comment": reviewText.text,
         "recommend_level": 0,
       };
@@ -129,7 +129,7 @@ class StoreInfoController extends GetxController {
 
       final modifyData = {
         "store_id": storeId,
-        "uid": auth.user!.uid,
+        "uid": auth.user.value!.uid,
         "comment": modifyText.text,
         "recommend_level": 0,
         "comment_id": commentId.toString(),
@@ -172,7 +172,7 @@ class StoreInfoController extends GetxController {
         "report_type_id": commentId,
         "report_title": "신고",
         "report_content": reportText,
-        "uid": auth.user!.uid
+        "uid": auth.user.value!.uid
       };
 
       await api.dio.post('/report', queryParameters: data);
@@ -192,7 +192,7 @@ class StoreInfoController extends GetxController {
 
       final deleteData = {
         "comment_id": commentId,
-        "uid": auth.user!.uid,
+        "uid": auth.user.value!.uid,
       };
 
       final res =

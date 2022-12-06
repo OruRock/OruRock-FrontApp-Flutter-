@@ -30,14 +30,14 @@ class LevelSetting extends GetView<SettingController> {
                   child: Column(
                     children: [
                       Image.asset(
-                        controller.app.levelImage[controller.userLevel.value],
+                        controller.app.levelImage[controller.selectedUserLevel.value],
                         width: WidthWithRatio.xxxLarge,
                       ),
                       const SizedBox(
                         height: GapSize.medium,
                       ),
                       Text(
-                        controller.nickname.value,
+                        controller.auth.user.value!.userNickname!.value,
                         style: const TextStyle(
                             fontFamily: "NotoB", fontSize: FontSize.large),
                       ),
@@ -65,7 +65,6 @@ class LevelSetting extends GetView<SettingController> {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
-                          controller.setUserLevel(index);
                         },
                         child: Container(
                           padding: const EdgeInsets.fromLTRB(GapSize.xxxSmall,
