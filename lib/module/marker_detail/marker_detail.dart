@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:like_button/like_button.dart';
@@ -9,6 +10,7 @@ import 'package:oru_rock/common_widget/ImageViewer.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/model/store_model.dart' as storeModel;
 import 'package:oru_rock/module/app/app_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../routes.dart';
 
@@ -28,7 +30,7 @@ class MarkerDetail extends GetView<AppController> {
           Get.toNamed(Routes.storeInfo, arguments: [store]);
         },
         child: Container(
-          height: 275,
+          height: 290,
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius:
@@ -69,17 +71,17 @@ class MarkerDetail extends GetView<AppController> {
                         Obx(
                           () => LikeButton(
                             circleColor: const CircleColor(
-                                start: Color(0xff00ddff),
-                                end: Color(0xff0099cc)),
+                                start: Color(0xfff0ddff),
+                                end: Color(0xffffb5e5)),
                             bubblesColor: const BubblesColor(
-                              dotPrimaryColor: Color(0xff33b5e5),
-                              dotSecondaryColor: Color(0xff0099cc),
+                              dotPrimaryColor: Color(0xffffb5e5),
+                              dotSecondaryColor: Color(0xffff99cc),
                             ),
                             likeBuilder: (bool isLiked) {
                               return Icon(
-                                Icons.push_pin,
+                                isLiked ? Icons.push_pin_rounded : Icons.push_pin_outlined,
                                 color: isLiked ? Colors.redAccent : Colors.grey,
-                                size: 23,
+                                size: 20,
                               );
                             },
                             isLiked: controller.detailButtonState[0].value,
@@ -104,10 +106,10 @@ class MarkerDetail extends GetView<AppController> {
                             ),
                             likeBuilder: (bool isLiked) {
                               return Icon(
-                                Icons.stars,
+                                isLiked ? Icons.stars : Icons.star_border_outlined,
                                 color:
                                     isLiked ? Colors.yellow[600] : Colors.grey,
-                                size: 25,
+                                size: 20,
                               );
                             },
                             isLiked: controller.detailButtonState[1].value,
@@ -128,9 +130,9 @@ class MarkerDetail extends GetView<AppController> {
                             ),
                             likeBuilder: (bool isLiked) {
                               return Icon(
-                                Icons.thumb_up,
+                                isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
                                 color: isLiked ? Colors.blue[600] : Colors.grey,
-                                size: 25,
+                                size: 20,
                               );
                             },
                             isLiked: controller.detailButtonState[2].value,
@@ -221,14 +223,19 @@ class MarkerDetail extends GetView<AppController> {
                                   const SizedBox(
                                     height: GapSize.xxxSmall,
                                   ),
-                                  Text(
-                                    '${store?.storePhone}',
-                                    style: const TextStyle(
-                                        fontSize: FontSize.xSmall,
-                                        fontFamily: "NotoR",
-                                        height: 1.6,
-                                        color: Colors.black,
-                                        overflow: TextOverflow.ellipsis),
+                                  InkWell(
+                                    onTap: () => launchUrl(
+                                        Uri.parse('tel:${store?.storePhone}')
+                                    ),
+                                    child: Text(
+                                      '${store?.storePhone}',
+                                      style: const TextStyle(
+                                          fontSize: FontSize.xSmall,
+                                          fontFamily: "NotoR",
+                                          height: 1.6,
+                                          color: Colors.blue,
+                                          overflow: TextOverflow.ellipsis),
+                                    ),
                                   ),
                                   const SizedBox(
                                     height: GapSize.xxxSmall,
@@ -274,6 +281,16 @@ class MarkerDetail extends GetView<AppController> {
                         ],
                       ),
                     ),
+                    SizedBox(
+                      height: 30,
+                      child: OutlinedButton(
+                          onPressed: () {
+                        controller.map.linkNaverMapNavigate(LatLng(store!.storeLat!, store!.storeLng!), store!.storeName!);
+                      }, child: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: GapSize.xxxSmall),
+                        child: Text('길찾기', style: TextStyle(color: Colors.green, fontFamily: "NotoM"),),
+                      )),
+                    )
                   ],
                 ),
               ),

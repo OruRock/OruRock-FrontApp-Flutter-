@@ -6,6 +6,7 @@ import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/model/store_model.dart' as storeModel;
 import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StoreInfoFragment extends GetView<StoreInfoController> {
   final storeModel.StoreModel? store;
@@ -38,14 +39,7 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
                   width: GapSize.xxSmall,
                 ),
                 Expanded(
-                  child: Text(
-                    '${store?.storeAddr}',
-                    style: const TextStyle(
-                      fontFamily: "NotoR",
-                      fontSize: FontSize.small,
-                      overflow: TextOverflow.clip,
-                    ),
-                  ),
+                  child: controller.setStoreAddrHandler(store?.storeAddr),
                 ),
               ],
             ),
@@ -66,9 +60,14 @@ class StoreInfoFragment extends GetView<StoreInfoController> {
                 const SizedBox(
                   width: GapSize.xxSmall,
                 ),
-                Text(
-                  '${store?.storePhone}',
-                  style: regularEllipsisNanumTextStyle,
+                InkWell(
+                  onTap: () => launchUrl(
+                      Uri.parse('tel:${store?.storePhone}')
+                  ),
+                  child: Text(
+                    '${store?.storePhone}',
+                    style: regularEllipsisNanumTextStyle.apply(color: Colors.blue),
+                  ),
                 ),
               ],
             ),

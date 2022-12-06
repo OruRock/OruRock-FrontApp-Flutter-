@@ -12,6 +12,7 @@ import 'package:oru_rock/model/store_detail_model.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
 import 'package:oru_rock/routes.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingController extends GetxController {
   final api = Get.find<ApiFunction>();

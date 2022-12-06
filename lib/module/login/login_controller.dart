@@ -240,16 +240,26 @@ class LoginController extends GetxController {
         "uid": cachedUid,
       };
 
-      final res = await api.dio.post('/login', data: data);
+      try {
+        final res = await api.dio.post('/login', data: data);
 
-      userAuth.setJwt(res.data['payload']['result']);
-      userAuth.setUser(
-          res.data['payload']['user']['user_nickname'],
-          res.data['payload']['user']['user_email'],
-          cachedUid,
-          res.data['payload']['user']['user_level']);
+        userAuth.setJwt(res.data['payload']['result']);
+        userAuth.setUser(
+            res.data['payload']['user']['user_nickname'],
+            res.data['payload']['user']['user_email'],
+            cachedUid,
+            res.data['payload']['user']['user_level']);
 
-      Get.offAllNamed(Routes.app);
+        Get.offAllNamed(Routes.app);
+      } catch(e) {
+        Fluttertoast.showToast(
+            msg: 'Auto Login Fail',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1);
+
+        isLoading.value = false;
+      }
     }
     isLoading.value = false;
   }

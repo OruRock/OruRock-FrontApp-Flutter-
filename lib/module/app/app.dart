@@ -3,13 +3,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
+import 'package:oru_rock/module/board/board_list.dart';
 import 'package:oru_rock/module/home/home.dart';
 import 'package:oru_rock/module/naver_map/nmap.dart';
 import 'package:oru_rock/module/search/search_page.dart';
 import 'package:oru_rock/module/setting/setting_page.dart';
 
 class App extends GetView<AppController> {
-  App({Key? key}) : super(key: key);
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class App extends GetView<AppController> {
       const Home(),
       const Search(),
       const NMap(),
+      BoardList(),
       const Setting(),
     ];
     return WillPopScope(
@@ -85,6 +87,19 @@ class App extends GetView<AppController> {
                       size: 30,
                     ),
                     label: '지도',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.list_alt,
+                      color: Colors.grey,
+                      size: 30,
+                    ),
+                    activeIcon: Icon(
+                      Icons.list_alt,
+                      color: Colors.black,
+                      size: 30,
+                    ),
+                    label: '게시판',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(

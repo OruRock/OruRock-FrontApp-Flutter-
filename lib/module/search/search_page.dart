@@ -133,7 +133,11 @@ class Search extends GetView<AppController> {
                 const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
             contentPadding: const EdgeInsets.symmetric(
                 vertical: GapSize.small, horizontal: GapSize.small)),
-        style: const TextStyle(fontSize: FontSize.large, fontFamily: "NotoR"),
+        style: const TextStyle(fontSize: FontSize.large, fontFamily: "NotoR",),
+        textInputAction: TextInputAction.done,
+        onSubmitted: (text){
+          controller.search();
+        },
       ),
     );
   }

@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:oru_rock/common_widget/alert_dialog.dart';
+import 'package:oru_rock/common_widget/report_dialog.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
@@ -35,10 +38,31 @@ class StoreInfoController extends GetxController {
   var isModifying = false.obs; // 수정 중
   var modifyingIndex = (-1).obs; // 수정할 리뷰 인덱스
 
+  List<RxBool> settingContainerVisible = [true.obs];
+
   @override
   void onInit() async {
     detailModel.value = await getReview();
+    settingContainerVisible = List.generate(detailModel.value!.comment!.length, (index) => false.obs);
     super.onInit();
+  }
+
+  GestureDetector setStoreAddrHandler(String? text) {
+    return GestureDetector(
+      child: SelectableText(
+        '$text',
+        style: const TextStyle(
+          fontFamily: "NotoR",
+          fontSize: FontSize.small,
+          overflow: TextOverflow.clip,
+        ),
+      ),
+      onDoubleTap: () {
+        Clipboard.setData(
+          ClipboardData(text: text));
+        Fluttertoast.showToast(msg: "복사 완료");
+      },
+    );
   }
 
   ///리뷰 새로 고침
@@ -130,6 +154,35 @@ class StoreInfoController extends GetxController {
         positiveFunc: () async {
           await deleteReview(storeId, commentId);
         }));
+  }
+
+  ///리뷰 삭제시 Dialog
+  void buildReportDialog(int storeId, int commentId) {
+    Get.dialog(ReportDialog(
+        title: "신고하기",
+        reportFunc: (reportText) async {
+          await reportReview(reportText, commentId);
+        }));
+  }
+
+  Future<void> reportReview(String reportText, int commentId) async {
+    try {
+      final data = {
+        "report_type": 1,
+        "report_type_id": commentId,
+        "report_title": "신고",
+        "report_content": reportText,
+        "uid": auth.user!.uid
+      };
+
+      await api.dio.post('/report', queryParameters: data);
+
+      Fluttertoast.showToast(msg: "신고가 완료되었습니다.");
+
+    } catch(e) {
+      Logger().e(e.toString());
+      Fluttertoast.showToast(msg: "신고에 실패하였습니다.");
+    }
   }
 
   ///리뷰 삭제 API

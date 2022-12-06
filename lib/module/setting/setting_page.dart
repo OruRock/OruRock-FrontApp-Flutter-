@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:oru_rock/common_widget/instagram_button.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/setting/fragment/change_nickname.dart';
@@ -8,8 +9,6 @@ import 'package:oru_rock/module/setting/fragment/my_bookmark_list.dart';
 import 'package:oru_rock/module/setting/fragment/my_review_list.dart';
 import 'package:oru_rock/module/setting/fragment/notice_list.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
-
-import 'fragment/notice_detail.dart';
 
 class Setting extends GetView<SettingController> {
   const Setting({Key? key}) : super(key: key);
@@ -46,19 +45,134 @@ class Setting extends GetView<SettingController> {
                       horizontal: GapSize.small, vertical: GapSize.small),
                   width: Get.width,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        controller.app.levelImage[controller.userLevel.value],
-                        width: WidthWithRatio.xxxLarge,
+                      Row(
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(bottom: GapSize.xxxSmall),
+                            child: Image.asset(
+                              controller.app
+                                  .levelImage[controller.userLevel.value ?? 0],
+                              width: WidthWithRatio.xxLarge,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: GapSize.small,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  const Icon(
+                                    Icons.person,
+                                    color: Colors.grey,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(
+                                    width: GapSize.xSmall,
+                                  ),
+                                  Text(
+                                    controller.nickname.value,
+                                    style: const TextStyle(
+                                        fontFamily: "NotoM",
+                                        fontSize: FontSize.small),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: GapSize.xxSmall,
+                              ),
+                              const InstagramButton(
+                                nickName: 'climb_developer',
+                              ),
+                              const SizedBox(
+                                height: GapSize.xxSmall,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: const [
+                                  Text(
+                                    '↕ 162',
+                                    style: TextStyle(
+                                        fontFamily: "NotoB",
+                                        fontSize: FontSize.medium),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: GapSize.xSmall),
+                                    child: Text('|'),
+                                  ),
+                                  Text(
+                                    '↔ 162',
+                                    style: TextStyle(
+                                        fontFamily: "NotoB",
+                                        fontSize: FontSize.medium),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                       const SizedBox(
                         height: GapSize.medium,
                       ),
-                      Text(
-                        controller.nickname.value,
-                        style: const TextStyle(
-                            fontFamily: "NotoB", fontSize: FontSize.large),
-                      ),
+                      //TODO 데이터 값으로 변경 필요
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Column(
+                            children: const [
+                              Text(
+                                '리뷰',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: "NotoM",
+                                ),
+                              ),
+                              SizedBox(
+                                height: GapSize.xxxSmall,
+                              ),
+                              Text('30',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: "NotoB",
+                                  ))
+                            ],
+                          ),
+                          Column(
+                            children: const [
+                              Text('추천',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: "NotoM",
+                                  )),
+                              SizedBox(
+                                height: GapSize.xxxSmall,
+                              ),
+                              Text('30',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: "NotoB",
+                                  ))
+                            ],
+                          ),
+                          InkWell(
+                              onTap: () {},
+                              child: Container(
+                                decoration: noShadowBoxDecoration,
+                                  padding: EdgeInsets.all(GapSize.xSmall),
+                                  child: Text('수정',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: "NotoM",
+                                          color: Colors.grey))))
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -79,7 +193,7 @@ class Setting extends GetView<SettingController> {
                   width: Get.width,
                   child: GestureDetector(
                     onTap: () {
-                      Get.to(LevelSetting());
+                      Get.to(const LevelSetting());
                     },
                     child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: GapSize.small),

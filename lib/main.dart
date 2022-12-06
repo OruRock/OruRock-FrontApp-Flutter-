@@ -13,6 +13,7 @@ import 'package:oru_rock/function/map_func.dart';
 import 'package:oru_rock/helper/firebase_options.dart';
 import 'package:oru_rock/module/app/app.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
+import 'package:oru_rock/module/board/board_controller.dart';
 import 'package:oru_rock/module/login/login.dart';
 import 'package:oru_rock/module/login/login_controller.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
@@ -28,7 +29,7 @@ void main() async {
   await Get.putAsync(() => ApiFunction().init());
   await Get.putAsync(() => MapFunction().init());
   await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform); // firebase chrlghk
+      options: DefaultFirebaseOptions.currentPlatform); // firebase 초기화
   KakaoSdk.init(nativeAppKey: Config.kakao_native_key);
   MobileAds.instance.initialize();
   MobileAds.instance.updateRequestConfiguration(RequestConfiguration(
@@ -66,6 +67,7 @@ class MyApp extends StatelessWidget {
             binding: BindingsBuilder(
               () => {
                 Get.put(AppController()),
+                Get.put(BoardController()),
                 Get.put(SettingController()),
               },
             )),

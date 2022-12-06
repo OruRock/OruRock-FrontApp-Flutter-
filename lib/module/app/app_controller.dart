@@ -4,18 +4,22 @@ import 'package:dio/src/response.dart' as Dio;
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 import 'package:oru_rock/common_widget/alert_dialog.dart';
+import 'package:oru_rock/constant/storagekey.dart';
+import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/function/map_func.dart';
+import 'package:oru_rock/helper/location_permission.dart';
+import 'package:oru_rock/model/popup_model.dart';
 import 'package:oru_rock/model/store_model.dart';
 import 'package:oru_rock/module/marker_detail/marker_detail.dart';
 import 'package:oru_rock/routes.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class AppController extends GetxController {
   var logger = Logger(
@@ -38,8 +42,9 @@ class AppController extends GetxController {
   RxList<Marker> markers = <Marker>[].obs;
 
   var detailButtonState = [false.obs, false.obs, false.obs];
-  var isPinned = GetStorage().read("PIN") != null ? true.obs : false.obs;
-  int? pinnedStoreId = GetStorage().read("PIN");
+  var isPinned =
+      GetStorage().read(StorageKeys.pin) != null ? true.obs : false.obs;
+  int? pinnedStoreId = GetStorage().read(StorageKeys.pin);
   var pinnedStoreName = ''.obs;
 
   //var detailPinState = false.obs;
@@ -73,10 +78,10 @@ class AppController extends GetxController {
 
   @override
   void onInit() async {
-    super.onInit();
+    await hasLocationPermission();
     await getStoreList();
     await getClientStoreBookMark();
-    setMarker();
+    await setMarker();
     searchScrollController.addListener(_searchScrollListener);
     pinnedStoreName.value =
         pinnedStoreId != null ? stores[pinnedStoreId!].storeName! : '';
@@ -91,12 +96,18 @@ class AppController extends GetxController {
           isEnd.value = true;
           break;
         case Tabs.nmap:
-          getLocationPermission();
           break;
         case Tabs.setting:
           break;
       }
     });
+    await getPopups();
+    super.onInit();
+  }
+
+  @override
+  void onReady() async {
+    super.onReady();
   }
 
   void onCloseApp() {
@@ -119,7 +130,17 @@ class AppController extends GetxController {
   ///암장 리스트 정보 API 연결 함수
   Future<void> getStoreList() async {
     try {
-      final bookMarkData = {"uid": auth.user?.uid};
+      final location = await Geolocator.getCurrentPosition();
+      Map<String, Object?> bookMarkData;
+      if (await hasLocationPermission()) {
+        bookMarkData = {
+          "uid": auth.user?.uid,
+          "user_lat": location.latitude,
+          "user_lng": location.longitude,
+        };
+      } else {
+        bookMarkData = {"uid": auth.user?.uid};
+      }
       final res =
           await api.dio.get('/store/list', queryParameters: bookMarkData);
 
@@ -133,13 +154,9 @@ class AppController extends GetxController {
     }
   }
 
-  void getLocationPermission() async {
-    final locationPermissionStatus = await Permission.location.request();
-  }
-
   ///뽑아온 Store 리스트[stores]에 따라 마커를 추가해준다.
   ///각 마커마다 onTap했을시, 해당하는 마커에 대한 데이터가 들어간다.
-  void setMarker() async {
+  Future<void> setMarker() async {
     int index = 0;
     OverlayImage overlayImage = await OverlayImage.fromAssetImage(
         assetName: 'asset/image/icon/pin_icon.png'); //마커 이미지
@@ -157,7 +174,7 @@ class AppController extends GetxController {
 
   ///각 마커 onTap시 함수
   void showDetailInformation(Marker? marker, Map<String, int?> iconSize) async {
-    map.setCamera(marker!.position!, 18.0);
+    map.setCamera(marker!.position!);
 
     final markerId = int.parse(marker!.markerId);
 
@@ -173,14 +190,16 @@ class AppController extends GetxController {
 
   ///핀버튼 누를 시에 추가, 삭제, 교체가 일어나는 함수
   void setPin() {
-    int? pin = appData.read("PIN");
+    int? pin = appData.read(StorageKeys.pin);
     //핀이 없는 경우
     if (pin == null) {
-      appData.write("PIN", selectedIndex);
+      appData.write(StorageKeys.pin, stores[selectedIndex].storeId);
       isPinned.value = true;
       detailButtonState[0].value = true;
-      pinnedStoreId = selectedIndex;
-      pinnedStoreName.value = stores[pinnedStoreId!].storeName!;
+      pinnedStoreId = stores[selectedIndex].storeId;
+      pinnedStoreName.value = stores[
+              stores.indexWhere((element) => element.storeId == pinnedStoreId!)]
+          .storeName!;
       Fluttertoast.showToast(msg: "선택하신 암장이 고정되었습니다.");
       return;
     }
@@ -193,14 +212,16 @@ class AppController extends GetxController {
   }
 
   void updatePin() {
-    appData.write("PIN", selectedIndex);
-    pinnedStoreId = selectedIndex;
+    appData.write(StorageKeys.pin, selectedIndex);
+    pinnedStoreId = stores[selectedIndex].storeId;
     detailButtonState[0].value = true;
-    pinnedStoreName.value = stores[pinnedStoreId!].storeName!;
+    pinnedStoreName.value = stores[
+    stores.indexWhere((element) => element.storeId == pinnedStoreId!)]
+        .storeName!;
   }
 
   void removePin() {
-    appData.remove("PIN");
+    appData.remove(StorageKeys.pin);
     isPinned.value = false;
     detailButtonState[0].value = false;
     pinnedStoreId = null;
@@ -209,7 +230,7 @@ class AppController extends GetxController {
   }
 
   void setDetailButtonState(StoreModel? store) {
-    if (selectedIndex == appData.read("PIN")) {
+    if (selectedIndex == appData.read(StorageKeys.pin)) {
       detailButtonState[0].value = true;
     } else {
       detailButtonState[0].value = false;
@@ -229,7 +250,8 @@ class AppController extends GetxController {
   }
 
   void goMapToSelectedStore(int index) async {
-    final storeIndex = searchStores[index].storeId! - 1;
+    final storeIndex = stores
+        .indexWhere((store) => store.storeId == searchStores[index].storeId);
     selectedTabIndex.value = Tabs.nmap;
     map.nmapController = Completer();
     showDetailInformation(markers[storeIndex], {"height": null, "width": null});
@@ -237,7 +259,6 @@ class AppController extends GetxController {
 
   void goMapToSelectedStoreAtBookMark(int index) async {
     final storeIndex = stores.indexOf(clientStoreBookMark[index]);
-
     selectedTabIndex.value = Tabs.nmap;
     map.nmapController = Completer();
     showDetailInformation(markers[storeIndex], {"height": null, "width": null});
@@ -247,11 +268,23 @@ class AppController extends GetxController {
     isLoading.value = true;
     isEnd.value = false;
     try {
-      final data = {
-        "uid": auth.user!.uid,
-        "search_txt": searchText.text,
-        "page": searchListPage.value
-      };
+      final location = await Geolocator.getCurrentPosition();
+      Map<String, Object?> data;
+      if (await hasLocationPermission()) {
+        data = {
+          "uid": auth.user!.uid,
+          "search_txt": searchText.text,
+          "user_lat": location.latitude,
+          "user_lng": location.longitude,
+          "page": searchListPage.value
+        };
+      } else {
+        data = {
+          "uid": auth.user!.uid,
+          "search_txt": searchText.text,
+          "page": searchListPage.value
+        };
+      }
       final res = await api.dio.get('/store/list', queryParameters: data);
 
       final List<dynamic>? storeData = res.data['payload']['result'];
@@ -325,11 +358,23 @@ class AppController extends GetxController {
   Future<void> addSearch() async {
     isGetMoreData.value = true;
     try {
-      final data = {
-        "uid": auth.user!.uid,
-        "search_txt": searchText.text,
-        "page": searchListPage.value
-      };
+      final location = await Geolocator.getCurrentPosition();
+      Map<String, Object?> data;
+      if (await hasLocationPermission()) {
+        data = {
+          "uid": auth.user!.uid,
+          "search_txt": searchText.text,
+          "user_lat": location.latitude,
+          "user_lng": location.longitude,
+          "page": searchListPage.value
+        };
+      } else {
+        data = {
+          "uid": auth.user!.uid,
+          "search_txt": searchText.text,
+          "page": searchListPage.value
+        };
+      }
       final res = await api.dio.get('/store/list', queryParameters: data);
 
       final List<dynamic>? storeData = res.data['payload']['result'];
@@ -341,7 +386,6 @@ class AppController extends GetxController {
         isEnd.value = true;
         searchListPage.value = 1;
       }
-      print(searchStores.value.length);
     } catch (e) {
       Logger().e(e.toString());
       isGetMoreData.value = false;
@@ -365,6 +409,105 @@ class AppController extends GetxController {
     }
   }
 
+  Future<void> getPopups() async {
+    final res = await api.dio.post('/popup');
+
+    final List<dynamic> data = res.data['payload']['popup'];
+    final List<PopupModel> popups =
+        data.map((e) => PopupModel.fromJson(e)).toList();
+
+    List<dynamic> cachedNoShowPopupList =
+        appData.read(StorageKeys.noShowPopupIdList) ?? [];
+
+    final noShowPopupIdList = cachedNoShowPopupList.cast<int>().toList();
+
+    for (final popup in popups) {
+      final index = noShowPopupIdList.indexOf(popup.popupId!);
+
+      if (index != -1) {
+        continue; //for in 문 종료
+      }
+
+      Get.bottomSheet(
+          Stack(
+            alignment: AlignmentDirectional.bottomCenter,
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Align(
+                    alignment: Alignment.centerRight,
+                    child: SizedBox(
+                      width: 45,
+                      height: 45,
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    constraints: BoxConstraints(maxHeight: Get.height - 45),
+                    child: Image.network(
+                      '${popup.fileUrl}',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(GapSize.xSmall),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                              onPressed: () {
+                                noShowPopupIdList.add(popup.popupId!);
+                                appData.write(
+                                  StorageKeys.noShowPopupIdList,
+                                  noShowPopupIdList,
+                                );
+                                Get.back();
+                              },
+                              style: OutlinedButton.styleFrom(
+                                  backgroundColor: popup.bgColor),
+                              child: Text(
+                                '다시보지 않기',
+                                style: TextStyle(
+                                    color: popup.fontColor,
+                                    fontFamily: "NotoB"),
+                              )),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: GapSize.xSmall),
+                            child: OutlinedButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                style: OutlinedButton.styleFrom(
+                                    backgroundColor: popup.bgColor),
+                                child: Text(
+                                  '닫기',
+                                  style: TextStyle(
+                                      color: popup.fontColor,
+                                      fontFamily: "NotoB"),
+                                )),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          isScrollControlled: true,
+          barrierColor: Colors.transparent);
+    }
+  }
+
   void signOut() {
     auth.signOut();
     Get.offAllNamed(Routes.login);
@@ -375,6 +518,7 @@ enum Tabs {
   home,
   search,
   nmap,
+  board,
   setting;
 
   String get routeString {
@@ -385,6 +529,8 @@ enum Tabs {
         return Routes.search;
       case Tabs.nmap:
         return Routes.nmap;
+      case Tabs.board:
+        return Routes.board;
       case Tabs.setting:
         return Routes.setting;
     }
@@ -399,6 +545,8 @@ enum Tabs {
       case 2:
         return Tabs.nmap;
       case 3:
+        return Tabs.board;
+      case 4:
         return Tabs.setting;
       default:
         return Tabs.home;

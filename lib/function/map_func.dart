@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 ///지도와 관련된 함수를 관리하는 Service
 class MapFunction extends GetxService {
@@ -22,6 +24,26 @@ class MapFunction extends GetxService {
 
   onMapTap(LatLng position) async {}
 
+  ///목적지 좌표 넣어주면 현 위치에서 목적지 좌표로 가는 네이버 지도 길찾기 기능으로 연결
+  linkNaverMapNavigate(LatLng position, String storeName) async {
+    try {
+      if (Platform.isAndroid) {
+        await launchUrl(Uri.parse(
+            'nmap://route/public?dlat=${position.latitude}&dlng=${position.longitude}&dname=${Uri.encodeComponent(storeName)}&appname=com.orurock.ai.oru_rock'));
+      } else {
+        await launchUrl(
+            Uri.parse('nmap://route/public?dlat=${position.latitude}&dlng=${position.longitude}&dname=${Uri.encodeComponent(storeName)}&appname=com.orurock.app'));
+      }
+    } catch (e) {
+      if (Platform.isAndroid) {
+        await launchUrl(Uri.parse("market://details?id=com.nhn.android.nmap"));
+      } else {
+        await launchUrl(
+            Uri.parse("http://itunes.apple.com/app/id311867728?mt=8"));
+      }
+    }
+  }
+
   //지도가 만들어지고 나서 일어나는 함수
   void onMapCreated(NaverMapController controller) async {
     if (nmapController.isCompleted) nmapController = Completer();
@@ -35,7 +57,7 @@ class MapFunction extends GetxService {
   }*/
 
   ///[position]으로 카메라 위치 이동 후 [zoom]만큼 확대
-  void setCamera(LatLng position, double zoom) async {
+  void setCamera(LatLng position, {double? zoom}) async {
     try {
       final controller = await nmapController.future;
 

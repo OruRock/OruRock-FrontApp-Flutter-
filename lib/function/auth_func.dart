@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
+import 'package:oru_rock/constant/storagekey.dart';
 import 'package:oru_rock/model/user_model.dart';
 
 class AuthFunction extends GetxService {
@@ -32,6 +33,6 @@ class AuthFunction extends GetxService {
     jwt = '';
     user = null;
     appData.remove("UID");
-    appData.remove("PIN");
+    appData.remove(StorageKeys.pin);
   }
 }
