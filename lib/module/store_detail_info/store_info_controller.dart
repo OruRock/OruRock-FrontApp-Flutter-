@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:oru_rock/function/api_func.dart';
 import 'package:oru_rock/function/auth_func.dart';
 import 'package:oru_rock/model/store_detail_model.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
+import 'package:oru_rock/model/review_detail_model.dart';
 
 class StoreInfoController extends GetxController {
   var logger = Logger(
@@ -31,6 +33,10 @@ class StoreInfoController extends GetxController {
   var imageSliderHeight = (Get.height * 0.25).obs; // imageSlider 높이 애니메이션용
   final imageHeight = [(Get.height * 0.25) , 0.0]; // imageSlider 높이 애니메이션용
 
+  Rx<ReviewDetailModel?> reviewDetailModel = ReviewDetailModel().obs;
+  late List<Rx<double>> questionRate;
+  var starsRate = 0.0.obs;
+
   TextEditingController reviewText =
       TextEditingController(); //리뷰 작성 텍스트 필드 컨트롤러
   TextEditingController modifyText =
@@ -43,6 +49,7 @@ class StoreInfoController extends GetxController {
   @override
   void onInit() async {
     detailModel.value = await getReview();
+    reviewDetailModel.value = await getReviewQuestion();
     settingContainerVisible = List.generate(detailModel.value!.comment!.length, (index) => false.obs);
     super.onInit();
   }
@@ -234,4 +241,50 @@ class StoreInfoController extends GetxController {
     }
     return true;
   }
+
+  Future<ReviewDetailModel?> getReviewQuestion() async {
+    try {
+      isLoading.value = false;
+      final questionData = {
+        "store_id": app.stores[app.selectedIndex].storeId.toString(),
+        "commentOnly": false
+      };
+      final res = await api.dio.post('/review/question', data: questionData);
+
+      final Map<String, dynamic>? data = res.data['payload'];
+      if (data != null) {
+        isLoading.value = true;
+        return ReviewDetailModel.fromJson(data);
+      }
+    } catch (e) {
+      logger.e(e.toString());
+      return null;
+    }
+    return null;
+  }
+
+  int getQuestionLength(int length) {
+    questionRate = List<Rx<double>>.filled(length, 0.0.obs);
+    return length;
+  }
+
+  // Future<void> createReview2(int storeId) async {
+  //   try {
+  //     isLoading.value = false;
+  //
+  //     final reviewData = {
+  //       "store_id": storeId,
+  //       "recommend_level": 0,
+  //       "comment": reviewText.text,
+  //       "answerList":""
+  //     };
+  //
+  //     final res = await api.dio.post('/store/comment', data: reviewData);
+  //
+  //     await fetchReview(storeId);
+  //   } catch (e) {
+  //     logger.e(e.toString());
+  //   }
+  // }
+
 }

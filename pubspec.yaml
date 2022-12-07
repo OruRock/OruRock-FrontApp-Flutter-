@@ -36,6 +36,7 @@ dependencies:
   shimmer: ^2.0.0
   url_launcher: ^6.1.6
   font_awesome_flutter: ^9.0.0
+  flutter_rating_stars: ^1.0.3+4
 
   flutter_naver_map:
     git: https://github.com/note11g/flutter_naver_map.git

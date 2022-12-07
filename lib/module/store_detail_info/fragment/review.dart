@@ -9,6 +9,7 @@ import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/model/store_model.dart' as storeModel;
 import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
+import 'package:oru_rock/module/store_detail_info/fragment/review_detail.dart';
 
 class ReviewFragment extends GetView<StoreInfoController> {
   final storeModel.StoreModel? store;
@@ -50,8 +51,9 @@ class ReviewFragment extends GetView<StoreInfoController> {
             child: FloatingActionButton(
               backgroundColor: Colors.black,
               onPressed: () {
-                Get.bottomSheet(_buildReviewTextField(),
-                    barrierColor: Colors.black26);
+                Get.to(() => ReviewDetailFragment());
+                // Get.bottomSheet(_buildReviewTextField(),
+                //     barrierColor: Colors.black26);
               },
               child: const Icon(Icons.edit_outlined),
             ),
