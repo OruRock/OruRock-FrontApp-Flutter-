@@ -24,6 +24,7 @@ class StoreInfoController extends GetxController {
   final auth = Get.find<AuthFunction>();
 
   Rx<StoreDetailModel?> detailModel = StoreDetailModel().obs;
+  RxList<dynamic> reviews = [].obs;
   var isLoading = false.obs; // 로딩용
 
   var toggleList = ['암장 정보', '리뷰'];
@@ -37,14 +38,30 @@ class StoreInfoController extends GetxController {
       TextEditingController(); //리뷰 수정 텍스트 필드 컨트롤러
   var isModifying = false.obs; // 수정 중
   var modifyingIndex = (-1).obs; // 수정할 리뷰 인덱스
+  ScrollController reviewScrollController = ScrollController();
+  var isGetMoreData = false.obs;
+  var reviewPage = 1.obs;
+  var isEnd = false.obs;
 
   List<RxBool> settingContainerVisible = [true.obs];
 
   @override
   void onInit() async {
     detailModel.value = await getReview();
-    settingContainerVisible = List.generate(detailModel.value!.comment!.length, (index) => false.obs);
+    reviews.value = detailModel.value!.comment as List<Comment>;
+    reviewScrollController.addListener(_reveiwScrollController);
+    settingContainerVisible = List.generate(detailModel.value!.total!, (index) => false.obs);
     super.onInit();
+  }
+
+  _reveiwScrollController() {
+    if (reviewScrollController.offset >=
+        reviewScrollController.position.maxScrollExtent &&
+        !reviewScrollController.position.outOfRange &&
+        !isEnd.value) {
+      ++reviewPage;
+      addMoreReview();
+    }
   }
 
   GestureDetector setStoreAddrHandler(String? text) {
@@ -208,9 +225,11 @@ class StoreInfoController extends GetxController {
   Future<StoreDetailModel?> getReview() async {
     try {
       isLoading.value = false;
+      isEnd.value = false;
       final reqData = {
         "store_id": app.stores[app.selectedIndex].storeId.toString(),
-        "commentOnly": false
+        "commentOnly": false,
+        "page": reviewPage.value
       };
       final res = await api.dio.get('/store/detail', queryParameters: reqData);
 
@@ -219,11 +238,42 @@ class StoreInfoController extends GetxController {
         isLoading.value = true;
         return StoreDetailModel.fromJson(data);
       }
+      if (res.data['payload']['isEnd']) {
+        isEnd.value = true;
+        reviewPage.value = 1;
+      }
     } catch (e) {
       logger.e(e.toString());
       return null;
     }
     return null;
+  }
+
+  Future<void> addMoreReview() async {
+    isGetMoreData.value = true;
+    try {
+      final data = {
+        "store_id": app.stores[app.selectedIndex].storeId.toString(),
+        "commentOnly": true,
+        "page": reviewPage.value,
+        };
+
+      final res = await api.dio.get('/store/detail', queryParameters: data);
+
+      final List<dynamic>? reviewData = res.data['payload']['comment'];
+      if (reviewData != null) {
+        reviews.value +=
+            reviewData.map((map) => Comment.fromJson(map)).toList();
+      }
+      if (res.data['payload']['isEnd']) {
+        isEnd.value = true;
+        reviewPage.value = 1;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      isGetMoreData.value = false;
+    }
+    isGetMoreData.value = false;
   }
 
   ///리뷰 텍스트 필드 (수정, 추가) validator
