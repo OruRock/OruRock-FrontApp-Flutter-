@@ -163,6 +163,7 @@ class AppController extends GetxController {
     for (var elem in stores) {
       markers.add(Marker(
           icon: overlayImage,
+          captionText: elem.storeName,
           width: 30,
           height: 30,
           markerId: index.toString(),
