@@ -98,18 +98,18 @@ class Setting extends GetView<SettingController> {
                                 children: [
                                   Text(
                                     '↕ ${controller.auth.user.value!.userHeight!.value}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontFamily: "NotoB",
                                         fontSize: FontSize.medium),
                                   ),
-                                  Padding(
+                                  const Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: GapSize.xSmall),
                                     child: Text('|'),
                                   ),
                                   Text(
                                     '↔ ${controller.auth.user.value!.userReach!.value}',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontFamily: "NotoB",
                                         fontSize: FontSize.medium),
                                   ),
@@ -163,15 +163,20 @@ class Setting extends GetView<SettingController> {
                             ],
                           ),
                           InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(()=> const ModifyMyInfo());
+                              },
                               child: Container(
-                                decoration: noShadowBoxDecoration,
-                                  padding: EdgeInsets.all(GapSize.xSmall),
-                                  child: Text('수정',
+                                decoration: const BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.all(Radius.circular(RadiusSize.medium)),
+                                ),
+                                  padding: const EdgeInsets.symmetric(horizontal: GapSize.large, vertical: GapSize.xxSmall),
+                                  child: const Text('수정',
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 12,
                                           fontFamily: "NotoM",
-                                          color: Colors.grey))))
+                                          color: Colors.white))))
                         ],
                       )
                     ],
@@ -273,24 +278,6 @@ class Setting extends GetView<SettingController> {
                       padding: EdgeInsets.symmetric(vertical: GapSize.small),
                       child: Text(
                         '공지사항',
-                        style: TextStyle(
-                            fontSize: FontSize.medium,
-                            fontFamily: "NotoR",
-                            color: Colors.black87),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: Get.width,
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.to(const ChangeNickname());
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: GapSize.small),
-                      child: Text(
-                        '닉네임 변경',
                         style: TextStyle(
                             fontSize: FontSize.medium,
                             fontFamily: "NotoR",

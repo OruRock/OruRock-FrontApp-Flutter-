@@ -5,8 +5,8 @@ import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
 
-class ChangeNickname extends GetView<SettingController> {
-  const ChangeNickname({Key? key}) : super(key: key);
+class ModifyMyInfo extends GetView<SettingController> {
+  const ModifyMyInfo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,53 +41,100 @@ class ChangeNickname extends GetView<SettingController> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Get.bottomSheet(Container(
-                              color: Colors.white,
-                              padding: EdgeInsets.fromLTRB(
-                                  WidthWithRatio.small,
-                                  HeightWithRatio.xxSmall,
-                                  WidthWithRatio.small,
-                                  0),
-                              child: GridView.builder(
-                                itemCount: controller.app.levelImage.length,
-                                //item 개수
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  //1 개의 행에 보여줄 item 개수
-                                  childAspectRatio: 1 / 1,
-                                  //item 의 가로 1, 세로 1.3 의 비율
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10,
+                            Get.bottomSheet(Column(
+                              children: [
+                                Container(
+                                  height: Get.height * 0.05,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(RadiusSize.large)),
+                                  ),
                                 ),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      controller.selectedUserLevel.value =
-                                          index;
-                                      Get.back();
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          GapSize.xxxSmall,
-                                          0,
-                                          GapSize.xxxSmall,
-                                          GapSize.xxSmall),
-                                      decoration: noShadowBoxDecoration,
-                                      child: Image.asset(
-                                          controller.app.levelImage[index]),
+                                Expanded(
+                                  child: Container(
+                                    color: Colors.white,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: WidthWithRatio.small,
                                     ),
-                                  );
-                                },
-                              ),
+                                    child: GridView.builder(
+                                      itemCount:
+                                          controller.app.levelImage.length,
+                                      //item 개수
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 3,
+                                              //1 개의 행에 보여줄 item 개수
+                                              childAspectRatio: 1 / 1.1,
+                                              //item 의 가로 1, 세로 1.3 의 비율
+                                              crossAxisSpacing: 10,
+                                              mainAxisSpacing: 10),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: GapSize.xxSmall),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              controller.selectedUserLevel
+                                                  .value = index;
+                                              Get.back();
+                                            },
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      GapSize.xxxSmall,
+                                                      GapSize.xxSmall,
+                                                      GapSize.xxxSmall,
+                                                      GapSize.xxSmall),
+                                              decoration: noShadowBoxDecoration,
+                                              child: Image.asset(controller
+                                                  .app.levelImage[index]),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ));
                           },
                           child: Align(
                             alignment: Alignment.center,
-                            child: Image.asset(
-                              controller.app.levelImage[
-                                  controller.selectedUserLevel.value ?? 0],
-                              scale: 0.8,
+                            child: Container(
+                              height: 115,
+                              width: 120,
+                              child: Stack(
+                                children: [
+                                  Image.asset(
+                                    fit: BoxFit.fill,
+                                    controller.app.levelImage[
+                                        controller.selectedUserLevel.value ??
+                                            0],
+                                  ),
+                                  Align(
+                                      alignment: Alignment(1.1, 1),
+                                      child: Container(
+                                        padding: EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.grey[200],
+                                        ),
+                                        child: Container(
+                                            padding:
+                                                EdgeInsets.all(GapSize.xxSmall),
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.black),
+                                            child: Icon(
+                                              Icons.edit,
+                                              color: Colors.white,
+                                              size: 15,
+                                            )),
+                                      )),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -118,8 +165,6 @@ class ChangeNickname extends GetView<SettingController> {
                         TextField(
                           controller: controller.nicknameController,
                           textInputAction: TextInputAction.next,
-                          onSubmitted: (_) =>
-                              FocusScope.of(context).nextFocus(),
                           decoration: InputDecoration(
                               filled: false,
                               hintText: controller
@@ -165,8 +210,6 @@ class ChangeNickname extends GetView<SettingController> {
                         TextField(
                           controller: controller.instagramIdController,
                           textInputAction: TextInputAction.next,
-                          onSubmitted: (_) =>
-                              FocusScope.of(context).nextFocus(),
                           decoration: InputDecoration(
                               filled: false,
                               hintText: controller
@@ -199,8 +242,6 @@ class ChangeNickname extends GetView<SettingController> {
                         TextField(
                           controller: controller.lengthController,
                           textInputAction: TextInputAction.next,
-                          onSubmitted: (_) =>
-                              FocusScope.of(context).nextFocus(),
                           decoration: InputDecoration(
                               filled: false,
                               hintText:
