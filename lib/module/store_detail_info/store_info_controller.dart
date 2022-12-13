@@ -242,6 +242,7 @@ class StoreInfoController extends GetxController {
     return true;
   }
 
+  /// 리뷰 Question 가져오기
   Future<ReviewDetailModel?> getReviewQuestion() async {
     try {
       isLoading.value = false;
@@ -264,8 +265,12 @@ class StoreInfoController extends GetxController {
   }
 
   int getQuestionLength(int length) {
-    questionRate = List<Rx<double>>.filled(length, 0.0.obs);
+    questionRate = List<Rx<double>>.generate(length, (_) => 0.0.obs);
     return length;
+  }
+
+  void saveRateQuestion(int index, double rateStars) {
+
   }
 
   // Future<void> createReview2(int storeId) async {

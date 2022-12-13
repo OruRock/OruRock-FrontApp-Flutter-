@@ -51,7 +51,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
             child: FloatingActionButton(
               backgroundColor: Colors.black,
               onPressed: () {
-                Get.to(() => ReviewDetailFragment());
+                Get.to(() => ReviewDetailFragment(store: store));
                 // Get.bottomSheet(_buildReviewTextField(),
                 //     barrierColor: Colors.black26);
               },

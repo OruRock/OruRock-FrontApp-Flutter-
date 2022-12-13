@@ -27,6 +27,13 @@ const TextStyle regularEllipsisNanumTextStyle = TextStyle(
     height: 1.6,
     color: Colors.black);
 
+const TextStyle regularEllipsisNanumWhiteTextStyle = TextStyle(
+    fontSize: FontSize.small,
+    overflow: TextOverflow.ellipsis,
+    fontFamily: "NotoR",
+    height: 1.6,
+    color: Colors.white);
+
 const TextStyle regularEllipsisNanumGreyTextStyle = TextStyle(
     fontSize: FontSize.small,
     overflow: TextOverflow.ellipsis,
