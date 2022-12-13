@@ -163,6 +163,7 @@ class AppController extends GetxController {
     for (var elem in stores) {
       markers.add(Marker(
           icon: overlayImage,
+          captionText: elem.storeName,
           width: 30,
           height: 30,
           markerId: index.toString(),
@@ -302,6 +303,44 @@ class AppController extends GetxController {
     isLoading.value = false;
   }
 
+  Future<void> addSearch() async {
+    isGetMoreData.value = true;
+    try {
+      final location = await Geolocator.getCurrentPosition();
+      Map<String, Object?> data;
+      if (await hasLocationPermission()) {
+        data = {
+          "uid": auth.user!.uid,
+          "search_txt": searchText.text,
+          "user_lat": location.latitude,
+          "user_lng": location.longitude,
+          "page": searchListPage.value
+        };
+      } else {
+        data = {
+          "uid": auth.user!.uid,
+          "search_txt": searchText.text,
+          "page": searchListPage.value
+        };
+      }
+      final res = await api.dio.get('/store/list', queryParameters: data);
+
+      final List<dynamic>? storeData = res.data['payload']['result'];
+      if (storeData != null) {
+        searchStores +=
+            storeData.map((map) => StoreModel.fromJson(map)).toList();
+      }
+      if (res.data['payload']['isEnd']) {
+        isEnd.value = true;
+        searchListPage.value = 1;
+      }
+    } catch (e) {
+      Logger().e(e.toString());
+      isGetMoreData.value = false;
+    }
+    isGetMoreData.value = false;
+  }
+
   /// 즐겨찾기 버튼 누를 시에 추가, 삭제, 교체가 일어나는 함수
   void updateBookMark(StoreModel? store) async {
     isLoading.value = true;
@@ -353,44 +392,6 @@ class AppController extends GetxController {
       isLoading.value = false;
     }
     isLoading.value = false;
-  }
-
-  Future<void> addSearch() async {
-    isGetMoreData.value = true;
-    try {
-      final location = await Geolocator.getCurrentPosition();
-      Map<String, Object?> data;
-      if (await hasLocationPermission()) {
-        data = {
-          "uid": auth.user!.uid,
-          "search_txt": searchText.text,
-          "user_lat": location.latitude,
-          "user_lng": location.longitude,
-          "page": searchListPage.value
-        };
-      } else {
-        data = {
-          "uid": auth.user!.uid,
-          "search_txt": searchText.text,
-          "page": searchListPage.value
-        };
-      }
-      final res = await api.dio.get('/store/list', queryParameters: data);
-
-      final List<dynamic>? storeData = res.data['payload']['result'];
-      if (storeData != null) {
-        searchStores +=
-            storeData.map((map) => StoreModel.fromJson(map)).toList();
-      }
-      if (res.data['payload']['isEnd']) {
-        isEnd.value = true;
-        searchListPage.value = 1;
-      }
-    } catch (e) {
-      Logger().e(e.toString());
-      isGetMoreData.value = false;
-    }
-    isGetMoreData.value = false;
   }
 
   ///북마크 list 정보 API
