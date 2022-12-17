@@ -24,104 +24,116 @@ class ReviewDetailWriteFragment extends GetView<StoreInfoController> {
             '리뷰 작성',
           ),
         ),
-        body: Column(
-          children: [
-            Container(
-            width: Get.width,
-            color: const Color(0xFF5A6170),
-            padding: const EdgeInsets.symmetric(vertical: GapSize.xxxSmall),
-            child: const Text("리뷰 작성 2/2",
-              style: regularEllipsisNanumWhiteTextStyle,
-              textAlign: TextAlign.center,),
-            ),
-            ListTile(
-              minVerticalPadding: GapSize.xxLarge,
-              title: const Padding(
-                padding: EdgeInsets.only(
-                    bottom: GapSize.medium),
-                child: Text("즐거웠나요?",
-                    style: mediumNanumTextStyle,
-                    textAlign: TextAlign.center),
-              ),
-              subtitle: Container (
-                alignment: Alignment.center,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: GapSize.small),
-                  child: RatingStars(
-                    valueLabelVisibility: false,
-                    value: 0.0,
-                    onValueChanged: (v) {
-                      v;
-                    },
-                    starSpacing: GapSize.xSmall,
-                    starCount: 5,
-                    starSize: 32,
-                    starOffColor: const Color(0xffe7e8ea),
-                    starColor: Colors.yellow,
+        body: ListView.builder(
+            itemCount: 1,
+            itemBuilder: (BuildContext context, int index) {
+              return Column(
+                children: [
+                  Container(
+                    width: Get.width,
+                    color: const Color(0xFF5A6170),
+                    padding: const EdgeInsets.symmetric(vertical: GapSize.xxxSmall),
+                    child: const Text("리뷰 작성 2/2",
+                        style: regularEllipsisNanumWhiteTextStyle,
+                        textAlign: TextAlign.center),
                   ),
-                ),
-              ),
-            ),
-            const Divider(
-              height: 1.0,
-              thickness: 1.0,
-              indent: 10.0,
-              endIndent: 10.0,
-            ),
-            Container(
-              padding: const  EdgeInsets.symmetric(vertical: GapSize.large),
-              child: const Text("암장에서의 경험을 공유해 주세요.")
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(
-                  vertical: GapSize.xxxSmall,
-                  horizontal: GapSize.medium),
-              decoration: shadowBoxDecoration,
-              child: TextField(
-                controller: controller.modifyText,
-                keyboardType: TextInputType.multiline,
-                maxLines: 15,
-                decoration: const InputDecoration(
-                    filled: false,
-                    hintText: "리뷰를 입력해주세요.",
-                    hintStyle: TextStyle(
-                        fontSize: FontSize.small,
-                        color: Colors.grey,
-                        fontFamily: "NotoR"),
-                    enabledBorder:
-                    OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
-                    focusedBorder:
-                    OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: GapSize.small, horizontal: GapSize.small)),
-                style: const TextStyle(
-                    fontSize: FontSize.small, fontFamily: "NotoR"),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: GapSize.medium, vertical: GapSize.xxSmall),
-              child: MaterialButton(
-                padding: const EdgeInsets.symmetric(vertical: GapSize.small),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-                onPressed: () {
-                  // Get.to(() => ReviewFragment(store: store));
-                },
-                color: const Color(0xFF5A6170),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text("완료", style: TextStyle(color: Colors.white, fontFamily: "NotoM")),
-                    SizedBox(
-                      width: GapSize.small,
+                  Obx(() =>
+                      ListTile(
+                        minVerticalPadding: GapSize.xxLarge,
+                        title: const Padding(
+                          padding: EdgeInsets.only(
+                              bottom: GapSize.medium),
+                          child: Text("즐거웠나요?",
+                              style: mediumNanumTextStyle,
+                              textAlign: TextAlign.center),
+                        ),
+                        subtitle: Container(
+                          alignment: Alignment.center,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: GapSize.small),
+                            child: RatingStars(
+                              valueLabelVisibility: false,
+                              value: controller.totalRate.value,
+                              onValueChanged: (v) {
+                                controller.totalRate.value = v;
+                              },
+                              starSpacing: GapSize.xSmall,
+                              starCount: 5,
+                              starSize: 32,
+                              starOffColor: const Color(0xffe7e8ea),
+                              starColor: Colors.yellow,
+                            ),
+                          ),
+                        ),
+                      )),
+                  const Divider(
+                    height: 1.0,
+                    thickness: 1.0,
+                    indent: 10.0,
+                    endIndent: 10.0,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.symmetric(vertical: GapSize.large),
+                      child: const Text("암장에서의 경험을 공유해 주세요.")
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                        vertical: GapSize.xxxSmall,
+                        horizontal: GapSize.medium),
+                    decoration: shadowBoxDecoration,
+                    child: TextField(
+                      controller: controller.modifyText,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 15,
+                      decoration: const InputDecoration(
+                          filled: false,
+                          hintText: "최소 10자이상 입력해주세요.\n비방, 비하, 욕설 등이 섞인 글은 안내 없이 삭제될 수 있습니다.",
+                          hintStyle: TextStyle(
+                              fontSize: FontSize.small,
+                              color: Colors.grey,
+                              fontFamily: "NotoR"),
+                          enabledBorder:
+                          OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+                          focusedBorder:
+                          OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: GapSize.small, horizontal: GapSize.small)),
+                      style: const TextStyle(
+                          fontSize: FontSize.small, fontFamily: "NotoR"),
                     ),
-                    Icon(Icons.check, color: Colors.white),
-                  ],
-                ),
-              ),
-            ),
-          ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: GapSize.medium, vertical: GapSize.xxSmall),
+                    child: MaterialButton(
+                      padding: const EdgeInsets.symmetric(vertical: GapSize.small),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      onPressed: () async {
+                        // 즐거웠나요 체크, 글자 10글자 이상
+                        if (controller.reviewTextFieldValidator(controller.reviewText)) {
+
+                        }
+                        // Get.to(() => ReviewFragment(store: store));
+                      },
+                      color: const Color(0xFF5A6170),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text("완료", style: TextStyle(
+                              color: Colors.white, fontFamily: "NotoM")),
+                          SizedBox(
+                            width: GapSize.small,
+                          ),
+                          Icon(Icons.check, color: Colors.white),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }
         ),
       ),
     );

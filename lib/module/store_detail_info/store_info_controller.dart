@@ -35,8 +35,8 @@ class StoreInfoController extends GetxController {
   final imageHeight = [(Get.height * 0.25) , 0.0]; // imageSlider 높이 애니메이션용
 
   Rx<ReviewDetailModel?> reviewDetailModel = ReviewDetailModel().obs;
-  late List<Rx<double>> questionRate;
-  var starsRate = 0.0.obs;
+  late List<Rx<double>> questionRate; // Api 리뷰 점수
+  var totalRate = 0.0.obs;
 
   TextEditingController reviewText =
       TextEditingController(); //리뷰 작성 텍스트 필드 컨트롤러
@@ -285,8 +285,11 @@ class StoreInfoController extends GetxController {
 
   ///리뷰 텍스트 필드 (수정, 추가) validator
   bool reviewTextFieldValidator(TextEditingController controller) {
-    if (controller.text.length < 3) {
-      Get.snackbar("알림", "3글자 이상 작성해주세요:)");
+    if (controller.text.length < 10) {
+      Get.snackbar("알림", "10글자 이상 작성해주세요:)");
+      return false;
+    } else if (totalRate.value < 0) {
+      Get.snackbar("알림", "즐거웠는지 알려주세요.");
       return false;
     }
     return true;
