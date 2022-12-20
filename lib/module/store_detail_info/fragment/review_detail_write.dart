@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
+import 'package:oru_rock/module/store_detail_info/fragment/review.dart';
 import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
 import '../../../constant/style/style.dart';
 import 'package:oru_rock/model/store_model.dart' as storeModel;
@@ -111,9 +112,9 @@ class ReviewDetailWriteFragment extends GetView<StoreInfoController> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12)),
                       onPressed: () async {
-                        // 즐거웠나요 체크, 글자 10글자 이상
-                        if (controller.reviewTextFieldValidator(controller.reviewText)) {
-
+                        if (controller.reviewTextFieldValidator(controller.modifyText)) {
+                          await controller.createReview(store!.storeId!);
+                          Get.to(() => ReviewFragment(store: store));
                         }
                         // Get.to(() => ReviewFragment(store: store));
                       },

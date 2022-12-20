@@ -114,18 +114,55 @@ class StoreInfoController extends GetxController {
   }
 
   ///리뷰 추가 API
+  // Future<void> createReview(int storeId) async {
+  //   try {
+  //     isLoading.value = false;
+  //
+  //     final reviewData = {
+  //       "store_id": storeId,
+  //       "uid": auth.user!.uid, //TODO 가져오는 UID로 수정
+  //       "comment": reviewText.text,
+  //       "recommend_level": 0,
+  //     };
+  //
+  //     final res = await api.dio.post('/store/comment', data: reviewData);
+  //
+  //     await fetchReview(storeId);
+  //   } catch (e) {
+  //     logger.e(e.toString());
+  //   }
+  // }
+
+  ///리뷰 추가 API
   Future<void> createReview(int storeId) async {
     try {
       isLoading.value = false;
 
+      List<Set<Map<String, String>>> listMap = <Set<Map<String, String>>>[];
+      var index = 0;
+
+      for (var i in questionRate) {
+        index++;
+
+        /// ??????
+        listMap.add(
+            {
+              {'question_id': "$index"},
+              {'answer_value': "${i.value}"}
+            }
+        );
+      }
+
+
       final reviewData = {
         "store_id": storeId,
         "uid": auth.user!.uid, //TODO 가져오는 UID로 수정
-        "comment": reviewText.text,
+        "comment": modifyText.text,
         "recommend_level": 0,
+        "answerList": listMap
       };
 
-      final res = await api.dio.post('/store/comment', data: reviewData);
+      final res = await api.dio.post('/review', data: reviewData);
 
       await fetchReview(storeId);
     } catch (e) {
@@ -288,8 +325,8 @@ class StoreInfoController extends GetxController {
     if (controller.text.length < 10) {
       Get.snackbar("알림", "10글자 이상 작성해주세요:)");
       return false;
-    } else if (totalRate.value < 0) {
-      Get.snackbar("알림", "즐거웠는지 알려주세요.");
+    } else if (totalRate.value < 1) {
+      Get.snackbar("알림", "즐거웠는지 평가해 주세요.");
       return false;
     }
     return true;
