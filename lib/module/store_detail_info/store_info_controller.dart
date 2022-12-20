@@ -42,6 +42,7 @@ class StoreInfoController extends GetxController {
       TextEditingController(); //리뷰 작성 텍스트 필드 컨트롤러
   TextEditingController modifyText =
       TextEditingController(); //리뷰 수정 텍스트 필드 컨트롤러
+
   var isModifying = false.obs; // 수정 중
   var modifyingIndex = (-1).obs; // 수정할 리뷰 인덱스
   ScrollController reviewScrollController = ScrollController();
@@ -50,6 +51,7 @@ class StoreInfoController extends GetxController {
   var isEnd = false.obs;
 
   List<RxBool> settingContainerVisible = [true.obs];
+  List<RxBool> reviewDetailContainerVisible = [true.obs];
 
   @override
   void onInit() async {
@@ -57,6 +59,7 @@ class StoreInfoController extends GetxController {
     reviews.value = detailModel.value!.comment as List<Comment>;
     reviewScrollController.addListener(_reveiwScrollController);
     settingContainerVisible = List.generate(detailModel.value!.total!, (index) => false.obs);
+    reviewDetailContainerVisible = List.generate(detailModel.value!.total!, (index) => false.obs);
     reviewDetailModel.value = await getReviewQuestion();
     super.onInit();
   }

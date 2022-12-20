@@ -8,8 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/model/store_model.dart' as storeModel;
-import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
 import 'package:oru_rock/module/store_detail_info/fragment/review_detail.dart';
+import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
 
 class ReviewFragment extends GetView<StoreInfoController> {
   final storeModel.StoreModel? store;
@@ -21,7 +21,6 @@ class ReviewFragment extends GetView<StoreInfoController> {
 
   @override
   Widget build(BuildContext context) {
-
     return Expanded(
       child: Stack(children: [
         controller.reviews.isEmpty
@@ -30,7 +29,8 @@ class ReviewFragment extends GetView<StoreInfoController> {
                 padding: const EdgeInsets.only(top: GapSize.medium),
                 child: Column(
                   children: [
-                    Obx(()=> Expanded(
+                    Obx(
+                      () => Expanded(
                         child: ListView(
                           controller: controller.reviewScrollController,
                           shrinkWrap: true,
@@ -130,11 +130,11 @@ class ReviewFragment extends GetView<StoreInfoController> {
   }
 
   _buildReviewTile(int index) {
-
     return Obx(
       () => GestureDetector(
         onTap: () {
-          controller.settingContainerVisible[index].value = false;
+          controller.reviewDetailContainerVisible[index].value =
+              !controller.reviewDetailContainerVisible[index].value;
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: GapSize.xxSmall),
@@ -163,7 +163,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
                                 child: Padding(
                                   padding: const EdgeInsets.only(bottom: 8.0),
                                   child: Image.asset(controller.app.levelImage[
-                                  controller.reviews[index].userLevel ??
+                                      controller.reviews[index].userLevel ??
                                           0]),
                                 )),
                           ),
@@ -243,6 +243,23 @@ class ReviewFragment extends GetView<StoreInfoController> {
                           fontSize: FontSize.xSmall,
                           color: Colors.grey),
                     ),
+                    Container(
+                      height: GapSize.small,
+                      alignment: Alignment.center,
+                      child: AnimatedCrossFade(
+                        firstChild: const Icon(
+                          Icons.keyboard_arrow_down_sharp,
+                          color: Colors.grey,
+                        ),
+                        secondChild: Container(),
+                        crossFadeState: !controller
+                                .reviewDetailContainerVisible[index].value
+                            ? CrossFadeState.showFirst
+                            : CrossFadeState.showSecond,
+                        duration: Duration(milliseconds: 100),
+                      ),
+                    ),
+                    _buildReviewDetail(index),
                   ],
                 ),
                 Obx(
@@ -262,7 +279,8 @@ class ReviewFragment extends GetView<StoreInfoController> {
                                       onTap: () {
                                         controller.buildReportDialog(
                                             store!.storeId!,
-                                            controller.reviews[index].commentId!);
+                                            controller
+                                                .reviews[index].commentId!);
                                         controller
                                             .settingContainerVisible[index]
                                             .value = false;
@@ -276,7 +294,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
                                             color: Colors.red,
                                             size: WidthWithRatio.xSmall,
                                           ),
-                                          Text(
+                                          const Text(
                                             '신고',
                                             style:
                                                 TextStyle(fontFamily: "NotoM"),
@@ -286,18 +304,18 @@ class ReviewFragment extends GetView<StoreInfoController> {
                                     ),
                                     Visibility(
                                         visible:
-                                        controller.reviews[index].uid ==
+                                            controller.reviews[index].uid ==
                                                 controller.auth.user?.uid,
                                         child: const Divider()),
                                     Visibility(
-                                      visible:
-                                      controller.reviews[index].uid ==
-                                              controller.auth.user?.uid,
+                                      visible: controller.reviews[index].uid ==
+                                          controller.auth.user?.uid,
                                       child: GestureDetector(
                                         onTap: () async {
                                           controller.buildWarningDialog(
                                               store!.storeId!,
-                                              controller.reviews[index].commentId!);
+                                              controller
+                                                  .reviews[index].commentId!);
                                           controller
                                               .settingContainerVisible[index]
                                               .value = false;
@@ -311,7 +329,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
                                               size: WidthWithRatio.xSmall,
                                               color: Colors.grey,
                                             ),
-                                            Text('삭제',
+                                            const Text('삭제',
                                                 style: TextStyle(
                                                     fontFamily: "NotoM"))
                                           ],
@@ -330,6 +348,78 @@ class ReviewFragment extends GetView<StoreInfoController> {
         ),
       ),
     );
+  }
+
+  _buildReviewDetail(int index) {
+    return AnimatedCrossFade(
+        firstChild: Container(
+          decoration: BoxDecoration(
+            borderRadius:
+                const BorderRadius.all(Radius.circular(RadiusSize.medium)),
+            color: Colors.grey[200],
+          ),
+          height: 70.0 * controller.reviewDetailModel.value!.question!.length,
+          child: ListView.separated(
+            itemCount: controller.reviewDetailModel.value!.question!.length,
+            itemBuilder: (BuildContext context, int index) {
+              return SizedBox(
+                height: 70,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                        '${controller.reviewDetailModel.value!.question![index].questionText}'),
+                    const SizedBox(
+                      height: GapSize.xxSmall,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(
+                          Icons.star,
+                          color: Colors.black,
+                          size: 15,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.black,
+                          size: 15,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.black,
+                          size: 15,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.black,
+                          size: 15,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.black,
+                          size: 15,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return const Divider(
+                height: 1,
+                color: Colors.grey,
+              );
+            },
+          ),
+        ),
+        secondChild: Container(),
+        crossFadeState: controller.reviewDetailContainerVisible[index].value
+            ? CrossFadeState.showFirst
+            : CrossFadeState.showSecond,
+        duration: const Duration(milliseconds: 300));
   }
 
   _buildModifyTextField(int index) {
@@ -372,8 +462,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
                     onPressed: () {
                       if (controller
                           .reviewTextFieldValidator(controller.modifyText)) {
-                        controller.modifyReview(
-                            store!.storeId!,
+                        controller.modifyReview(store!.storeId!,
                             controller.reviews[index].commentId!);
                       }
                     },
@@ -404,7 +493,6 @@ class ReviewFragment extends GetView<StoreInfoController> {
   }
 
   _buildCommentField(int index) {
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.max,
