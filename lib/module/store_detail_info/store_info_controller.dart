@@ -57,14 +57,14 @@ class StoreInfoController extends GetxController {
   void onInit() async {
     detailModel.value = await getReview();
     reviews.value = detailModel.value!.comment as List<Comment>;
-    reviewScrollController.addListener(_reveiwScrollController);
+    reviewScrollController.addListener(_reviewScrollController);
     settingContainerVisible = List.generate(detailModel.value!.total!, (index) => false.obs);
     reviewDetailContainerVisible = List.generate(detailModel.value!.total!, (index) => false.obs);
     reviewDetailModel.value = await getReviewQuestion();
     super.onInit();
   }
 
-  _reveiwScrollController() {
+  _reviewScrollController() {
     if (reviewScrollController.offset >=
         reviewScrollController.position.maxScrollExtent &&
         !reviewScrollController.position.outOfRange &&
@@ -110,6 +110,7 @@ class StoreInfoController extends GetxController {
         StoreDetailModel newModel = StoreDetailModel.fromJson(data);
         detailModel.value!.total = newModel.total;
         detailModel.value!.comment = newModel.comment;
+        reviews.value = newModel.comment!;
       }
     } catch (e) {
       logger.e(e.toString());
