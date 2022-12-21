@@ -141,7 +141,7 @@ class StoreInfoController extends GetxController {
     try {
       isLoading.value = false;
 
-      List<Set<Map<String, String>>> listMap = <Set<Map<String, String>>>[];
+      List<Map<String, dynamic>> listMap = <Map<String, dynamic>>[];
       var index = 0;
 
       for (var i in questionRate) {
@@ -150,8 +150,8 @@ class StoreInfoController extends GetxController {
         /// ??????
         listMap.add(
             {
-              {'question_id': "$index"},
-              {'answer_value': "${i.value}"}
+              'question_id': "$index",
+              'answer_value': "${i.value}"
             }
         );
       }

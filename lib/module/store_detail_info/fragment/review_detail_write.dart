@@ -114,7 +114,8 @@ class ReviewDetailWriteFragment extends GetView<StoreInfoController> {
                       onPressed: () async {
                         if (controller.reviewTextFieldValidator(controller.modifyText)) {
                           await controller.createReview(store!.storeId!);
-                          Get.to(() => ReviewFragment(store: store));
+                          Get.back();
+                          Get.back();
                         }
                         // Get.to(() => ReviewFragment(store: store));
                       },

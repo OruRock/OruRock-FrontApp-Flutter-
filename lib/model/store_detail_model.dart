@@ -5,7 +5,8 @@ class StoreDetailModel {
   List<OpenTime>? openTime;
   List<Comment>? comment;
 
-  StoreDetailModel({this.image, this.total, this.comment});
+
+  StoreDetailModel({this.image, this.total,this.price, this.comment, this.openTime});
 
   StoreDetailModel.fromJson(Map<String, dynamic> json) {
     if (json['image'] != null) {
@@ -126,6 +127,7 @@ class Comment {
   int? commentId;
   String? createDate;
   String? updateDate;
+  List<ReviewRate>? reviewRate;
 
   Comment(
       {this.storeId,
@@ -140,6 +142,12 @@ class Comment {
       this.updateDate});
 
   Comment.fromJson(Map<String, dynamic> json) {
+    if (json['review'] != null) {
+      reviewRate = <ReviewRate>[];
+      json['review'].forEach((v) {
+        reviewRate!.add(ReviewRate.fromJson(v));
+      });
+    }
     storeId = json['store_id'];
     storeName = json['store_name'];
     userNickname = json['user_nickname'];
@@ -154,6 +162,9 @@ class Comment {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    if (reviewRate != null) {
+      data['review'] = reviewRate!.map((v) => v.toJson()).toList();
+    }
     data['store_id'] = storeId;
     data['store_name'] = storeName;
     data['user_nickname'] = userNickname;
@@ -164,6 +175,32 @@ class Comment {
     data['comment_id'] = commentId;
     data['create_date'] = createDate;
     data['update_date'] = updateDate;
+    return data;
+  }
+}
+
+class ReviewRate {
+  double? answerValue;
+  int? answerId;
+  int? questionId;
+
+  ReviewRate({
+    this.answerValue,
+    this.answerId,
+    this.questionId,
+  });
+
+  ReviewRate.fromJson(Map<String, dynamic> json) {
+    answerValue = json['answer_value'];
+    answerId = json['answer_id'];
+    questionId = json['question_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['answer_value'] = answerValue;
+    data['answer_id'] = answerId;
+    data['question_id'] = questionId;
     return data;
   }
 }

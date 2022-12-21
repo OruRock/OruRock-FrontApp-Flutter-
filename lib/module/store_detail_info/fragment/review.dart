@@ -5,8 +5,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:oru_rock/common_widget/rating_view.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
+import 'package:oru_rock/model/store_detail_model.dart' as storeDetailModel;
 import 'package:oru_rock/model/store_model.dart' as storeModel;
 import 'package:oru_rock/module/store_detail_info/fragment/review_detail.dart';
 import 'package:oru_rock/module/store_detail_info/store_info_controller.dart';
@@ -350,7 +352,9 @@ class ReviewFragment extends GetView<StoreInfoController> {
     );
   }
 
-  _buildReviewDetail(int index) {
+  _buildReviewDetail(int reviewIndex) {
+    storeDetailModel.Comment review = controller.reviews[reviewIndex];
+
     return AnimatedCrossFade(
         firstChild: Container(
           decoration: BoxDecoration(
@@ -362,6 +366,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
           child: ListView.separated(
             itemCount: controller.reviewDetailModel.value!.question!.length,
             itemBuilder: (BuildContext context, int index) {
+              int answerIndex = review.reviewRate!.indexWhere((answer) => answer.questionId == controller.reviewDetailModel.value!.question![index].questionId);
               return SizedBox(
                 height: 70,
                 child: Column(
@@ -373,36 +378,9 @@ class ReviewFragment extends GetView<StoreInfoController> {
                     const SizedBox(
                       height: GapSize.xxSmall,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          Icons.star,
-                          color: Colors.black,
-                          size: 15,
-                        ),
-                        Icon(
-                          Icons.star,
-                          color: Colors.black,
-                          size: 15,
-                        ),
-                        Icon(
-                          Icons.star,
-                          color: Colors.black,
-                          size: 15,
-                        ),
-                        Icon(
-                          Icons.star,
-                          color: Colors.black,
-                          size: 15,
-                        ),
-                        Icon(
-                          Icons.star,
-                          color: Colors.black,
-                          size: 15,
-                        ),
-                      ],
-                    ),
+                    answerIndex == -1 ?
+                        RatingView(rate: 0.0) :
+                    RatingView(rate: review.reviewRate![answerIndex].answerValue!)
                   ],
                 ),
               );
@@ -416,7 +394,7 @@ class ReviewFragment extends GetView<StoreInfoController> {
           ),
         ),
         secondChild: Container(),
-        crossFadeState: controller.reviewDetailContainerVisible[index].value
+        crossFadeState: controller.reviewDetailContainerVisible[reviewIndex].value
             ? CrossFadeState.showFirst
             : CrossFadeState.showSecond,
         duration: const Duration(milliseconds: 300));
