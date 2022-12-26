@@ -160,8 +160,8 @@ class BoardController extends GetxController {
       "board_category_id": selectedBoardCategory.value,
       "subject": title,
       "content": content,
-      "uid": auth.user!.uid,
-      "nickname": auth.user!.displayName,
+      "uid": auth.user.value!.uid,
+      "nickname": auth.user.value!.userNickname,
       "board_id": id,
       "use_yn": 1,
     };
@@ -175,7 +175,7 @@ class BoardController extends GetxController {
 //게시판 삭제
   Future<void> deleteBoardById(int id) async {
     var data = {
-      "uid": auth.user!.uid,
+      "uid": auth.user.value!.uid,
       "board_id": id
     };
     final rst = await api.dio.post("/board/delete", data: data);
@@ -188,7 +188,7 @@ class BoardController extends GetxController {
     int commentId,
   ) async {
     var data = {
-      "uid": auth.user!.uid,
+      "uid": auth.user.value!.uid,
       "comment_id": commentId,
       "board_id": boardId
     };
@@ -199,7 +199,7 @@ class BoardController extends GetxController {
 //좋아요 저장
   Future<bool> saveBoardLike(int boardId, bool? islike) async {
     var data = {
-      "uid": auth.user!.uid,
+      "uid": auth.user.value!.uid,
       "board_id": boardId
     };
     await api.dio.post("/board/like", data: data);
@@ -211,7 +211,7 @@ class BoardController extends GetxController {
   Future<bool> saveCommentLike(
       int boardId, int boardCategoryId, int commentId, bool? islike) async {
     var data = {
-      "uid": auth.user!.uid,
+      "uid": auth.user.value!.uid,
       "board_id": boardId,
       "comment_id": commentId,
     };
@@ -225,9 +225,9 @@ class BoardController extends GetxController {
     var data = {
       "board_id": board.value?.boardId,
       "comment_id": id,
-      "uid": auth.user!.uid,
+      "uid": auth.user.value!.uid,
       "comment": comment,
-      "nickname": auth.user!.displayName,
+      "nickname": auth.user.value!.userNickname,
     };
 
     if (comment.isEmpty) {
@@ -323,11 +323,11 @@ class BoardController extends GetxController {
     popupMenuItemIndex = value;
 
     if (value == Options.edit.index) {
-      if (auth.user!.uid == board.value?.uid) {
+      if (auth.user.value!.uid == board.value?.uid) {
         Get.to(() => BoardUpdatePage());
       }
     } else if (value == Options.delete.index) {
-      if (auth.user!.uid == board.value?.uid) {
+      if (auth.user.value!.uid == board.value?.uid) {
         Get.back();
         Fluttertoast.showToast(msg: '삭제완료우.');
         deleteBoardById(board.value?.boardId as int); // 상태관리로 갱신 시킬 수 있음.

@@ -18,20 +18,19 @@ class AuthFunction extends GetxService {
   }
 
   String jwt = '';
-  UserModel? user;
+  Rx<UserModel?> user = UserModel().obs;
 
   setJwt(String jwt) {
     this.jwt = jwt;
   }
 
-  setUser(String? displayName, String? email, String uid, int userLevel) {
-    user = UserModel(
-        displayName: displayName, email: email, uid: uid, userLevel: userLevel);
+  setUser(dynamic userJson) {
+    user.value = UserModel.fromJson(userJson);
   }
 
   signOut() {
     jwt = '';
-    user = null;
+    user.value = null;
     appData.remove("UID");
     appData.remove(StorageKeys.pin);
   }
