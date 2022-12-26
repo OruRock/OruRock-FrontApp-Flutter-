@@ -310,7 +310,7 @@ class AppController extends GetxController {
       Map<String, Object?> data;
       if (await hasLocationPermission()) {
         data = {
-          "uid": auth.user!.uid,
+          "uid": auth.user.value!.uid,
           "search_txt": searchText.text,
           "user_lat": location.latitude,
           "user_lng": location.longitude,
@@ -318,7 +318,7 @@ class AppController extends GetxController {
         };
       } else {
         data = {
-          "uid": auth.user!.uid,
+          "uid": auth.user.value!.uid,
           "search_txt": searchText.text,
           "page": searchListPage.value
         };
@@ -392,44 +392,6 @@ class AppController extends GetxController {
       isLoading.value = false;
     }
     isLoading.value = false;
-  }
-
-  Future<void> addSearch() async {
-    isGetMoreData.value = true;
-    try {
-      final location = await Geolocator.getCurrentPosition();
-      Map<String, Object?> data;
-      if (await hasLocationPermission()) {
-        data = {
-          "uid": auth.user.value!.uid,
-          "search_txt": searchText.text,
-          "user_lat": location.latitude,
-          "user_lng": location.longitude,
-          "page": searchListPage.value
-        };
-      } else {
-        data = {
-          "uid": auth.user.value!.uid,
-          "search_txt": searchText.text,
-          "page": searchListPage.value
-        };
-      }
-      final res = await api.dio.get('/store/list', queryParameters: data);
-
-      final List<dynamic>? storeData = res.data['payload']['result'];
-      if (storeData != null) {
-        searchStores +=
-            storeData.map((map) => StoreModel.fromJson(map)).toList();
-      }
-      if (res.data['payload']['isEnd']) {
-        isEnd.value = true;
-        searchListPage.value = 1;
-      }
-    } catch (e) {
-      Logger().e(e.toString());
-      isGetMoreData.value = false;
-    }
-    isGetMoreData.value = false;
   }
 
   ///북마크 list 정보 API
