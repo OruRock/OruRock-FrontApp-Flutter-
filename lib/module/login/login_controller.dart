@@ -21,6 +21,9 @@ class LoginController extends GetxController {
   final appData = GetStorage();
   var isLoading = false.obs; //로그인중 로딩용
   final nicknameController = TextEditingController();
+  final instagramIdController = TextEditingController();
+  final lengthController = TextEditingController();
+  final reachController = TextEditingController();
 
   var opacityValue = 0.0.obs;
   var opacityAnimateList = [0.0, 1.0];
@@ -58,10 +61,10 @@ class LoginController extends GetxController {
     if (success.status == LoginStatus.existUser) {
       //로그인 성공시
       Get.offAllNamed(Routes.app);
-      appData.write("UID", userAuth.user!.uid);
+      appData.write("UID", userAuth.user.value!.uid);
     } else if (success.status == LoginStatus.newUser) {
       Get.to(const FirstNickname());
-      appData.write("UID", userAuth.user!.uid);
+      appData.write("UID", userAuth.user.value!.uid);
     } else {
       //로그인 실패시
       Logger().e("Login Failed");
@@ -115,11 +118,7 @@ class LoginController extends GetxController {
 
       userAuth.setJwt(res.data['payload']['result']);
 
-      userAuth.setUser(
-          res.data['payload']['user']['user_nickname'],
-          user.kakaoAccount?.email,
-          kakao_res.data['payload']['uid'],
-          res.data['payload']['user']['user_level']);
+      userAuth.setUser(res.data['payload']['user']);
 
       if (kakao_res.data['payload']['isNewUser']) {
         return LoginResult(status: LoginStatus.newUser);
@@ -207,11 +206,7 @@ class LoginController extends GetxController {
       final res = await api.dio.post('/login', data: data);
 
       userAuth.setJwt(res.data['payload']['result']);
-      userAuth.setUser(
-          res.data['payload']['user']['user_nickname'],
-          res.data['payload']['user']['user_email'],
-          user.uid,
-          res.data['payload']['user']['user_level']);
+      userAuth.setUser(res.data['payload']['user']);
 
       if (authResult.additionalUserInfo!.isNewUser) {
         return LoginResult(status: LoginStatus.newUser);
@@ -244,14 +239,11 @@ class LoginController extends GetxController {
         final res = await api.dio.post('/login', data: data);
 
         userAuth.setJwt(res.data['payload']['result']);
-        userAuth.setUser(
-            res.data['payload']['user']['user_nickname'],
-            res.data['payload']['user']['user_email'],
-            cachedUid,
-            res.data['payload']['user']['user_level']);
+        userAuth.setUser(res.data['payload']['user']);
 
         Get.offAllNamed(Routes.app);
       } catch(e) {
+        Logger().e(e.toString());
         Fluttertoast.showToast(
             msg: 'Auto Login Fail',
             toastLength: Toast.LENGTH_SHORT,
@@ -275,15 +267,15 @@ class LoginController extends GetxController {
       }
 
       final data = {
-        "uid": userAuth.user!.uid,
-        "user_email": userAuth.user!.email,
+        "uid": userAuth.user.value!.uid,
+        "user_email": userAuth.user.value!.userEmail,
         "user_nickname": changeNickname
       };
 
       final res = await api.dio.post('/user', data: data);
 
       if (res.statusCode == 200 || res.statusCode == 201) {
-        userAuth.user!.displayName = changeNickname;
+        userAuth.user.value!.userNickname!.value = changeNickname;
         Get.offAllNamed(Routes.app);
       }
     } catch (e) {

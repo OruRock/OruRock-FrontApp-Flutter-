@@ -54,7 +54,7 @@ class Setting extends GetView<SettingController> {
                                 const EdgeInsets.only(bottom: GapSize.xxxSmall),
                             child: Image.asset(
                               controller.app
-                                  .levelImage[controller.userLevel.value ?? 0],
+                                  .levelImage[controller.auth.user.value!.userLevel!.value ?? 0],
                               width: WidthWithRatio.xxLarge,
                             ),
                           ),
@@ -75,40 +75,41 @@ class Setting extends GetView<SettingController> {
                                   const SizedBox(
                                     width: GapSize.xSmall,
                                   ),
-                                  Text(
-                                    controller.nickname.value,
-                                    style: const TextStyle(
-                                        fontFamily: "NotoM",
-                                        fontSize: FontSize.small),
+                                  Obx(()=> Text(
+                                      controller.auth.user.value!.userNickname!.value,
+                                      style: const TextStyle(
+                                          fontFamily: "NotoM",
+                                          fontSize: FontSize.small),
+                                    ),
                                   ),
                                 ],
                               ),
                               const SizedBox(
                                 height: GapSize.xxSmall,
                               ),
-                              const InstagramButton(
-                                nickName: 'climb_developer',
+                              InstagramButton(
+                                nickName: controller.auth.user.value!.instaNickname!.value,
                               ),
                               const SizedBox(
                                 height: GapSize.xxSmall,
                               ),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
+                                children: [
                                   Text(
-                                    '↕ 162',
-                                    style: TextStyle(
+                                    '↕ ${controller.auth.user.value!.userHeight!.value}',
+                                    style: const TextStyle(
                                         fontFamily: "NotoB",
                                         fontSize: FontSize.medium),
                                   ),
-                                  Padding(
+                                  const Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: GapSize.xSmall),
                                     child: Text('|'),
                                   ),
                                   Text(
-                                    '↔ 162',
-                                    style: TextStyle(
+                                    '↔ ${controller.auth.user.value!.userReach!.value}',
+                                    style: const TextStyle(
                                         fontFamily: "NotoB",
                                         fontSize: FontSize.medium),
                                   ),
@@ -162,15 +163,20 @@ class Setting extends GetView<SettingController> {
                             ],
                           ),
                           InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(()=> const ModifyMyInfo());
+                              },
                               child: Container(
-                                decoration: noShadowBoxDecoration,
-                                  padding: EdgeInsets.all(GapSize.xSmall),
-                                  child: Text('수정',
+                                decoration: const BoxDecoration(
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.all(Radius.circular(RadiusSize.medium)),
+                                ),
+                                  padding: const EdgeInsets.symmetric(horizontal: GapSize.large, vertical: GapSize.xxSmall),
+                                  child: const Text('수정',
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 12,
                                           fontFamily: "NotoM",
-                                          color: Colors.grey))))
+                                          color: Colors.white))))
                         ],
                       )
                     ],
@@ -272,24 +278,6 @@ class Setting extends GetView<SettingController> {
                       padding: EdgeInsets.symmetric(vertical: GapSize.small),
                       child: Text(
                         '공지사항',
-                        style: TextStyle(
-                            fontSize: FontSize.medium,
-                            fontFamily: "NotoR",
-                            color: Colors.black87),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: Get.width,
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.to(const ChangeNickname());
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: GapSize.small),
-                      child: Text(
-                        '닉네임 변경',
                         style: TextStyle(
                             fontSize: FontSize.medium,
                             fontFamily: "NotoR",

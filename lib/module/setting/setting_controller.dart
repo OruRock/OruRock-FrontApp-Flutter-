@@ -12,7 +12,6 @@ import 'package:oru_rock/model/store_detail_model.dart';
 import 'package:oru_rock/module/app/app_controller.dart';
 import 'package:oru_rock/routes.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingController extends GetxController {
   final api = Get.find<ApiFunction>();
@@ -21,9 +20,12 @@ class SettingController extends GetxController {
   final app = Get.find<AppController>();
 
   var noticeList = <NoticeModel>[].obs;
-  var nickname = ''.obs;
   final nicknameController = TextEditingController();
-  final userLevel = 0.obs;
+  final instagramIdController = TextEditingController();
+  final lengthController = TextEditingController();
+  final reachController = TextEditingController();
+
+  final selectedUserLevel = 0.obs;
   var isLoading = false.obs;
   var appVersion = ''.obs;
   var myReviewList = <Comment>[].obs;
@@ -32,8 +34,7 @@ class SettingController extends GetxController {
   void onInit() async {
     final packageInfo = await PackageInfo.fromPlatform();
     await getNotice();
-    setNicknameAtUserModel();
-    userLevel.value = auth.user!.userLevel!;
+    selectedUserLevel.value = auth.user.value!.userLevel!.value;
     appVersion.value = packageInfo.version;
   }
 
@@ -69,26 +70,44 @@ class SettingController extends GetxController {
   }
 
   ///닉네임 젼경
-  Future<void> changeNickname() async {
+  Future<void> changeUserInfo() async {
     isLoading.value = true;
-    final changeNickname = nicknameController.text.trim();
+    final changeNickname = nicknameController.text == ''
+        ? auth.user.value!.userNickname!.value
+        : nicknameController.text.trim();
+    final changeInstaId = instagramIdController.text == ''
+        ? auth.user.value!.instaNickname!.value
+        : instagramIdController.text.trim();
+    final changeLength = lengthController.text == ''
+        ? auth.user.value!.userHeight!.value
+        : lengthController.text.trim();
+    final changeReach = reachController.text == ''
+        ? auth.user.value!.userReach!.value
+        : reachController.text.trim();
     try {
-      if (!await nickNameChecker(changeNickname)) {
-        isLoading.value = false;
-        return;
+      if (nicknameController.text != '') {
+        if (!await nickNameChecker(changeNickname)) {
+          isLoading.value = false;
+          return;
+        }
       }
 
       final data = {
-        "uid": auth.user!.uid,
-        "user_email": auth.user!.email,
-        "user_nickname": changeNickname
+        "uid": auth.user.value!.uid,
+        "user_email": auth.user.value!.userEmail,
+        "user_nickname": changeNickname,
+        "user_level": selectedUserLevel.value,
+        "user_height": changeLength,
+        "user_reach": changeReach,
+        "insta_nickname": changeInstaId
       };
 
       final res = await api.dio.post('/user', data: data);
 
       if (res.statusCode == 200 || res.statusCode == 201) {
-        auth.user!.displayName = changeNickname;
-        setNicknameAtUserModel();
+        final res =
+            await api.dio.post('/login', data: {"uid": auth.user.value!.uid});
+        auth.setUser(res.data['payload']['user']);
       }
     } catch (e) {
       Logger().e(e.toString());
@@ -101,39 +120,10 @@ class SettingController extends GetxController {
     Fluttertoast.showToast(msg: "닉네임 변경이 완료되었습니다.");
   }
 
-  void setNicknameAtUserModel() {
-    nickname.value = auth.user!.displayName!;
-  }
-
-  void setUserLevel(int index) async {
-    isLoading.value = true;
-    try {
-      final data = {
-        "uid": auth.user!.uid,
-        "user_email": auth.user!.email,
-        "user_level": index
-      };
-
-      final res = await api.dio.post('/user', data: data);
-
-      if (res.statusCode == 200 || res.statusCode == 201) {
-        auth.user!.userLevel = index;
-        userLevel.value = index;
-      }
-    } catch (e) {
-      Logger().e(e.toString());
-      isLoading.value = false;
-      return;
-    }
-    isLoading.value = false;
-    Get.back();
-    Fluttertoast.showToast(msg: "프로필 설정이 완료되었습니다.");
-  }
-
   Future<List<Comment>> getMyReview() async {
     List<Comment> comment = [];
     try {
-      final data = {"uid": auth.user?.uid, "page": 1};
+      final data = {"uid": auth.user.value!.uid, "page": 1};
       final res = await api.dio.get('/store/myReview', queryParameters: data);
 
       final List<dynamic>? reviewData = res.data['payload']['result'];
@@ -150,7 +140,7 @@ class SettingController extends GetxController {
   Future<void> removeCommentAtMyReview(Comment comment) async {
     final data = {
       "comment_id": comment.commentId.toString(),
-      "uid": auth.user!.uid
+      "uid": auth.user.value!.uid
     };
     final res = await api.dio.delete('/store/comment', queryParameters: data);
     if (res.statusCode == 200 || res.statusCode == 201) {

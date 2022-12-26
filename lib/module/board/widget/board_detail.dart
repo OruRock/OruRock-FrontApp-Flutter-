@@ -21,7 +21,7 @@ class BoardDetail extends GetView<BoardController> {
           title: const Text('커뮤니티',),
           actions: [
             Visibility(
-              visible: controller.auth.user!.uid! ==
+              visible: controller.auth.user.value!.uid! ==
                   controller.board.value?.uid,
               child: PopupMenuButton(
                 onSelected: (value) {
@@ -232,7 +232,7 @@ class BoardDetail extends GetView<BoardController> {
                                 Expanded(child: Container()),
                                 Visibility(
                                   visible:
-                                      controller.auth.user!.uid == board.uid &&
+                                      controller.auth.user.value!.uid == board.uid &&
                                           board.useYn == true,
                                   child: Row(
                                     children: [
