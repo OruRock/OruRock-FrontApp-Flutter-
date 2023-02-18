@@ -32,11 +32,11 @@ class InstagramButton extends StatelessWidget {
             const SizedBox(
               width: GapSize.xSmall,
             ),
-            Text('$nickName', style: TextStyle(fontFamily: "NotoM", fontSize: FontSize.small, color: Colors.black),),
-            SizedBox(
+            Text('$nickName', style: const TextStyle(fontFamily: "NotoM", fontSize: FontSize.small, color: Colors.black),),
+            const SizedBox(
               width: GapSize.xxxSmall,
             ),
-            Icon(Icons.chevron_right, size: FontSize.small,),
+            const Icon(Icons.chevron_right, size: FontSize.small,),
           ],
         ));
   }

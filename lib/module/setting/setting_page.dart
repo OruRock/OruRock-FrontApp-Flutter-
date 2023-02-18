@@ -53,8 +53,9 @@ class Setting extends GetView<SettingController> {
                             padding:
                                 const EdgeInsets.only(bottom: GapSize.xxxSmall),
                             child: Image.asset(
-                              controller.app
-                                  .levelImage[controller.auth.user.value!.userLevel!.value ?? 0],
+                              controller.app.levelImage[controller
+                                      .auth.user.value!.userLevel!.value ??
+                                  0],
                               width: WidthWithRatio.xxLarge,
                             ),
                           ),
@@ -75,8 +76,10 @@ class Setting extends GetView<SettingController> {
                                   const SizedBox(
                                     width: GapSize.xSmall,
                                   ),
-                                  Obx(()=> Text(
-                                      controller.auth.user.value!.userNickname!.value,
+                                  Obx(
+                                    () => Text(
+                                      controller
+                                          .auth.user.value!.userNickname!.value,
                                       style: const TextStyle(
                                           fontFamily: "NotoM",
                                           fontSize: FontSize.small),
@@ -87,9 +90,14 @@ class Setting extends GetView<SettingController> {
                               const SizedBox(
                                 height: GapSize.xxSmall,
                               ),
-                              InstagramButton(
-                                nickName: controller.auth.user.value!.instaNickname!.value,
-                              ),
+                              controller.auth.user.value!.instaNickname
+                                          ?.value ==
+                                      null
+                                  ? const Text('인스타 닉네임을 입력해주세요.')
+                                  : InstagramButton(
+                                      nickName: controller.auth.user.value!
+                                          .instaNickname!.value,
+                                    ),
                               const SizedBox(
                                 height: GapSize.xxSmall,
                               ),
@@ -164,14 +172,17 @@ class Setting extends GetView<SettingController> {
                           ),
                           InkWell(
                               onTap: () {
-                                Get.to(()=> const ModifyMyInfo());
+                                Get.to(() => const ModifyMyInfo());
                               },
                               child: Container(
-                                decoration: const BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.all(Radius.circular(RadiusSize.medium)),
-                                ),
-                                  padding: const EdgeInsets.symmetric(horizontal: GapSize.large, vertical: GapSize.xxSmall),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(RadiusSize.medium)),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: GapSize.large,
+                                      vertical: GapSize.xxSmall),
                                   child: const Text('수정',
                                       style: TextStyle(
                                           fontSize: 12,

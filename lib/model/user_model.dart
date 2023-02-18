@@ -32,9 +32,9 @@ class UserModel {
     userId = json['user_id'];
     useYn = json['use_yn'];
     userNickname = json['user_nickname'].toString().obs;
-    userHeight = json['user_height'].toString().obs ?? '없음'.obs;
-    userReach = json['user_reach'].toString().obs ?? '없음'.obs;
-    instaNickname = json['insta_nickname'].toString().obs;
+    userHeight = json['user_height'] != null ? json['user_height'].toString().obs : '없음'.obs;
+    userReach = json['user_reach'] != null ? json['user_reach'].toString().obs : '없음'.obs;
+    instaNickname = json['insta_nickname'].obs;
     userLevel = int.parse(json['user_level'].toString()).obs;
     createDate = json['create_date'];
     updateDate = json['update_date'];
