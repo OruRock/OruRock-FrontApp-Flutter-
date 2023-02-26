@@ -127,19 +127,19 @@ class Setting extends GetView<SettingController> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Column(
-                            children: const [
-                              Text(
+                            children: [
+                              const Text(
                                 '리뷰',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontFamily: "NotoM",
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: GapSize.xxxSmall,
                               ),
-                              Text('30',
-                                  style: TextStyle(
+                              Text('${controller.myReviewList.length}',
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontFamily: "NotoB",
                                   ))

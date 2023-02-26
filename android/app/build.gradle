@@ -79,4 +79,10 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.google.android.gms:play-services-location:18.0.0"
+}
+
+tasks.register("prepareKotlinBuildScriptModel") {}
+task wrapper(type: Wrapper){
+    gradleVersion = '7.2'
 }
