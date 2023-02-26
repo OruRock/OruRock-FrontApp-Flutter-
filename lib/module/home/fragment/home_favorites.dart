@@ -23,7 +23,7 @@ class HomeFavorites extends GetView<AppController> {
       Obx(
         () => controller.isLoading.value
             ? const Center(child: CircularProgressIndicator())
-            : ListView.builder(
+            : controller.clientStoreBookMark.value.isNotEmpty ? ListView.builder(
                 padding: const EdgeInsets.symmetric(
                     vertical: GapSize.xxxSmall),
                 physics: const NeverScrollableScrollPhysics(),
@@ -75,23 +75,6 @@ class HomeFavorites extends GetView<AppController> {
                                       size: 30,
                                     );
                                   },
-                                // child: LikeButton(
-                                //   circleColor: const CircleColor(
-                                //       start: Color(0xff00ddff),
-                                //       end: Color(0xff0099cc)),
-                                //   bubblesColor: const BubblesColor(
-                                //     dotPrimaryColor: Color(0xff33b5e5),
-                                //     dotSecondaryColor: Color(0xff0099cc),
-                                //   ),
-                                //   likeBuilder: (bool isLiked) {
-                                //     return Icon(
-                                //       Icons.favorite,
-                                //       color: isLiked
-                                //           ? Colors.pinkAccent
-                                //           : Colors.grey,
-                                //       size: 25,
-                                //     );
-                                //   },
                                   isLiked: true,
                                   onTap: (bool isLiked) async {
                                     controller.detailButtonState[1].value =
@@ -109,7 +92,13 @@ class HomeFavorites extends GetView<AppController> {
                     ),
                   );
                 },
-              ),
+              )
+        : Center(
+            child: FractionallySizedBox(
+              widthFactor: 0.4,
+              child: Image.asset("asset/image/icon/empty_folder.png")
+            )
+        ),
       ),
     ]);
   }
