@@ -215,8 +215,9 @@ class ModifyMyInfo extends GetView<SettingController> {
                           textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
                               filled: false,
-                              hintText: controller
-                                  .auth.user.value!.instaNickname!.value,
+                              hintText: controller.auth.user.value!.instaNickname!.value == 'null'
+                                  ? 'Input Instagram Name'
+                                  : '${controller.auth.user.value!.instaNickname!.value}',
                               hintStyle: const TextStyle(
                                   fontSize: FontSize.large,
                                   color: Colors.grey,
@@ -251,7 +252,7 @@ class ModifyMyInfo extends GetView<SettingController> {
                               hintText:
                                   controller.auth.user.value!.userHeight!.value == 'null'
                                       ? '0cm'
-                                      : "${controller.auth.user.value!.userHeight!.value}cm",
+                                      : '${controller.auth.user.value!.userHeight!.value}cm',
                               hintStyle: const TextStyle(
                                   fontSize: FontSize.large,
                                   color: Colors.grey,
@@ -287,7 +288,7 @@ class ModifyMyInfo extends GetView<SettingController> {
                               hintText:
                                   controller.auth.user.value!.userReach!.value == 'null'
                                       ? '0cm'
-                                      : "${controller.auth.user.value!.userReach!.value}cm",
+                                      : '${controller.auth.user.value!.userReach!.value}cm',
                               hintStyle: const TextStyle(
                                   fontSize: FontSize.large,
                                   color: Colors.grey,
