@@ -45,8 +45,8 @@ class NoticeList extends GetView<SettingController> {
                                   isExpanded.value = expand;
                                 },
                                 trailing: isExpanded.value
-                                    ? const Icon(Icons.keyboard_arrow_down, color: Colors.black)
-                                    : const Icon(Icons.keyboard_arrow_up, color: Colors.black54),
+                                    ? const Icon(Icons.keyboard_arrow_up, color: Colors.black)
+                                    : const Icon(Icons.keyboard_arrow_down, color: Colors.black54),
                                 tilePadding: EdgeInsets.zero,
                                 title: Text(controller
                                     .noticeList[index].title!,
