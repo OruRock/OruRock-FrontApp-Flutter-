@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:oru_rock/constant/style/size.dart';
 import 'package:oru_rock/constant/style/style.dart';
 import 'package:oru_rock/module/setting/setting_controller.dart';
+import 'package:oru_rock/module/setting/setting_page.dart';
 
 class ModifyMyInfo extends GetView<SettingController> {
   const ModifyMyInfo({Key? key}) : super(key: key);
@@ -20,6 +22,7 @@ class ModifyMyInfo extends GetView<SettingController> {
             TextButton(
                 onPressed: () {
                   controller.changeUserInfo();
+                  Get.to(() => Setting());
                 },
                 child: Text('저장'))
           ],
@@ -242,10 +245,13 @@ class ModifyMyInfo extends GetView<SettingController> {
                         TextField(
                           controller: controller.lengthController,
                           textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                               filled: false,
                               hintText:
-                                  controller.auth.user.value!.userHeight!.value,
+                                  controller.auth.user.value!.userHeight!.value == 'null'
+                                      ? '0cm'
+                                      : "${controller.auth.user.value!.userHeight!.value}cm",
                               hintStyle: const TextStyle(
                                   fontSize: FontSize.large,
                                   color: Colors.grey,
@@ -274,11 +280,14 @@ class ModifyMyInfo extends GetView<SettingController> {
                         TextField(
                           controller: controller.reachController,
                           textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.number,
                           onSubmitted: (_) => FocusScope.of(context).unfocus(),
                           decoration: InputDecoration(
                               filled: false,
                               hintText:
-                                  controller.auth.user.value!.userReach!.value,
+                                  controller.auth.user.value!.userReach!.value == 'null'
+                                      ? '0cm'
+                                      : "${controller.auth.user.value!.userReach!.value}cm",
                               hintStyle: const TextStyle(
                                   fontSize: FontSize.large,
                                   color: Colors.grey,

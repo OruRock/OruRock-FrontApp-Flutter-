@@ -13,7 +13,7 @@ class LevelSetting extends GetView<SettingController> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            '레벨 설정',
+            '나의 트로피',
           ),
         ),
         body: Padding(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:oru_rock/constant/style/size.dart';
@@ -14,16 +15,21 @@ class InstagramButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () async {
-          var nativeUrl = "instagram://user?username=$nickName";
-          var webUrl = "https://www.instagram.com/$nickName";
-          try {
-            if (!await launchUrl(Uri.parse(nativeUrl),
-                mode: LaunchMode.externalApplication)) {
-              await launchUrl(Uri.parse(webUrl),
-                  mode: LaunchMode.platformDefault);
+          if (nickName == "null") {
+            await Fluttertoast.showToast(msg: "Instagram을 설정해 주세요.");
+          }
+          else {
+            var nativeUrl = "instagram://user?username=$nickName";
+            var webUrl = "https://www.instagram.com/$nickName";
+            try {
+              if (!await launchUrl(Uri.parse(nativeUrl),
+                  mode: LaunchMode.externalApplication)) {
+                await launchUrl(Uri.parse(webUrl),
+                    mode: LaunchMode.platformDefault);
+              }
+            } catch (e) {
+              Logger().e(e.toString());
             }
-          } catch (e) {
-            Logger().e(e.toString());
           }
         },
         child: Row(
@@ -32,12 +38,18 @@ class InstagramButton extends StatelessWidget {
             const SizedBox(
               width: GapSize.xSmall,
             ),
-            Text('$nickName', style: TextStyle(fontFamily: "NotoM", fontSize: FontSize.small, color: Colors.black),),
-            SizedBox(
+            Text(nickName == "null"
+                ? "Let's Connect"
+                : '$nickName',
+              style: const TextStyle(fontFamily: "NotoM", fontSize: FontSize.small, color: Colors.black),
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(
               width: GapSize.xxxSmall,
             ),
-            Icon(Icons.chevron_right, size: FontSize.small,),
+            const Icon(Icons.chevron_right, size: FontSize.small,),
           ],
-        ));
+        )
+    );
   }
 }

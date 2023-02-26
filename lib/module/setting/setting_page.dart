@@ -15,6 +15,7 @@ class Setting extends GetView<SettingController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.changeUserInfo();
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -97,7 +98,9 @@ class Setting extends GetView<SettingController> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    '↕ ${controller.auth.user.value!.userHeight!.value}',
+                                    controller.auth.user.value!.userHeight!.value == 'null'
+                                        ? '↕ 0cm'
+                                        : '↕ ${controller.auth.user.value!.userHeight!.value}cm',
                                     style: const TextStyle(
                                         fontFamily: "NotoB",
                                         fontSize: FontSize.medium),
@@ -108,7 +111,9 @@ class Setting extends GetView<SettingController> {
                                     child: Text('|'),
                                   ),
                                   Text(
-                                    '↔ ${controller.auth.user.value!.userReach!.value}',
+                                    controller.auth.user.value!.userReach!.value == 'null'
+                                        ? '↔ 0cm'
+                                        : '↔ ${controller.auth.user.value!.userReach!.value}cm',
                                     style: const TextStyle(
                                         fontFamily: "NotoB",
                                         fontSize: FontSize.medium),
