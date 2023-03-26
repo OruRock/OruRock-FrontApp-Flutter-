@@ -79,19 +79,18 @@ class MyBookmarkList extends GetView<SettingController> {
                   height: 50,
                   child: LikeButton(
                     circleColor: const CircleColor(
-                        start: Color(0xff00ddff),
-                        end: Color(0xff0099cc)),
+                        start: Color(0xFFFFEE58),
+                        end: Color(0xFFF9A825)),
                     bubblesColor: const BubblesColor(
-                      dotPrimaryColor: Color(0xff33b5e5),
-                      dotSecondaryColor: Color(0xff0099cc),
+                      dotPrimaryColor: Color(0xFFFBC02D),
+                      dotSecondaryColor: Color(0xFFF9A825),
                     ),
                     likeBuilder: (bool isLiked) {
                       return Icon(
-                        Icons.favorite,
-                        color: isLiked
-                            ? Colors.pinkAccent
-                            : Colors.grey,
-                        size: 25,
+                        isLiked ? Icons.star : Icons.star_border_outlined,
+                        color:
+                        isLiked ? Colors.yellow[600] : Colors.grey,
+                        size: 30,
                       );
                     },
                     isLiked: true,

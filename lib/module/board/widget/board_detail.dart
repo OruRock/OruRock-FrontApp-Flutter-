@@ -122,7 +122,7 @@ class BoardDetail extends GetView<BoardController> {
                           likeBuilder: (bool isLiked) {
                             return Icon(
                               isLiked ? EvaIcons.heart : EvaIcons.heartOutline,
-                              color: isLiked ? Colors.red : Colors.grey,
+                              color: isLiked ?  Colors.red[300] : Colors.grey,
                               size: 20,
                             );
                           },
@@ -266,11 +266,10 @@ class BoardDetail extends GetView<BoardController> {
                                 ),
                                 LikeButton(
                                   circleColor: const CircleColor(
-                                      start: Colors.blueAccent,
-                                      end: Color(0xff0099cc)),
+                                      start: Color(0xfff0ddff), end: Color(0xffffb5e5)),
                                   bubblesColor: const BubblesColor(
-                                    dotPrimaryColor: Color(0xff33b5e5),
-                                    dotSecondaryColor: Color(0xff0099cc),
+                                    dotPrimaryColor: Color(0xffffb5e5),
+                                    dotSecondaryColor: Color(0xffff99cc),
                                   ),
                                   isLiked: board.isLike == 1,
                                   onTap: (bool isLiked) {
@@ -283,12 +282,8 @@ class BoardDetail extends GetView<BoardController> {
                                   },
                                   likeBuilder: (bool isLiked) {
                                     return Icon(
-                                      isLiked
-                                          ? Icons.thumb_up
-                                          : Icons.thumb_up_alt_outlined,
-                                      color: isLiked
-                                          ? Colors.blueAccent
-                                          : Colors.grey,
+                                      isLiked ? EvaIcons.heart : EvaIcons.heartOutline,
+                                      color: isLiked ?  Colors.red[300] : Colors.grey,
                                       size: 18,
                                     );
                                   },

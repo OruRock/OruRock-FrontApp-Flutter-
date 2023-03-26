@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
@@ -80,7 +81,7 @@ class MarkerDetail extends GetView<AppController> {
                             likeBuilder: (bool isLiked) {
                               return Icon(
                                 isLiked ? Icons.push_pin_rounded : Icons.push_pin_outlined,
-                                color: isLiked ? Colors.redAccent : Colors.grey,
+                                color: isLiked ? Colors.deepOrangeAccent[200] : Colors.grey,
                                 size: 20,
                               );
                             },
@@ -98,18 +99,18 @@ class MarkerDetail extends GetView<AppController> {
                         Obx(
                           () => LikeButton(
                             circleColor: const CircleColor(
-                                start: Color(0xff00ddff),
-                                end: Color(0xff0099cc)),
+                                start: Color(0xFFFFEE58),
+                                end: Color(0xFFF9A825)),
                             bubblesColor: const BubblesColor(
-                              dotPrimaryColor: Color(0xff33b5e5),
-                              dotSecondaryColor: Color(0xff0099cc),
+                              dotPrimaryColor: Color(0xFFFBC02D),
+                              dotSecondaryColor: Color(0xFFF9A825),
                             ),
                             likeBuilder: (bool isLiked) {
                               return Icon(
-                                isLiked ? Icons.stars : Icons.star_border_outlined,
+                                isLiked ? Icons.star : Icons.star_border_outlined,
                                 color:
                                     isLiked ? Colors.yellow[600] : Colors.grey,
-                                size: 20,
+                                size: 22,
                               );
                             },
                             isLiked: controller.detailButtonState[1].value,
@@ -122,16 +123,15 @@ class MarkerDetail extends GetView<AppController> {
                         Obx(
                           () => LikeButton(
                             circleColor: const CircleColor(
-                                start: Color(0xff00ddff),
-                                end: Color(0xff0099cc)),
+                                start: Color(0xfff0ddff), end: Color(0xffffb5e5)),
                             bubblesColor: const BubblesColor(
-                              dotPrimaryColor: Color(0xff33b5e5),
-                              dotSecondaryColor: Color(0xff0099cc),
+                              dotPrimaryColor: Color(0xffffb5e5),
+                              dotSecondaryColor: Color(0xffff99cc),
                             ),
                             likeBuilder: (bool isLiked) {
                               return Icon(
-                                isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
-                                color: isLiked ? Colors.blue[600] : Colors.grey,
+                                isLiked ? EvaIcons.heart : EvaIcons.heartOutline,
+                                color: isLiked ? Colors.red[300] : Colors.grey,
                                 size: 20,
                               );
                             },
