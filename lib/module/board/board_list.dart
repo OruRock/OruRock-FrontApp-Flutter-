@@ -21,6 +21,7 @@ class BoardList extends GetView<BoardController> {
   Widget build(BuildContext context) {
     controller.context = context;
     return Obx(() => DefaultTabController(
+          initialIndex: controller.selectedBoardCategory.value,
           length: 2,
           child: Scaffold(
             key: _scaffoldKey,
@@ -43,6 +44,9 @@ class BoardList extends GetView<BoardController> {
               bottom: PreferredSize(
                 preferredSize: Size(HeightWithRatio.xSmall, HeightWithRatio.xSmall),
                 child: TabBar(
+                  onTap: (index) {
+                    controller.selectedBoardCategory.value = index;
+                  },
                   indicatorSize: TabBarIndicatorSize.label,
                   indicatorWeight: 1,
                   indicatorColor: Colors.black,

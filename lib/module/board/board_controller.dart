@@ -19,7 +19,7 @@ class BoardController extends GetxController {
   final api = Get.find<ApiFunction>();
   var isLoadingProfile = false.obs;
 
-  var selectedBoardCategory = 1.obs;
+  var selectedBoardCategory = 0.obs;
 
   Rx<BoardModel?> board = BoardModel().obs;
   var comment = <CommentModel>[].obs;
@@ -76,7 +76,6 @@ class BoardController extends GetxController {
   void onReady() {
     super.onReady();
   }
-
 
   void showSearchBox() {
     search.value = !search.value;
